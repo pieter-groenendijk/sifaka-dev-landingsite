@@ -1,47 +1,87 @@
 <script lang="ts">
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
+    import {onMount} from "svelte";
+
+    const viewMinX = $state(0);
+    const viewMinY = $state(0);
+    let viewWidth = $state(0);
+    let viewHeight = $state(0);
+
+    let mainRect: DOMRect | undefined = $state();
+    let rects: DOMRect[] | undefined = $state();
+
+    onMount(() => {
+        const sectionElem = document.getElementById("section--hero");
+        if (!sectionElem) {
+            return;
+        }
+
+        const observer = new ResizeObserver(() => {
+            const mainElem = document.getElementById("section--hero__elem--main");
+            if (!mainElem) {
+                return;
+            }
+            mainRect = mainElem.getBoundingClientRect();
+
+
+            const elems = document.getElementsByClassName("section--hero__elem");
+            rects = new Array(elems.length);
+            for (let i = 0; i < elems.length; ++i) {
+                rects[i] = elems[i].getBoundingClientRect();
+            }
+        });
+        observer.observe(sectionElem);
+
+        return () => observer.disconnect;
+    });
 </script>
 
+{#snippet line(rectOne: DOMRect, rectTwo: DOMRect)}
+    <line
+        x1={rectOne.x} y1={rectOne.y}
+        x2={rectTwo.x} y2={rectTwo.y}
+    />
+{/snippet}
+
 <main>
-  <div>
-    <a href="https://vite.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
+    <section id="section--hero" class="section">
+        <div class="section--hero__elem">No shenanigans</div>
+        <div class="section--hero__elem">Enjoyable</div>
+        <h1 id="section--hero__elem--main"><div>Design databases —</div><div>without grunt work</div></h1>
+        <div class="section--hero__elem">Cross-compatible</div>
+        <div class="section--hero__elem">Be productive</div>
 
-  <div class="card">
-    <Counter />
-  </div>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
+        <svg
+            bind:clientWidth={viewWidth} bind:clientHeight={viewHeight}
+            viewBox="{viewMinX} {viewMinY} {viewWidth} {viewHeight}"
+        >
+            {#each rects as rect}
+                {@render line(mainRect, rect)}
+            {/each}
+        </svg>
+    </section>
 </main>
 
 <style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
+    .section {
+
+    }
+
+    #section--hero {
+        position: relative;
+        isolation: isolate;
+    }
+
+    svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    line {
+        stroke: black;
+        stroke-width: 2px;
+    }
 </style>
