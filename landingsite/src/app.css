@@ -1,6 +1,20 @@
 :root {
     --green: #57AA87;
     --dark-green: #20605D;
+    --yellow: #FFEFC5;
     --dark: #1F242C;
     --light: #EFEFDD;
+
+    --font-family: "Rubik", sans-serif;
+}
+
+*, *::after, *::before {
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+}
+
+html {
+    font-family: var(--font-family);
+    background-color: var(--dark-green);
 }

@@ -44,31 +44,82 @@
 
 <main>
     <section id="section--hero" class="section">
-        <div class="section--hero__elem">No shenanigans</div>
-        <div class="section--hero__elem">Enjoyable</div>
-        <h1 id="section--hero__elem--main"><div>Design databases —</div><div>without grunt work</div></h1>
-        <div class="section--hero__elem">Cross-compatible</div>
-        <div class="section--hero__elem">Be productive</div>
+        <div class="section__content">
+            <div id="section--hero__elem--one" class="section--hero__elem">No shenanigans</div>
+            <div id="section--hero__elem--two" class="section--hero__elem">Enjoyable</div>
+            <h1 id="section--hero__elem--main">Design databases —<strong>without grunt work</strong></h1>
+            <div id="section--hero__elem--three" class="section--hero__elem">Cross-compatible</div>
+            <div id="section--hero__elem--four" class="section--hero__elem">Be productive</div>
 
-        <svg
-            bind:clientWidth={viewWidth} bind:clientHeight={viewHeight}
-            viewBox="{viewMinX} {viewMinY} {viewWidth} {viewHeight}"
-        >
-            {#each rects as rect}
-                {@render line(mainRect, rect)}
-            {/each}
-        </svg>
+            <svg
+                bind:clientWidth={viewWidth} bind:clientHeight={viewHeight}
+                viewBox="{viewMinX} {viewMinY} {viewWidth} {viewHeight}"
+            >
+                {#each rects as rect}
+                    {@render line(mainRect, rect)}
+                {/each}
+            </svg>
+        </div>
     </section>
 </main>
 
 <style>
-    .section {
-
+    .section__content {
+        box-sizing: border-box;
+        margin-inline: auto;
+        max-width: 1920px;
+        min-height: 90vh;
+        padding-inline: 128px;
+        padding-block: 96px 128px;
     }
 
     #section--hero {
-        position: relative;
         isolation: isolate;
+        background-color: var(--green);
+
+        .section__content {
+            max-width: 1200px;
+            display: grid;
+            justify-content: center;
+            align-content: center;
+            grid-template-columns: 1fr 1fr;
+            grid-auto-rows: min-content;
+            grid-template-areas:
+                "one two"
+                "main main"
+                "three four";
+            row-gap: 96px;
+        }
+    }
+
+    #section--hero__elem--main {
+        grid-area: main;
+        justify-self: center;
+        align-self: center;
+        font-size: 64px;
+        font-weight: 400;
+        text-align: center;
+        color: var(--yellow);
+    }
+
+    #section--hero__elem--main strong {
+        display: block;
+        font-weight: 800;
+    }
+
+    .section--hero__elem {
+        width: max-content;
+        height: fit-content;
+        padding-inline: 16px;
+        padding-block: 8px;
+        background-color: var(--dark-green);
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--light);
+    }
+
+    :is(#section--hero__elem--two, #section--hero__elem--four) {
+        justify-self: right;
     }
 
     svg {
