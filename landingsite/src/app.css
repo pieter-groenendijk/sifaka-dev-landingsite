@@ -17,3 +17,8 @@ body {
         opacity: 1;
     }
 }
+
+::selection {
+    background-color: var(--light);
+    color: var(--dark-green);
+}
