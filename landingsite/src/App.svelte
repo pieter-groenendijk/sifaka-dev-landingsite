@@ -106,6 +106,8 @@
         grid-area: main;
         justify-self: center;
         align-self: center;
+        background-color: var(--green);
+        border: 16px solid var(--green);
         font-size: 64px;
         font-weight: 400;
         text-align: center;
@@ -122,11 +124,12 @@
         height: fit-content;
         padding-inline: 16px;
         padding-block: 8px;
+        border: 16px solid var(--green);
         background-color: var(--dark-green);
         font-size: 32px;
         font-weight: 700;
         color: var(--light);
-        animation: 300ms ease-in-out 100ms both fade-in;
+        animation: 300ms ease-in-out var(--animation-stage-one) both fade-in;
     }
 
     :is(#section--hero__elem--two, #section--hero__elem--four) {
@@ -140,13 +143,22 @@
         width: 100%;
         height: 100%;
         z-index: -1;
+        animation: 900ms ease-in-out var(--animation-stage-two) both circle-clip-in;
+    }
+
+    @keyframes circle-clip-in {
+        from {
+            clip-path: circle(0px at center);
+        }
+
+        to {
+            clip-path: circle(500px at center);
+        }
     }
 
     line {
         stroke: color-mix(in srgb, var(--light) 60%, transparent 40%);
         stroke-width: 4px;
-        animation: 300ms ease-in-out 100ms both fade-in;
+        animation: 300ms ease-in-out var(--animation-stage-two) both fade-in;
     }
-
-
 </style>
