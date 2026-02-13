@@ -1,20 +1,13 @@
-:root {
-    --green: #57AA87;
-    --dark-green: #20605D;
-    --yellow: #FFEFC5;
-    --dark: #1F242C;
-    --light: #EFEFDD;
-
-    --font-family: "Rubik", sans-serif;
+body {
+    animation: 300ms ease-in-out both fade-in;
 }
 
-*, *::after, *::before {
-    margin: 0;
-    padding: 0;
-    border-width: 0;
-}
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
 
-html {
-    font-family: var(--font-family);
-    background-color: var(--dark-green);
+    to {
+        opacity: 1;
+    }
 }

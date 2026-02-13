@@ -126,6 +126,7 @@
         font-size: 32px;
         font-weight: 700;
         color: var(--light);
+        animation: 300ms ease-in-out 100ms both fade-in;
     }
 
     :is(#section--hero__elem--two, #section--hero__elem--four) {
@@ -147,13 +148,5 @@
         animation: 300ms ease-in-out 100ms both fade-in;
     }
 
-    @keyframes fade-in {
-        from {
-            opacity: 0;
-        }
 
-        to {
-            opacity: 1;
-        }
-    }
 </style>
