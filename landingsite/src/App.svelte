@@ -1,5 +1,6 @@
 <script lang="ts">
     import {onMount} from "svelte";
+    import {debounce, throttle} from "./lib/perf/perf";
 
     const viewMinX = $state(0);
     const viewMinY = $state(0);
@@ -10,35 +11,44 @@
     let rects: DOMRect[] | undefined = $state();
 
     onMount(() => {
+        // Gather elements
         const sectionElem = document.getElementById("section--hero");
         if (!sectionElem) {
             return;
         }
 
-        const observer = new ResizeObserver(() => {
-            const mainElem = document.getElementById("section--hero__elem--main");
-            if (!mainElem) {
-                return;
-            }
+        const mainElem = document.getElementById("section--hero__elem--main");
+        if (!mainElem) {
+            return;
+        }
+
+        const elems = document.getElementsByClassName("section--hero__elem");
+
+        // Create observer
+        const observer = new ResizeObserver(debounce(() => {
             mainRect = mainElem.getBoundingClientRect();
 
-
-            const elems = document.getElementsByClassName("section--hero__elem");
             rects = new Array(elems.length);
             for (let i = 0; i < elems.length; ++i) {
                 rects[i] = elems[i].getBoundingClientRect();
             }
-        });
-        observer.observe(sectionElem);
+        }, 50));
 
-        return () => observer.disconnect;
+        // Observe elements that could change the placement of the lines
+        observer.observe(sectionElem);
+        observer.observe(mainElem);
+        for (let i = 0; i < elems.length; ++i) {
+            observer.observe(elems[i]);
+        }
+
+        return observer.disconnect.bind(observer);
     });
 </script>
 
 {#snippet line(rectOne: DOMRect, rectTwo: DOMRect)}
     <line
-        x1={rectOne.x} y1={rectOne.y}
-        x2={rectTwo.x} y2={rectTwo.y}
+        x1={rectOne.x + rectOne.width / 2} y1={rectOne.y + rectOne.height / 2}
+        x2={rectTwo.x + rectTwo.width / 2} y2={rectTwo.y + rectTwo.height / 2}
     />
 {/snippet}
 
@@ -132,7 +142,18 @@
     }
 
     line {
-        stroke: black;
-        stroke-width: 2px;
+        stroke: color-mix(in srgb, var(--light) 60%, transparent 40%);
+        stroke-width: 4px;
+        animation: 300ms ease-in-out 100ms both fade-in;
+    }
+
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
     }
 </style>
