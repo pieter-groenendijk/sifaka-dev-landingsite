@@ -10,37 +10,71 @@
     let rects: DOMRect[] | undefined = $state();
 
     onMount(() => {
-        // Gather elements
-        const sectionElem = document.getElementById("section--hero");
-        if (!sectionElem) {
-            return;
-        }
+        const elems = document.getElementsByClassName("section--hero__elem") as HTMLCollectionOf<HTMLElement>;
+        const elemsLength = elems.length;
 
-        const mainElem = document.getElementById("section--hero__elem--main");
-        if (!mainElem) {
-            return;
-        }
+        // Random movement
+        {
+            const maxPixelDistance = 10;
+            const averageMsDuration = 2000;
 
-        const elems = document.getElementsByClassName("section--hero__elem");
+            for (let i = 0; i < elemsLength; ++i) {
+                const msDuration = Math.random() * averageMsDuration * 0.5 + averageMsDuration;
 
-        // Create observer
-        const observer = new ResizeObserver(() => {
-            mainRect = mainElem.getBoundingClientRect();
+                setInterval(() => {
+                    const angle = Math.random() * 2 * Math.PI;
+                    const distance = Math.sqrt(Math.random()) * maxPixelDistance;
 
-            rects = new Array(elems.length);
-            for (let i = 0; i < elems.length; ++i) {
-                rects[i] = elems[i].getBoundingClientRect();
+                    const offsetX = Math.trunc(Math.sin(angle) * distance);
+                    const offsetY = Math.trunc(Math.cos(angle) * distance);
+
+                    // Set goal for positions before next paint
+                    requestAnimationFrame(() => {
+                        const element = elems[i];
+
+                        element.style.setProperty("--offsetX", `${offsetX}px`);
+                        element.style.setProperty("--offsetY", `${offsetY}px`);
+                    });
+                }, msDuration);
             }
-        });
-
-        // Observe elements that could change the placement of the lines
-        observer.observe(sectionElem);
-        observer.observe(mainElem);
-        for (let i = 0; i < elems.length; ++i) {
-            observer.observe(elems[i]);
         }
 
-        return observer.disconnect.bind(observer);
+
+        // Keeping track of positions
+        let disconnectObserver;
+        {
+            // Gather elements
+            const sectionElem = document.getElementById("section--hero");
+            if (!sectionElem) {
+                return;
+            }
+
+            const mainElem = document.getElementById("section--hero__elem--main");
+            if (!mainElem) {
+                return;
+            }
+
+            // Create observer
+            const observer = new ResizeObserver(() => {
+                mainRect = mainElem.getBoundingClientRect();
+
+                rects = new Array(elemsLength);
+                for (let i = 0; i < elemsLength; ++i) {
+                    rects[i] = elems[i].getBoundingClientRect();
+                }
+            });
+
+            // Observe elements that could change the placement of the lines
+            observer.observe(sectionElem);
+            observer.observe(mainElem);
+            for (let i = 0; i < elemsLength; ++i) {
+                observer.observe(elems[i]);
+            }
+
+            disconnectObserver = observer.disconnect.bind(observer);
+        }
+
+        return disconnectObserver;
     });
 </script>
 
@@ -117,6 +151,9 @@
     }
 
     .section--hero__elem {
+        position: relative;
+        left: var(--offsetX, 0);
+        top: var(--offsetY, 0);
         width: max-content;
         height: fit-content;
         padding-inline: 16px;
@@ -127,6 +164,9 @@
         font-weight: 700;
         color: var(--light);
         animation: 300ms ease-in-out var(--animation-stage-one) both fade-in;
+        transition:
+            left 1500ms ease-in-out,
+            top 1500ms ease-in-out;
     }
 
     :is(#section--hero__elem--two, #section--hero__elem--four) {
