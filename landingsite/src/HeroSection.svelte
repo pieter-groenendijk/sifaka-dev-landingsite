@@ -1,5 +1,6 @@
 <script lang="ts">
     import {onMount} from "svelte";
+    import Section from "./Section.svelte";
 
     const viewMinX = $state(0);
     const viewMinY = $state(0);
@@ -85,40 +86,34 @@
     />
 {/snippet}
 
-<section id="section--hero" class="section">
-    <div class="section__content">
-        <div id="section--hero__elem--one" class="section--hero__elem">No shenanigans</div>
-        <div id="section--hero__elem--two" class="section--hero__elem">Enjoyable</div>
-        <h1 id="section--hero__elem--main">Design databases —<strong>without grunt work</strong></h1>
-        <div id="section--hero__elem--three" class="section--hero__elem">Cross-compatible</div>
-        <div id="section--hero__elem--four" class="section--hero__elem">Be productive</div>
+<Section id="section--hero">
+    <div id="section--hero__elem--one" class="section--hero__elem">No shenanigans</div>
+    <div id="section--hero__elem--two" class="section--hero__elem">Enjoyable</div>
+    <h1 id="section--hero__elem--main">Design databases —<strong>without grunt work</strong></h1>
+    <div id="section--hero__elem--three" class="section--hero__elem">Cross-compatible</div>
+    <div id="section--hero__elem--four" class="section--hero__elem">Be productive</div>
 
-        <svg
-            bind:clientWidth={viewWidth} bind:clientHeight={viewHeight}
-            viewBox="{viewMinX} {viewMinY} {viewWidth} {viewHeight}"
-        >
-            {#each rects as rect}
-                {@render line(mainRect, rect)}
-            {/each}
-        </svg>
-    </div>
-</section>
+    <svg
+        bind:clientWidth={viewWidth} bind:clientHeight={viewHeight}
+        viewBox="{viewMinX} {viewMinY} {viewWidth} {viewHeight}"
+    >
+        {#each rects as rect}
+            {@render line(mainRect, rect)}
+        {/each}
+    </svg>
+</Section>
+
+<!--<section id="section&#45;&#45;hero" class="section">-->
+<!--    <div class="section__content">-->
+<!--    </div>-->
+<!--</section>-->
 
 <style>
-    .section__content {
-        box-sizing: border-box;
-        margin-inline: auto;
-        max-width: 1920px;
-        min-height: 90vh;
-        padding-inline: 128px;
-        padding-block: 96px 128px;
-    }
-
-    #section--hero {
+    :global(#section--hero) {
         isolation: isolate;
         background-color: var(--green);
 
-        .section__content {
+        :global(.section__content) {
             max-width: 1200px;
             display: grid;
             justify-content: center;
