@@ -1,7 +1,8 @@
 <script lang="ts">
     import HeroSection from "./HeroSection.svelte";
     import ShowcaseSection from "./ShowcaseSection.svelte";
-    import {bindSequence, createHandler, enable} from "./lib/input/handler";
+    import {createHandler, enable} from "./lib/input/handler";
+    import {bindSequence} from "./lib/input/sequence";
 
     const inputHandler = createHandler();
     bindSequence(inputHandler, ["KeyQ", "KeyA"], () => {

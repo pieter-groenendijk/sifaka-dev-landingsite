@@ -1,7 +1,7 @@
 /*
     A defined scope for handling bindings
  */
-interface Handler {
+export interface Handler {
     keys: Set<string>;
     actions: Map<string, () => any>;
 
@@ -28,8 +28,8 @@ export function enable(h: Handler): void {
             return;
         }
 
-        const key = createKey(keyCode, sequenceIndex)
-        const inKeySet = h.keys.has(key);
+        const keyId = _createId(keyCode, sequenceIndex);
+        const inKeySet = h.keys.has(keyId);
         if (!inKeySet) {
             sequenceIndex = 0;
             return;
@@ -37,9 +37,7 @@ export function enable(h: Handler): void {
 
         ++sequenceIndex;
 
-        console.log("in key set");
-
-        const action = h.actions.get(key)
+        const action = h.actions.get(keyId);
         if (action === undefined) {
             return;
         }
@@ -60,25 +58,7 @@ export function disable(h: Handler): void {
     h.clearListeners();
 }
 
-export function bindSequence(h: Handler, keyCodes: string[], action: () => any): void {
-    if (keyCodes.length <= 0) {
-        return;
-    }
 
-    let key: string;
-    for (let i = 0; i < keyCodes.length; ++i) {
-        key = createKey(keyCodes[i], i);
-
-        h.keys.add(key);
-    }
-
-    h.actions.set(key!, action);
-}
-
-export function unbindSequence(h: Handler, keyCodes: string[]): void {
-    h.actions.delete(keyCodes.join());
-}
-
-function createKey(keyCode: string, index: number): string {
+export function _createId(keyCode: string, index: number): string {
     return `i${index}k${keyCode}`;
 }
