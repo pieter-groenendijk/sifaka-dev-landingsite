@@ -2,7 +2,8 @@
     A defined scope for handling bindings
  */
 interface Handler {
-    actions: Map<string, () => any>,
+    keys: Set<string>;
+    actions: Map<string, () => any>;
 
     clearListeners: (() => any),
 }
@@ -10,6 +11,7 @@ interface Handler {
 export function createHandler(): Handler {
     const h: Handler = Object.create(null);
 
+    h.keys = new Set();
     h.actions = new Map();
     h.clearListeners = () => {};
 
@@ -17,27 +19,34 @@ export function createHandler(): Handler {
 }
 
 export function enable(h: Handler): void {
-    let currentSequence: string = "";
+    let sequenceIndex = 0;
     const eventListener = function(event: KeyboardEvent) {
         const keyCode = event.code;
         console.log(keyCode);
-        if (keyCode === "Unidentified" || keyCode === "") {
-            return;
-        }
         if (keyCode === "Escape") {
-            currentSequence = "";
+            sequenceIndex = 0;
             return;
         }
 
-        currentSequence = currentSequence + keyCode;
-        console.log(currentSequence);
+        const key = createKey(keyCode, sequenceIndex)
+        const inKeySet = h.keys.has(key);
+        if (!inKeySet) {
+            sequenceIndex = 0;
+            return;
+        }
 
-        const action = h.actions.get(currentSequence);
+        ++sequenceIndex;
+
+        console.log("in key set");
+
+        const action = h.actions.get(key)
         if (action === undefined) {
             return;
         }
 
         action();
+
+        sequenceIndex = 0;
     };
     window.addEventListener("keydown", eventListener);
 
@@ -52,9 +61,24 @@ export function disable(h: Handler): void {
 }
 
 export function bindSequence(h: Handler, keyCodes: string[], action: () => any): void {
-    h.actions.set(keyCodes.join(), action);
+    if (keyCodes.length <= 0) {
+        return;
+    }
+
+    let key: string;
+    for (let i = 0; i < keyCodes.length; ++i) {
+        key = createKey(keyCodes[i], i);
+
+        h.keys.add(key);
+    }
+
+    h.actions.set(key!, action);
 }
 
 export function unbindSequence(h: Handler, keyCodes: string[]): void {
     h.actions.delete(keyCodes.join());
+}
+
+function createKey(keyCode: string, index: number): string {
+    return `i${index}k${keyCode}`;
 }

@@ -4,7 +4,7 @@
     import {bindSequence, createHandler, enable} from "./lib/input/handler";
 
     const inputHandler = createHandler();
-    bindSequence(inputHandler, ["KeyQ"], () => {
+    bindSequence(inputHandler, ["KeyQ", "KeyA"], () => {
         console.log("action!");
     })
     enable(inputHandler);
