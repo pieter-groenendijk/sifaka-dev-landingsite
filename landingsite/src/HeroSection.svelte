@@ -103,11 +103,6 @@
     </svg>
 </Section>
 
-<!--<section id="section&#45;&#45;hero" class="section">-->
-<!--    <div class="section__content">-->
-<!--    </div>-->
-<!--</section>-->
-
 <style>
     :global(#section--hero) {
         isolation: isolate;

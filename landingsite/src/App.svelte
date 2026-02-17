@@ -1,9 +1,11 @@
 <script lang="ts">
     import HeroSection from "./HeroSection.svelte";
+    import ShowcaseSection from "./ShowcaseSection.svelte";
 </script>
 
 <main>
     <HeroSection/>
+    <ShowcaseSection/>
 </main>
 <svg><!-- Noise overlay -->
     <filter id="noise-filter">
