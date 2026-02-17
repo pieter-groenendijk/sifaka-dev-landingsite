@@ -1,6 +1,13 @@
 <script lang="ts">
     import HeroSection from "./HeroSection.svelte";
     import ShowcaseSection from "./ShowcaseSection.svelte";
+    import {bindSequence, createHandler, enable} from "./lib/input/handler";
+
+    const inputHandler = createHandler();
+    bindSequence(inputHandler, ["KeyQ"], () => {
+        console.log("action!");
+    })
+    enable(inputHandler);
 </script>
 
 <main>
