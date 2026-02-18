@@ -1,63 +1,39 @@
 /*
     A defined scope for handling bindings
  */
-export interface Handler {
-    keys: Set<string>;
-    actions: Map<string, () => any>;
+import {type _Combination, enableCombinations} from "./combination";
+import {enableSequences} from "./sequence";
 
-    clearListeners: (() => any),
+export interface Handler {
+    combinations: Map<string, _Combination>;
+
+    sequenceKeys: Set<string>;
+    sequenceActions: Map<string, () => any>;
+
+    disableSequences: () => any;
+    disableCombinations: () => any;
 }
 
 export function createHandler(): Handler {
     const h: Handler = Object.create(null);
 
-    h.keys = new Set();
-    h.actions = new Map();
-    h.clearListeners = () => {};
+    h.combinations = new Map();
+
+    h.sequenceKeys = new Set();
+    h.sequenceActions = new Map();
 
     return h;
 }
 
 export function enable(h: Handler): void {
-    let sequenceIndex = 0;
-    const eventListener = function(event: KeyboardEvent) {
-        const keyCode = event.code;
-        console.log(keyCode);
-        if (keyCode === "Escape") {
-            sequenceIndex = 0;
-            return;
-        }
-
-        const keyId = _createId(keyCode, sequenceIndex);
-        const inKeySet = h.keys.has(keyId);
-        if (!inKeySet) {
-            sequenceIndex = 0;
-            return;
-        }
-
-        ++sequenceIndex;
-
-        const action = h.actions.get(keyId);
-        if (action === undefined) {
-            return;
-        }
-
-        action();
-
-        sequenceIndex = 0;
-    };
-    window.addEventListener("keydown", eventListener);
-
-
-    h.clearListeners = () => {
-        window.removeEventListener("keydown", eventListener);
-    }
+    h.disableSequences = enableSequences(h);
+    h.disableCombinations = enableCombinations(h);
 }
 
 export function disable(h: Handler): void {
-    h.clearListeners();
+    h.disableCombinations?.();
+    h.disableSequences?.();
 }
-
 
 export function _createId(keyCode: string, index: number): string {
     return `i${index}k${keyCode}`;

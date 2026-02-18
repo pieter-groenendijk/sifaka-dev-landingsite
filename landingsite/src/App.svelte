@@ -3,11 +3,15 @@
     import ShowcaseSection from "./ShowcaseSection.svelte";
     import {createHandler, enable} from "./lib/input/handler";
     import {bindSequence} from "./lib/input/sequence";
+    import {bindCombination} from "./lib/input/combination";
 
     const inputHandler = createHandler();
     bindSequence(inputHandler, ["KeyQ", "KeyA"], () => {
         console.log("action!");
-    })
+    });
+    bindCombination(inputHandler, ["KeyQ", "KeyA"], () => {
+        console.log("action!");
+    });
     enable(inputHandler);
 </script>
 
