@@ -5,7 +5,7 @@ import {type _Combination, enableCombinations} from "./combination";
 import {enableSequences} from "./sequence";
 
 export interface Handler {
-    combinations: Map<string, _Combination>;
+    combinations: Map<string, () => any>
 
     sequenceKeys: Set<string>;
     sequenceActions: Map<string, () => any>;

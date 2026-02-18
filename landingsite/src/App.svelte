@@ -6,9 +6,9 @@
     import {bindCombination} from "./lib/input/combination";
 
     const inputHandler = createHandler();
-    bindSequence(inputHandler, ["KeyQ", "KeyA"], () => {
-        console.log("action!");
-    });
+    // bindSequence(inputHandler, ["KeyQ", "KeyA"], () => {
+    //     console.log("action!");
+    // });
     bindCombination(inputHandler, ["KeyQ", "KeyA"], () => {
         console.log("action!");
     });
