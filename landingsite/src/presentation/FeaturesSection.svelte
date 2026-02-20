@@ -13,11 +13,11 @@
         },
         {
             title: "Cross-compatible",
-            description: "Built to deeply understand any given domain to provide you the tools you need and want. It guides the development without undermining your control; No AI. Just like an IDE.",
+            description: "Any database has structure to some capacity. Design databases for many modern paradigms & platforms. Or perhaps design a domain to multiple databases effectively.",
         },
         {
             title: "Enjoyable",
-            description: "Built to deeply understand any given domain to provide you the tools you need and want. It guides the development without undermining your control; No AI. Just like an IDE.",
+            description: "Our tool is dumb enough that it doesn’t come in your way. It’s smart enough to support what you want.",
         },
         {
             title: "No shenanigans",

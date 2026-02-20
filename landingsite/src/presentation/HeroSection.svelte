@@ -1,6 +1,7 @@
 <script lang="ts">
     import {onMount} from "svelte";
     import Section from "./lib/Section.svelte";
+    import {debounce} from "../lib/perf/perf";
 
     const viewMinX = $state(0);
     const viewMinY = $state(0);
@@ -56,14 +57,14 @@
             }
 
             // Create observer
-            const observer = new ResizeObserver(() => {
+            const observer = new ResizeObserver(debounce(300, () => {
                 mainRect = mainElem.getBoundingClientRect();
 
                 rects = new Array(elemsLength);
                 for (let i = 0; i < elemsLength; ++i) {
                     rects[i] = elems[i].getBoundingClientRect();
                 }
-            });
+            }));
 
             // Observe elements that could change the placement of the lines
             observer.observe(sectionElem);
@@ -73,7 +74,7 @@
             }
 
             disconnectObserver = observer.disconnect.bind(observer);
-        }
+        };
 
         return disconnectObserver;
     });

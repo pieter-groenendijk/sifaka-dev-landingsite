@@ -1,4 +1,4 @@
-export function debounce(func: () => void, ms: number): () => void {
+export function debounce(ms: number, func: () => void): () => void {
     let id: number;
     return function() {
         clearTimeout(id);
