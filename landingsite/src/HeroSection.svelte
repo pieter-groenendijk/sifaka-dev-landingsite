@@ -81,8 +81,8 @@
 
 {#snippet line(rectOne: DOMRect, rectTwo: DOMRect)}
     <line
-        x1={rectOne.x + rectOne.width / 2} y1={rectOne.y + rectOne.height / 2}
-        x2={rectTwo.x + rectTwo.width / 2} y2={rectTwo.y + rectTwo.height / 2}
+        x1={rectOne.x + rectOne.width / 2 + window.scrollX} y1={rectOne.y + rectOne.height / 2 + window.scrollY}
+        x2={rectTwo.x + rectTwo.width / 2 + window.scrollX} y2={rectTwo.y + rectTwo.height / 2 + window.scrollY}
     />
 {/snippet}
 
