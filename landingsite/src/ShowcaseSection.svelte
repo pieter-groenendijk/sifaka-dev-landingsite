@@ -27,10 +27,7 @@
 
     let openedFeature = $state(0);
 
-    function setMaxHeight(node: HTMLElement): void {
-        node.style.setProperty("--opened-height", `${node.clientHeight}px`);
-        node.classList.remove("feature__description--measuring");
-    }
+    const featureMaxHeights = $state(new Array(features.length));
 </script>
 
 {#snippet Feature(feature: Feature, index: number)}
@@ -44,9 +41,18 @@
             <span class="feature__title">{feature.title}</span><span class="feature__status">{#if isOpen}−{:else}+{/if}</span>
         </button>
         <div
-            class="feature__description feature__description--measuring"
-            use:setMaxHeight
-        >{feature.description}</div>
+            class="feature__description feature__description--displayed"
+            style="--max-height: {featureMaxHeights[index]}px"
+        >
+            {feature.description}
+            <div
+                class="feature__description feature__description--measurement"
+                aria-hidden="true"
+                bind:clientHeight={featureMaxHeights[index]}
+            >
+                {feature.description}
+            </div>
+        </div>
     </li>
 {/snippet}
 
@@ -105,30 +111,33 @@
         transition: 300ms font-weight ease-in-out;
     }
 
-    .feature__title {
-
+    .feature__description {
+        font-size: 18px;
+        font-weight: 300;
     }
 
-    .feature__description {
+    .feature__description--displayed {
+        position: relative;
         margin-top: 16px;
         max-height: 0;
         overflow: hidden;
         opacity: 0;
-        font-size: 18px;
-        font-weight: 300;
         transition:
             max-height 300ms ease-in-out,
             opacity 200ms ease-in-out;
     }
 
-    .feature__description--measuring {
+    .feature__description--measurement {
+        position: absolute;
+        top: 0;
+        inset-inline: 0;
         max-height: unset;
         visibility: hidden;
         pointer-events: none;
     }
 
-    .feature--is-open .feature__description {
-        max-height: var(--opened-height);
+    .feature--is-open .feature__description--displayed {
+        max-height: var(--max-height);
         opacity: 1;
     }
 
