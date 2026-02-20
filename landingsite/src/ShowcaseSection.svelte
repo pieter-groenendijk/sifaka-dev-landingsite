@@ -41,7 +41,7 @@
         class:feature--is-open={isOpen}
     >
         <button class="feature__header" onclick={() => {openedFeature = index}}>
-            <span class="feature__title">{feature.title}</span><span class="feature__status">{#if isOpen}-{:else}+{/if}</span>
+            <span class="feature__title">{feature.title}</span><span class="feature__status">{#if isOpen}−{:else}+{/if}</span>
         </button>
         <div
             class="feature__description feature__description--measuring"
@@ -50,36 +50,78 @@
     </li>
 {/snippet}
 
-<Section>
-    <h2>Made to be used</h2>
-    <div class="content">
-        <div>
-            <ul>
-                {#each features as feature, index}
-                    {@render Feature(feature, index)}
-                {/each}
-            </ul>
+<Section id="section--features">
+    <h2 class="title">Made to be used</h2>
+    <div class="hor-divided">
+        <ul class="features">
+            {#each features as feature, index}
+                {@render Feature(feature, index)}
+            {/each}
+        </ul>
+        <div class="demo">
+            <div class="demo-placeholder"></div>
+            <button></button>
         </div>
-        <div></div>
     </div>
 </Section>
 
 <style>
+    :global(#section--features .section__content) {
+        max-width: 1600px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .title {
+        margin-bottom: 60px;
+        font-size: 48px;
+        font-weight: 800;
+        color: var(--yellow);
+    }
+
+    .hor-divided {
+        flex-grow: 1;
+        display: grid;
+        grid-template-columns: minmax(300px, 6fr) 8fr;
+        gap: 128px;
+    }
+
+    .features {
+        align-self: center;
+    }
+
+    .feature {
+        margin-bottom: 30px;
+        list-style: none;
+        color: var(--yellow);
+    }
+
     .feature__header {
-        appearance: none;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        text-transform: uppercase;
+        font-size: 22px;
+        transition: 300ms font-weight ease-in-out;
+    }
+
+    .feature__title {
+
     }
 
     .feature__description {
+        margin-top: 16px;
         max-height: 0;
-        opacity: 0;
         overflow: hidden;
+        opacity: 0;
+        font-size: 18px;
+        font-weight: 300;
         transition:
             max-height 300ms ease-in-out,
             opacity 200ms ease-in-out;
     }
 
     .feature__description--measuring {
-        position: absolute;
         max-height: unset;
         visibility: hidden;
         pointer-events: none;
@@ -88,5 +130,9 @@
     .feature--is-open .feature__description {
         max-height: var(--opened-height);
         opacity: 1;
+    }
+
+    .demo {
+        background-color: var(--dark);
     }
 </style>
