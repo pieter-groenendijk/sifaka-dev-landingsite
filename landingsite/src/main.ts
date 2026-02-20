@@ -1,7 +1,7 @@
 import { mount } from 'svelte';
-import App from './App.svelte';
-import './app.css';
+import App from './presentation/App.svelte';
+import './presentation/app.css';
 
 mount(App, {
   target: document.getElementById('app')!,
-})
+});

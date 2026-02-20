@@ -1,4 +1,4 @@
-import {_createId, type Handler} from "./handler";
+import {type Handler} from "./handler";
 
 export function enableSequences(h: Handler): () => any {
     let sequenceIndex = 0;
@@ -10,7 +10,7 @@ export function enableSequences(h: Handler): () => any {
             return;
         }
 
-        const keyId = _createId(keyCode, sequenceIndex);
+        const keyId = createId(keyCode, sequenceIndex);
         const inKeySet = h.sequenceKeys.has(keyId);
         if (!inKeySet) {
             sequenceIndex = 0;
@@ -43,7 +43,7 @@ export function bindSequence(h: Handler, keyCodes: string[], action: () => any):
 
     let keyId: string;
     for (let i = 0; i < keyCodes.length; ++i) {
-        keyId = _createId(keyCodes[i], i);
+        keyId = createId(keyCodes[i], i);
 
         h.sequenceKeys.add(keyId);
     }
@@ -54,10 +54,14 @@ export function bindSequence(h: Handler, keyCodes: string[], action: () => any):
 export function unbindSequence(h: Handler, keyCodes: string[]): void {
     let keyId: string;
     for (let i = 0; i < keyCodes.length; ++i) {
-        keyId = _createId(keyCodes[i], i);
+        keyId = createId(keyCodes[i], i);
 
         h.sequenceKeys.delete(keyId);
     }
 
     h.sequenceActions.delete(keyId!);
+}
+
+function createId(keyCode: string, index: number): string {
+    return `i${index}k${keyCode}`;
 }

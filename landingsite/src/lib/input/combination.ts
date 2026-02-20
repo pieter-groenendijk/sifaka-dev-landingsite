@@ -1,11 +1,5 @@
 import type {Handler} from "./handler";
 
-export interface _Combination {
-    activeAmount: number,
-    amount: number,
-    action: () => any,
-}
-
 export function enableCombinations(h: Handler): () => any {
     const activeKeys: string[] = [];
     const keyDownListener = function(event: KeyboardEvent) {

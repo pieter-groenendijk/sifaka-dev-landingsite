@@ -1,6 +1,6 @@
 <script lang="ts">
     import {onMount} from "svelte";
-    import Section from "./Section.svelte";
+    import Section from "./lib/Section.svelte";
 
     const viewMinX = $state(0);
     const viewMinY = $state(0);

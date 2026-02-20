@@ -1,7 +1,4 @@
-/*
-    A defined scope for handling bindings
- */
-import {type _Combination, enableCombinations} from "./combination";
+import {enableCombinations} from "./combination";
 import {enableSequences} from "./sequence";
 
 export interface Handler {
@@ -35,6 +32,4 @@ export function disable(h: Handler): void {
     h.disableSequences?.();
 }
 
-export function _createId(keyCode: string, index: number): string {
-    return `i${index}k${keyCode}`;
-}
+
