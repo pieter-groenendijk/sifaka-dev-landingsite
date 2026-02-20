@@ -1,6 +1,5 @@
 <script lang="ts">
     import Section from "./Section.svelte";
-    import {onMount} from "svelte";
 
     interface Feature {
         title: string,
@@ -28,7 +27,10 @@
 
     let openedFeature = $state(0);
 
-    const maxHeights = $state(new Array(features.length));
+    function setMaxHeight(node: HTMLElement): void {
+        node.style.setProperty("--opened-height", `${node.clientHeight}px`);
+        node.classList.remove("feature__description--measuring");
+    }
 </script>
 
 {#snippet Feature(feature: Feature, index: number)}
@@ -42,9 +44,8 @@
             <span class="feature__title">{feature.title}</span><span class="feature__status">{#if isOpen}-{:else}+{/if}</span>
         </button>
         <div
-            class="feature__description"
-            style="--opened-height: {maxHeights[index]}px"
-            bind:clientHeight={maxHeights[index]}
+            class="feature__description feature__description--measuring"
+            use:setMaxHeight
         >{feature.description}</div>
     </li>
 {/snippet}
@@ -69,19 +70,23 @@
     }
 
     .feature__description {
+        max-height: 0;
+        opacity: 0;
+        overflow: hidden;
+        transition:
+            max-height 300ms ease-in-out,
+            opacity 200ms ease-in-out;
+    }
+
+    .feature__description--measuring {
         position: absolute;
+        max-height: unset;
         visibility: hidden;
         pointer-events: none;
     }
 
-    :global(.feature__description--prepared) {
-        height: 0;
-    }
-
     .feature--is-open .feature__description {
-        position: static;
-        height: var(--opened-height);
-        visibility: visible;
-        transition: height 300ms ease-in-out;
+        max-height: var(--opened-height);
+        opacity: 1;
     }
 </style>
