@@ -1,11 +1,13 @@
 <script lang="ts">
     import HeroSection from "./HeroSection.svelte";
     import FeaturesSection from "./FeaturesSection.svelte";
+    import TimelineSection from "./TimelineSection.svelte";
 </script>
 
 <main>
     <HeroSection/>
     <FeaturesSection/>
+    <TimelineSection/>
 </main>
 <svg>
     <filter id="noise-filter">
