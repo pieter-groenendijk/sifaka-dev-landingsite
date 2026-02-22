@@ -118,7 +118,7 @@
 
     .feature__description--displayed {
         position: relative;
-        margin-top: 16px;
+        margin-top: 15px;
         max-height: 0;
         overflow: hidden;
         opacity: 0;
