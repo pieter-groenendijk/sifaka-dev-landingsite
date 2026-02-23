@@ -108,14 +108,18 @@
     }
 
     .milestones {
+        --max-item-width: 600px;
+        padding-inline: 50%;
         display: grid;
         grid-auto-flow: column;
-        grid-auto-columns: clamp(300px, 30vw, 600px);
-        overflow: scroll;
+        grid-auto-columns: clamp(300px, 30%, 600px);
         gap: 96px;
+        overflow: scroll;
+        scroll-snap-type: x mandatory;
     }
 
     .milestone {
+        scroll-snap-align: center;
     }
 
     .milestone__time {
