@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { onMount } from "svelte";
     import Section from "./lib/Section.svelte";
 
     interface Milestone {
@@ -68,11 +69,116 @@
                 "Automate recurring labor-intensive tasks",
             ],
         },
+        {
+            timeLabel: "2026",
+            title: "MongoDB Focus",
+            keyPoints: [
+                "Document paradigm support",
+                "MongoDB support",
+                "Project consistency at all times",
+                "Automate recurring labor-intensive tasks",
+            ],
+        },
+        {
+            timeLabel: "2026",
+            title: "MongoDB Focus",
+            keyPoints: [
+                "Document paradigm support",
+                "MongoDB support",
+                "Project consistency at all times",
+                "Automate recurring labor-intensive tasks",
+            ],
+        },
+        {
+            timeLabel: "2026",
+            title: "MongoDB Focus",
+            keyPoints: [
+                "Document paradigm support",
+                "MongoDB support",
+                "Project consistency at all times",
+                "Automate recurring labor-intensive tasks",
+            ],
+        },
+        {
+            timeLabel: "2026",
+            title: "MongoDB Focus",
+            keyPoints: [
+                "Document paradigm support",
+                "MongoDB support",
+                "Project consistency at all times",
+                "Automate recurring labor-intensive tasks",
+            ],
+        },
+        {
+            timeLabel: "2026",
+            title: "MongoDB Focus",
+            keyPoints: [
+                "Document paradigm support",
+                "MongoDB support",
+                "Project consistency at all times",
+                "Automate recurring labor-intensive tasks",
+            ],
+        },
+        {
+            timeLabel: "2026",
+            title: "MongoDB Focus",
+            keyPoints: [
+                "Document paradigm support",
+                "MongoDB support",
+                "Project consistency at all times",
+                "Automate recurring labor-intensive tasks",
+            ],
+        },
     ]);
+
+    let currMilestoneAt = $state(0);
+
+    function initScrollContainer(scrollContainerElem: HTMLOListElement) {
+        const children = scrollContainerElem.children as HTMLCollectionOf<HTMLElement>;
+        if (children.length < 1) {
+            return;
+        }
+
+
+        function updateCurrentMilestoneAt(): void {
+            const scrollLeft = scrollContainerElem.scrollLeft;
+
+            // If it's left, go left until you've gone too far
+            let leftAt;
+            for (
+                leftAt = currMilestoneAt - 1; 
+                leftAt >= 0 && scrollLeft < children[leftAt].offsetLeft;
+                --leftAt
+            ) {}
+            ++leftAt;
+
+            // If it's right, go right until you've gone too far
+            let rightAt;
+            for (
+                rightAt = currMilestoneAt + 1;
+                rightAt < children.length && scrollLeft > children[rightAt].offsetLeft;
+                ++rightAt
+            ) {}
+            --rightAt;
+
+            if (leftAt !== currMilestoneAt) {
+                currMilestoneAt = leftAt;
+            } else if (rightAt !== currMilestoneAt) {
+                currMilestoneAt = rightAt;
+            }
+
+            console.log(currMilestoneAt, leftAt, rightAt);
+        }
+        scrollContainerElem.addEventListener("scrollend", updateCurrentMilestoneAt);
+
+        return () => {
+            scrollContainerElem.removeEventListener("scrollend", updateCurrentMilestoneAt);
+        }
+    }
 </script>
 
-{#snippet Milestone(milestone: Milestone)}
-    <li class="milestone">
+{#snippet Milestone(milestone: Milestone, at: number)}
+    <li class="milestone" class:milestone--current={at === currMilestoneAt}>
         <div class="milestone__time-container">
             <div class="milestone__time">{milestone.timeLabel}</div>
         </div>
@@ -89,9 +195,9 @@
 
 <Section id="section--timeline">
     <h2 class="section__title">Roadmap</h2>
-    <ol class="milestones">
-        {#each milestones as milestone}
-            {@render Milestone(milestone)}
+    <ol class="milestones" {@attach initScrollContainer}>
+        {#each milestones as milestone, at}
+            {@render Milestone(milestone, at)}
         {/each}
     </ol>
 </Section>
