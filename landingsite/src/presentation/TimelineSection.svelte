@@ -73,7 +73,9 @@
 
 {#snippet Milestone(milestone: Milestone)}
     <li class="milestone">
-        <div class="milestone__time">{milestone.timeLabel}</div>
+        <div class="milestone__time-container">
+            <div class="milestone__time">{milestone.timeLabel}</div>
+        </div>
         <div class="milestone__content">
             <div class="milestone__title">{milestone.title}</div>
             <ul class="milestone__points">
@@ -97,6 +99,10 @@
 <style>
     :global(#section--timeline) {
         background-color: var(--dark);
+
+        :global(.section__content) {
+            padding-inline: 0; /* Normal padding not ideal due to clipping of inside scroll container */
+        }
     }
 
     .section__title {
@@ -109,11 +115,12 @@
 
     .milestones {
         --max-item-width: 600px;
+        --gap: 96px;
         padding-inline: 50%;
         display: grid;
         grid-auto-flow: column;
         grid-auto-columns: clamp(300px, 30%, 600px);
-        gap: 96px;
+        gap: var(--gap);
         overflow: scroll;
         scroll-snap-type: x mandatory;
     }
@@ -122,9 +129,25 @@
         scroll-snap-align: center;
     }
 
-    .milestone__time {
-        margin-inline: auto;
+    .milestone__time-container {
+        margin-inline: calc(-0.5 * var(--gap));
         margin-bottom: 45px;
+        display: flex;
+        flex-direction: row;
+        gap: 8px;
+        align-items: center;
+    }
+
+    .milestone__time-container::before, 
+    .milestone__time-container::after {
+        content: "";
+        display: block;
+        height: 16px;
+        flex-grow: 1;
+        background-color: var(--green);
+    }
+
+    .milestone__time {
         width: fit-content;
         font-size: 20px;
         color: var(--green);
@@ -132,7 +155,6 @@
 
     .milestone__content {
         padding: 15px;
-        /*background-color: var(--green);*/
         text-align: center;
     }
 
