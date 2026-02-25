@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { onMount } from "svelte";
     import Section from "./lib/Section.svelte";
+    import {throttle} from "../lib/perf/perf";
 
     interface Milestone {
         timeLabel: string,
@@ -170,12 +170,13 @@
                 return;
             }
         }
-        scrollContainerElem.addEventListener("scrollend", updateCurrentMilestoneAt);
+        const onScroll = throttle(100, updateCurrentMilestoneAt);
+        scrollContainerElem.addEventListener("scroll", onScroll);
 
         updateCurrentMilestoneAt();
 
         return () => {
-            scrollContainerElem.removeEventListener("scrollend", updateCurrentMilestoneAt);
+            scrollContainerElem.removeEventListener("scroll", onScroll);
         }
     }
 </script>

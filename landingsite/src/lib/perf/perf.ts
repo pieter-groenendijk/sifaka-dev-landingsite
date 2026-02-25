@@ -6,7 +6,7 @@ export function debounce(ms: number, func: () => void): () => void {
     }
 }
 
-export function throttle(func: () => void, ms: number): () => void {
+export function throttle(ms: number, func: () => void): () => void {
     let lastExecutedAt: number = performance.now();
     return function() {
         const nowAt: number = performance.now();
