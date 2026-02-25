@@ -131,7 +131,7 @@
         },
     ]);
 
-    let currMilestoneAt = $state(0);
+    let currMilestoneAt = $state(Math.trunc(milestones.length / 2));
 
     function initScrollContainer(scrollContainerElem: HTMLOListElement) {
         const children = scrollContainerElem.children as HTMLCollectionOf<HTMLElement>;
@@ -171,6 +171,8 @@
             }
         }
         scrollContainerElem.addEventListener("scrollend", updateCurrentMilestoneAt);
+
+        updateCurrentMilestoneAt();
 
         return () => {
             scrollContainerElem.removeEventListener("scrollend", updateCurrentMilestoneAt);
@@ -234,12 +236,6 @@
 
     .milestone {
         scroll-snap-align: center;
-        opacity: 0.6;
-        transition: opacity 200ms ease-in-out;
-    }
-
-    .milestone--current {
-        opacity: 1;
     }
 
     .milestone__time-container {
@@ -269,6 +265,22 @@
     .milestone__content {
         padding: 15px;
         text-align: center;
+    }
+
+    .milestone__time-container::before, 
+    .milestone__time-container::after,
+    .milestone__time-container > *,
+    .milestone__content {
+        opacity: 0.6; 
+        transition: opacity 200ms ease-in-out;
+    }
+
+    .milestone--current .milestone__content,
+    .milestone--current .milestone__time-container::before,
+    .milestone--current .milestone__time-container::after,
+    .milestone--current + .milestone .milestone__time-container::before,
+    .milestone:has(+ .milestone--current) .milestone__time-container::after {
+        opacity: 1;
     }
 
     .milestone__title {
