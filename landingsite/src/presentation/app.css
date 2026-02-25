@@ -4,6 +4,11 @@
     --animation-stage-two: calc(var(--animation-stage-one) + 200ms);
 }
 
+html {
+    scroll-behavior: smooth;
+    scrollbar-color: var(--light) var(--dark);
+}
+
 body {
     animation: 300ms ease-in-out var(--animation-stage-zero) both fade-in;
 }

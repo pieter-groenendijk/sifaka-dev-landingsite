@@ -90,7 +90,7 @@
     }
 
     .section__title {
-        margin-bottom: 60px;
+        margin-bottom: 96px;
         font-size: 48px;
         font-weight: 800;
         text-align: center;
@@ -99,13 +99,14 @@
 
     .milestones {
         --gap: 96px;
-        --item-width: clamp(300px, calc(33% - var(--gap)), 450px);
+        --item-width: clamp(300px, calc(30% - var(--gap)), 450px);
         display: grid;
         grid-auto-flow: column;
         grid-auto-columns: var(--item-width);
         gap: var(--gap);
         overflow: scroll;
         scroll-snap-type: x mandatory;
+        scrollbar-width: none;
     }
 
     .milestones::before,
@@ -134,7 +135,7 @@
         height: 3px;
         flex-grow: 1;
         background-color: var(--light);
-        opacity: 0;
+        opacity: 0.3;
         transition: opacity 400ms ease-in-out;
     }
 
@@ -143,7 +144,7 @@
         font-size: 20px;
         font-weight: 500;
         color: var(--light);
-        opacity: 0;
+        opacity: 0.1;
         transition: opacity 400ms ease-in-out;
     }
 
@@ -168,7 +169,7 @@
     }
 
     .milestone__content {
-        opacity: 0;
+        opacity: 0.3;
         transition: opacity 500ms ease-in-out;
     }
 
