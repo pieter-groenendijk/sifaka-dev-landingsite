@@ -141,33 +141,34 @@
 
 
         function updateCurrentMilestoneAt(): void {
-            const scrollLeft = scrollContainerElem.scrollLeft;
+            const middleOffsetLeft = scrollContainerElem.scrollLeft + scrollContainerElem.offsetWidth / 2;
 
             // If it's left, go left until you've gone too far
             let leftAt;
             for (
-                leftAt = currMilestoneAt - 1; 
-                leftAt >= 0 && scrollLeft < children[leftAt].offsetLeft;
+                leftAt = currMilestoneAt; 
+                leftAt > 0 && middleOffsetLeft <= children[leftAt].offsetLeft;
                 --leftAt
             ) {}
-            ++leftAt;
+
+            if (leftAt !== currMilestoneAt) {
+                currMilestoneAt = leftAt;
+                return;
+            }
 
             // If it's right, go right until you've gone too far
             let rightAt;
             for (
                 rightAt = currMilestoneAt + 1;
-                rightAt < children.length && scrollLeft > children[rightAt].offsetLeft;
+                rightAt < children.length && middleOffsetLeft > children[rightAt].offsetLeft;
                 ++rightAt
             ) {}
             --rightAt;
 
-            if (leftAt !== currMilestoneAt) {
-                currMilestoneAt = leftAt;
-            } else if (rightAt !== currMilestoneAt) {
+            if (rightAt !== currMilestoneAt) {
                 currMilestoneAt = rightAt;
+                return;
             }
-
-            console.log(currMilestoneAt, leftAt, rightAt);
         }
         scrollContainerElem.addEventListener("scrollend", updateCurrentMilestoneAt);
 
@@ -233,6 +234,12 @@
 
     .milestone {
         scroll-snap-align: center;
+        opacity: 0.6;
+        transition: opacity 200ms ease-in-out;
+    }
+
+    .milestone--current {
+        opacity: 1;
     }
 
     .milestone__time-container {
