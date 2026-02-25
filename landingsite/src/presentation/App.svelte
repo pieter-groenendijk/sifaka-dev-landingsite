@@ -1,7 +1,7 @@
 <script lang="ts">
-    import HeroSection from "./HeroSection.svelte";
-    import FeaturesSection from "./FeaturesSection.svelte";
-    import TimelineSection from "./TimelineSection.svelte";
+    import HeroSection from "./hero/HeroSection.svelte";
+    import FeaturesSection from "./features/FeaturesSection.svelte";
+    import TimelineSection from "./timeline/TimelineSection.svelte";
 </script>
 
 <main>
