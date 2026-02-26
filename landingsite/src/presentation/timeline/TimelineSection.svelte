@@ -135,7 +135,7 @@
         height: 3px;
         flex-grow: 1;
         background-color: var(--light);
-        opacity: 0.3;
+        opacity: 0.1;
         transition: opacity 400ms ease-in-out;
     }
 
@@ -165,11 +165,11 @@
 
     .milestone--current + .milestone .milestone__time-container::after,
     .milestone:has(+ .milestone--current) .milestone__time-container::before {
-        opacity: 0.4;
+        opacity: 0.2;
     }
 
     .milestone__content {
-        opacity: 0.3;
+        opacity: 0.2;
         transition: opacity 500ms ease-in-out;
     }
 
