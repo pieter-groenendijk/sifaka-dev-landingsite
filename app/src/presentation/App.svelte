@@ -1,13 +1,13 @@
 <script lang="ts">
     import HeroSection from "./hero/HeroSection.svelte";
     import FeaturesSection from "./features/FeaturesSection.svelte";
-    import TimelineSection from "./timeline/TimelineSection.svelte";
+    import RoadmapSection from "./roadmap/RoadmapSection.svelte";
 </script>
 
 <main>
     <HeroSection/>
     <FeaturesSection/>
-    <TimelineSection/>
+    <RoadmapSection/>
 </main>
 <svg>
     <defs>

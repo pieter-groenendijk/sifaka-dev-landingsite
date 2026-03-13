@@ -1,7 +1,8 @@
 <script lang="ts">
     import Section from "../lib/Section.svelte";
-    import {throttle} from "../../lib/perf/perf";
+    import {throttled} from "../../lib/perf/perf";
     import {milestones} from "../../data/milestones";
+    import type {Milestone} from "./milestone";
 
     let currMilestoneAt = $state(Math.trunc(milestones.length / 2));
 
@@ -42,7 +43,7 @@
                 return;
             }
         }
-        const onScroll = throttle(100, updateCurrentMilestoneAt);
+        const onScroll = throttled(100, updateCurrentMilestoneAt);
         scrollContainerElem.addEventListener("scroll", onScroll);
 
         updateCurrentMilestoneAt();
@@ -51,10 +52,32 @@
             scrollContainerElem.removeEventListener("scroll", onScroll);
         }
     }
+
+    function attachToMilestone(element: HTMLLIElement) {
+        const onClick = throttled(300, () => {
+            console.log("execute");
+            element.scrollIntoView({
+                behavior: "smooth",
+                inline: "center",
+            });
+        });
+        element.addEventListener("click", onClick);
+
+        return () => {
+            element.removeEventListener("click", onClick);
+        }
+    }
 </script>
 
-{#snippet Milestone(milestone: Milestone, at: number)}
-    <li class="milestone" class:milestone--current={at === currMilestoneAt}>
+{#snippet MilestoneSnip(milestone: Milestone, at: number)}
+    <li
+        class="milestone"
+        class:milestone--current={at === currMilestoneAt}
+        class:milestone--before={at === currMilestoneAt - 1}
+        class:milestone--after={at === currMilestoneAt + 1}
+
+        {@attach attachToMilestone}
+    >
         <div class="milestone__time-container">
             <div class="milestone__time">{milestone.timeLabel}</div>
         </div>
@@ -74,7 +97,7 @@
     <h2 class="section__title">Roadmap</h2>
     <ol class="milestones" {@attach initScrollContainer}>
         {#each milestones as milestone, at}
-            {@render Milestone(milestone, at)}
+            {@render MilestoneSnip(milestone, at)}
         {/each}
     </ol>
 </Section>

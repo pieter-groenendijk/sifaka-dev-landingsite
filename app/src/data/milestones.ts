@@ -1,4 +1,4 @@
-import type {Milestone} from "../presentation/timeline/milestone";
+import type {Milestone} from "../presentation/roadmap/milestone";
 
 export const milestones: Milestone[] = [
     {
