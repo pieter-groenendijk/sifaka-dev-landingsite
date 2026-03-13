@@ -2,6 +2,7 @@
     --animation-stage-zero: 50ms;
     --animation-stage-one: calc(var(--animation-stage-zero) + 200ms);
     --animation-stage-two: calc(var(--animation-stage-one) + 200ms);
+    --animation-stage-three: calc(var(--animation-stage-two) + 1000ms);
 }
 
 html {
