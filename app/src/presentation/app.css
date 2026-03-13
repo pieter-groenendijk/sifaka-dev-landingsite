@@ -25,8 +25,8 @@ html {
     --gap-16: clamp(0.75rem, 0.663rem + 0.435vw, 1rem); /* 12 - 16 */
     --gap-32: clamp(1rem, 0.652rem + 1.739vw, 2rem); /* 16 - 32 */
     --gap-64: clamp(1.5rem, 0.63rem + 4.348vw, 4rem); /* 24 - 64 */
-    --gap-96: clamp(3rem, 1.957rem + 5.217vw, 6rem); /* 48 - 96 */
-    --gap-128: clamp(4rem, 2.609rem + 6.957vw, 8rem); /* 64 - 128 */
+    --gap-96: clamp(2rem, 0.609rem + 6.957vw, 6rem); /* 32 - 96 */
+    --gap-128: clamp(3rem, 1.261rem + 8.696vw, 8rem); /* 48 - 128 */
 }
 
 body {

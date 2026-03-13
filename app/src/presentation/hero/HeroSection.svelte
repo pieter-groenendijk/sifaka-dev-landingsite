@@ -133,6 +133,7 @@
         font-size: var(--font-size-64);
         font-weight: 400;
         text-align: center;
+        white-space: nowrap;
         color: var(--yellow);
     }
 
@@ -187,5 +188,19 @@
         stroke: color-mix(in srgb, var(--light) 60%, transparent 40%);
         stroke-width: 4px;
         animation: 300ms ease-in-out var(--animation-stage-two) both fade-in;
+    }
+
+    @media (max-width: 700px) {
+        .section--hero__elem {
+            font-size: var(--font-size-22);
+            padding: var(--gap-8) var(--gap-12);
+        }
+    }
+
+    @media (max-width: 450px) {
+        .section--hero__elem {
+            font-size: var(--font-size-18);
+            padding: 4px 8px;
+        }
     }
 </style>
