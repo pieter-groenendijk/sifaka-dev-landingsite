@@ -33,7 +33,6 @@
         width: 100%;
         height: 100%;
         opacity: 0.075;
-        z-index: 1;
         pointer-events: none;
     }
 

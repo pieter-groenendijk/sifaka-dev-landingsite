@@ -122,7 +122,7 @@
 
     .milestones {
         --gap: 96px;
-        --item-width: clamp(300px, calc(30% - var(--gap)), 450px);
+        --item-width: 320px;
         display: grid;
         grid-auto-flow: column;
         grid-auto-columns: var(--item-width);
@@ -130,6 +130,20 @@
         overflow: scroll;
         scroll-snap-type: x mandatory;
         scrollbar-width: none;
+    }
+
+    @media (max-width: 1500px) {
+        .milestones {
+            --item-width: 450px;
+            --gap: 60px;
+        }
+    }
+
+    @media (max-width: 800px) {
+        .milestones {
+            --item-width: 300px;
+            --gap: 96px;
+        }
     }
 
     .milestones::before,
@@ -172,22 +186,22 @@
     }
 
     .milestone--current :is(.milestone__time, .milestone__content), /* current */
-    .milestone--current + .milestone :is(.milestone__time, .milestone__content), /* after current */
-    .milestone:has(+ .milestone--current) :is(.milestone__time, .milestone__content) /* before current */
+    .milestone--after :is(.milestone__time, .milestone__content), /* after current */
+    .milestone--before :is(.milestone__time, .milestone__content) /* before current */
     {
         opacity: 1;
     }
 
     .milestone--current .milestone__time-container::before, /* current ::before */
     .milestone--current .milestone__time-container::after, /* current ::after */
-    .milestone--current + .milestone .milestone__time-container::before, /* after current ::before */
-    .milestone:has(+ .milestone--current) .milestone__time-container::after /* before current ::after */
+    .milestone--after .milestone__time-container::before, /* after current ::before */
+    .milestone--before .milestone__time-container::after /* before current ::after */
     {
         opacity: 0.6;
     }
 
-    .milestone--current + .milestone .milestone__time-container::after,
-    .milestone:has(+ .milestone--current) .milestone__time-container::before {
+    .milestone--after .milestone__time-container::after,
+    .milestone--before .milestone__time-container::before {
         opacity: 0.2;
     }
 
