@@ -80,7 +80,7 @@
 
     .title {
         margin-bottom: 60px;
-        font-size: 48px;
+        font-size: var(--font-size-900);
         font-weight: 800;
         color: var(--yellow);
     }
@@ -107,12 +107,12 @@
         display: flex;
         justify-content: space-between;
         text-transform: uppercase;
-        font-size: 22px;
+        font-size: var(--font-size-700);
         transition: 300ms font-weight ease-in-out;
     }
 
     .feature__description {
-        font-size: 18px;
+        font-size: var(--font-size-500);
         font-weight: 300;
     }
 

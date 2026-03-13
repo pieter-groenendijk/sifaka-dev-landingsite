@@ -114,7 +114,7 @@
 
     .section__title {
         margin-bottom: 96px;
-        font-size: 48px;
+        font-size: var(--font-size-900);
         font-weight: 800;
         text-align: center;
         color: var(--yellow);
@@ -178,7 +178,7 @@
 
     .milestone__time {
         width: fit-content;
-        font-size: 20px;
+        font-size: var(--font-size-600);
         font-weight: 500;
         color: var(--light);
         opacity: 0.1;
@@ -219,7 +219,7 @@
         padding: 12px 8px;
         width: fit-content;
         background-color: var(--dark-green);
-        font-size: 22px;
+        font-size: var(--font-size-700);
         font-weight: 500;
         text-transform: uppercase;
         color: var(--yellow);
@@ -227,7 +227,7 @@
 
     .milestone__summary {
         text-align: justify;
-        font-size: 18px;
+        font-size: var(--font-size-500);
         color: var(--light);
     }
 

@@ -42,7 +42,7 @@
         position: fixed;
         top: 0;
         left: 100%;
-        font-size: 22px;
+        font-size: var(--font-size-600);
         font-weight: 500;
         letter-spacing: -5%;
         white-space: nowrap;

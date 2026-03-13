@@ -130,7 +130,7 @@
         align-self: center;
         background-color: var(--green);
         border: 16px solid var(--green);
-        font-size: 64px;
+        font-size: var(--font-size-1000);
         font-weight: 400;
         text-align: center;
         color: var(--yellow);
@@ -151,7 +151,7 @@
         padding-block: 8px;
         border: 16px solid var(--green);
         background-color: var(--dark-green);
-        font-size: 32px;
+        font-size: var(--font-size-800);
         font-weight: 700;
         color: var(--light);
         animation: 300ms ease-in-out var(--animation-stage-one) both fade-in;
