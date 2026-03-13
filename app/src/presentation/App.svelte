@@ -38,11 +38,11 @@
 
     .wip-notice {
         --angle: 45deg;
-        padding: 16px 64px;
+        padding: var(--gap-16) var(--gap-64);
         position: fixed;
         top: 0;
         left: 100%;
-        font-size: var(--font-size-600);
+        font-size: var(--font-size-16);
         font-weight: 500;
         letter-spacing: -5%;
         white-space: nowrap;

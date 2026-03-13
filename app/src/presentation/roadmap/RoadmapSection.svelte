@@ -113,15 +113,15 @@
     }
 
     .section__title {
-        margin-bottom: 96px;
-        font-size: var(--font-size-900);
+        margin-bottom: var(--gap-96);
+        font-size: var(--font-size-48);
         font-weight: 800;
         text-align: center;
         color: var(--yellow);
     }
 
     .milestones {
-        --gap: 96px;
+        --gap: var(--gap-96);
         --item-width: 320px;
         display: grid;
         grid-auto-flow: column;
@@ -132,19 +132,19 @@
         scrollbar-width: none;
     }
 
-    @media (max-width: 1500px) {
-        .milestones {
-            --item-width: 450px;
-            --gap: 60px;
-        }
-    }
+    /*@media (max-width: 1500px) {*/
+    /*    .milestones {*/
+    /*        --item-width: 450px;*/
+    /*        --gap: 60px;*/
+    /*    }*/
+    /*}*/
 
-    @media (max-width: 800px) {
-        .milestones {
-            --item-width: 300px;
-            --gap: 96px;
-        }
-    }
+    /*@media (max-width: 800px) {*/
+    /*    .milestones {*/
+    /*        --item-width: 300px;*/
+    /*        --gap: 96px;*/
+    /*    }*/
+    /*}*/
 
     .milestones::before,
     .milestones::after {
@@ -158,10 +158,10 @@
 
     .milestone__time-container {
         margin-inline: calc(-0.5 * var(--gap));
-        margin-bottom: 45px;
+        margin-bottom: var(--gap-64);
         display: flex;
         flex-direction: row;
-        gap: 8px;
+        gap: var(--gap-8);
         align-items: center;
     }
 
@@ -178,7 +178,7 @@
 
     .milestone__time {
         width: fit-content;
-        font-size: var(--font-size-600);
+        font-size: var(--font-size-20);
         font-weight: 500;
         color: var(--light);
         opacity: 0.1;
@@ -211,15 +211,15 @@
     }
 
     .milestone__content > *:not(:last-child) {
-        margin-bottom: 24px;
+        margin-bottom: var(--gap-32);
     }
 
     .milestone__title {
         margin-inline: auto;
-        padding: 12px 8px;
+        padding: var(--gap-12) var(--gap-8);
         width: fit-content;
         background-color: var(--dark-green);
-        font-size: var(--font-size-700);
+        font-size: var(--font-size-22);
         font-weight: 500;
         text-transform: uppercase;
         color: var(--yellow);
@@ -227,18 +227,18 @@
 
     .milestone__summary {
         text-align: justify;
-        font-size: var(--font-size-500);
+        font-size: var(--font-size-18);
         color: var(--light);
     }
 
     .milestone__points {
-        font-size: 18px;
+        font-size: var(--font-size-18);
         font-weight: 300;
         color: var(--light);
     }
 
     .milestone__point:not(:last-child) {
-        margin-bottom: 12px;
+        margin-bottom: var(--gap-12);
     }
 
     .milestone__point::before {

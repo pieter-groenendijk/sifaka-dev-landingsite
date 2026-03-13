@@ -120,7 +120,7 @@
                 "one two"
                 "main main"
                 "three four";
-            row-gap: 96px;
+            row-gap: var(--gap-96);
         }
     }
 
@@ -129,8 +129,8 @@
         justify-self: center;
         align-self: center;
         background-color: var(--green);
-        border: 16px solid var(--green);
-        font-size: var(--font-size-1000);
+        border: var(--gap-16) solid var(--green);
+        font-size: var(--font-size-64);
         font-weight: 400;
         text-align: center;
         color: var(--yellow);
@@ -147,11 +147,11 @@
         top: var(--offsetY, 0);
         width: max-content;
         height: fit-content;
-        padding-inline: 16px;
-        padding-block: 8px;
-        border: 16px solid var(--green);
+        padding-inline: var(--gap-16);
+        padding-block: var(--gap-8);
+        border: var(--gap-16) solid var(--green);
         background-color: var(--dark-green);
-        font-size: var(--font-size-800);
+        font-size: var(--font-size-32);
         font-weight: 700;
         color: var(--light);
         animation: 300ms ease-in-out var(--animation-stage-one) both fade-in;

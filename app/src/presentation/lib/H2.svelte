@@ -6,7 +6,7 @@
 
 <style>
     h2 {
-        font-size: var(--font-size-900);
+        font-size: var(--font-size-48);
         font-weight: 800;
     }
 </style>

@@ -14,7 +14,7 @@
         margin-inline: auto;
         max-width: 1920px;
         min-height: 90vh;
-        padding-inline: 128px;
-        padding-block: 96px 128px;
+        padding-inline: var(--gap-128);
+        padding-block: var(--gap-96) var(--gap-128);
     }
 </style>
