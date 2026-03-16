@@ -3,7 +3,6 @@
 - [ ] Roadmap section
   - [ ] Always shows another element partly to signal scrollable
   - [x] Click to go to section
-  - [ ] Initially start at the released one
 - [x] WIP notice
 - [ ] SEO
 - [ ] Make the content actually good
@@ -11,6 +10,8 @@
 
 ## SHOULD
 - [ ] Show label for "released" or something
+- [ ] Roadmap section
+  - [ ] Initially start at the released one
 - [ ] Header
 - [ ] Developer/Business toggle
 - [ ] Feature visualisations
