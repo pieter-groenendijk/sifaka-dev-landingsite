@@ -1,8 +1,7 @@
 <script lang="ts">
-    import Section from "../lib/Section.svelte";
-    import {throttled} from "../../lib/perf/perf";
-    import {milestones} from "../../data/milestones";
-    import type {Milestone} from "./milestone";
+    import {throttled} from "$lib/logic/perf/perf";
+    import Section from "$lib/components/general/Section.svelte";
+    import {milestones} from "./milestones.ts";
 
     let currMilestoneAt = $state(Math.trunc(milestones.length / 2));
 

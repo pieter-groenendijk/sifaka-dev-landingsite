@@ -1,0 +1,19 @@
+:root {
+    --green: #57AA87;
+    --dark-green: #20605D;
+    --yellow: #FFEFC5;
+    --dark: #1F242C;
+    --light: #EFEFDD;
+}
+
+*, *::after, *::before {
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+}
+
+html {
+    font-family: "Rubik", sans-serif;
+    font-optical-sizing: auto;
+    background-color: var(--dark-green);
+}

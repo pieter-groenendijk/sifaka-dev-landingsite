@@ -21,6 +21,4 @@
         padding-inline: var(--gap-128);
         padding-block: var(--gap-96) var(--gap-128);
     }
-
-    @media (max-wdith: )
 </style>

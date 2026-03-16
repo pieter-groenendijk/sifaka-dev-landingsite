@@ -1,4 +1,9 @@
-import type {Milestone} from "../presentation/roadmap/milestone";
+export interface Milestone {
+    timeLabel: string,
+    title: string,
+    summary: string,
+    keyPoints: string[],
+}
 
 export const milestones: Milestone[] = [
     {

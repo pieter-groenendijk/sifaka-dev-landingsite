@@ -1,7 +1,7 @@
 <script lang="ts">
     import {onMount} from "svelte";
-    import Section from "../lib/Section.svelte";
-    import {debounced} from "../../lib/perf/perf";
+    import {debounced} from "$lib/logic/perf/perf.ts";
+    import Section from "$lib/components/general/Section.svelte";
 
     const viewMinX = $state(0);
     const viewMinY = $state(0);

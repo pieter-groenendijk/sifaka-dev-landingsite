@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Section from "../lib/Section.svelte";
+    import Section from "$lib/components/general/Section.svelte";
 
     interface Feature {
         title: string,

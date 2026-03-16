@@ -7,6 +7,7 @@
 - [ ] SEO
 - [ ] Make the content actually good
 - [ ] Responsive
+- [x] Convert to sveltekit
 
 ## SHOULD
 - [ ] Show label for "released" or something
@@ -15,7 +16,6 @@
 - [ ] Header
 - [ ] Developer/Business toggle
 - [ ] Feature visualisations
-- [ ] Convert to sveltekit
 - [ ] View transitions
 - [ ] Tooltips for additional info
 - [ ] Read more functionality for features

@@ -1,7 +1,7 @@
 <script lang="ts">
-    import HeroSection from "./hero/HeroSection.svelte";
-    import FeaturesSection from "./features/FeaturesSection.svelte";
-    import RoadmapSection from "./roadmap/RoadmapSection.svelte";
+import HeroSection from "$lib/components/routes/home/hero/HeroSection.svelte";
+import FeaturesSection from "$lib/components/routes/home/features/FeaturesSection.svelte";
+import RoadmapSection from "$lib/components/routes/home/roadmap/RoadmapSection.svelte";
 </script>
 
 <main>
@@ -52,7 +52,7 @@
                 translateX(calc(cos(var(--angle)) * 100% * -1)) /* Move left to perfectly fit it in the corner */
                 translateY(-100%) /* Left-bottom anchored to top of page */
                 rotate(var(--angle))
-        ;
+    ;
         transform-origin: left bottom;
         animation: 300ms ease-in-out var(--animation-stage-three) both fade-in;
     }
