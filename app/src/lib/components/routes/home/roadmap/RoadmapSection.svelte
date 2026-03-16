@@ -121,29 +121,18 @@
 
     .milestones {
         --gap: var(--gap-96);
-        --item-width: 320px;
+        --peek: 20%;
+        container-type: inline-size;
+        container-name: milestones;
         display: grid;
         grid-auto-flow: column;
-        grid-auto-columns: var(--item-width);
+        grid-auto-columns: min(320px, calc(100% - 2 * var(--gap) - var(--peek)));
         gap: var(--gap);
         overflow: scroll;
         scroll-snap-type: x mandatory;
         scrollbar-width: none;
+        scroll-padding: var(--gap);
     }
-
-    /*@media (max-width: 1500px) {*/
-    /*    .milestones {*/
-    /*        --item-width: 450px;*/
-    /*        --gap: 60px;*/
-    /*    }*/
-    /*}*/
-
-    /*@media (max-width: 800px) {*/
-    /*    .milestones {*/
-    /*        --item-width: 300px;*/
-    /*        --gap: 96px;*/
-    /*    }*/
-    /*}*/
 
     .milestones::before,
     .milestones::after {
@@ -153,10 +142,14 @@
 
     .milestone {
         scroll-snap-align: center;
+
+        @container milestones (max-width: 450px) {
+            scroll-snap-align: start;
+        }
     }
 
     .milestone__time-container {
-        margin-inline: calc(-0.5 * var(--gap));
+        margin-inline: calc(-0.5 * var(--gap)); /* extend out of the element to cover the gap */
         margin-bottom: var(--gap-64);
         display: flex;
         flex-direction: row;
@@ -184,26 +177,6 @@
         transition: opacity 400ms ease-in-out;
     }
 
-    .milestone--current :is(.milestone__time, .milestone__content), /* current */
-    .milestone--after :is(.milestone__time, .milestone__content), /* after current */
-    .milestone--before :is(.milestone__time, .milestone__content) /* before current */
-    {
-        opacity: 1;
-    }
-
-    .milestone--current .milestone__time-container::before, /* current ::before */
-    .milestone--current .milestone__time-container::after, /* current ::after */
-    .milestone--after .milestone__time-container::before, /* after current ::before */
-    .milestone--before .milestone__time-container::after /* before current ::after */
-    {
-        opacity: 0.6;
-    }
-
-    .milestone--after .milestone__time-container::after,
-    .milestone--before .milestone__time-container::before {
-        opacity: 0.2;
-    }
-
     .milestone__content {
         opacity: 0.2;
         transition: opacity 500ms ease-in-out;
@@ -211,6 +184,44 @@
 
     .milestone__content > *:not(:last-child) {
         margin-bottom: var(--gap-32);
+    }
+
+    @container milestones (min-width: 1500px) {
+        .milestone--current :is(.milestone__time, .milestone__content),
+        .milestone--after :is(.milestone__time, .milestone__content),
+        .milestone--before :is(.milestone__time, .milestone__content)
+        {
+            opacity: 1;
+        }
+
+        .milestone--current .milestone__time-container::before,
+        .milestone--current .milestone__time-container::after,
+        .milestone--after .milestone__time-container::before,
+        .milestone--before .milestone__time-container::after
+        {
+            opacity: 0.6;
+        }
+
+        .milestone--after .milestone__time-container::after,
+        .milestone--before .milestone__time-container::before {
+            opacity: 0.2;
+        }
+    }
+
+    @container milestones (max-width: 1500px) {
+        .milestone--current :is(.milestone__time, .milestone__content) {
+            opacity: 1;
+        }
+
+        .milestone--current .milestone__time-container::before,
+        .milestone--current .milestone__time-container::after {
+            opacity: 0.6;
+        }
+
+        .milestone--before .milestone__time-container::after,
+        .milestone--after .milestone__time-container::before {
+            opacity: 0.2;
+        }
     }
 
     .milestone__title {
