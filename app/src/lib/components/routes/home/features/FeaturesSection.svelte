@@ -66,7 +66,7 @@
         </ul>
         <div class="demo">
             <div class="demo-placeholder"></div>
-            <button></button>
+<!--            <button></button>-->
         </div>
     </div>
 </Section>
@@ -86,14 +86,18 @@
     }
 
     .hor-divided {
+        container-type: inline-size;
+        container-name: hor-divided;
         flex-grow: 1;
-        display: grid;
+        display: flex;
         grid-template-columns: minmax(300px, 6fr) 8fr;
         gap: var(--gap-128);
     }
 
     .features {
         align-self: center;
+        flex-grow: 6;
+        flex-basis: 0;
     }
 
     .feature {
@@ -106,9 +110,14 @@
         width: 100%;
         display: flex;
         justify-content: space-between;
+        align-items: center;
         text-transform: uppercase;
         font-size: var(--font-size-22);
         transition: 300ms font-weight ease-in-out;
+    }
+
+    .feature__title {
+        text-align: left;
     }
 
     .feature__description {
@@ -142,6 +151,11 @@
     }
 
     .demo {
+        flex-grow: 8;
         background-color: var(--dark);
+
+        @container hor-divided (max-width: 1300px) {
+            display: none;
+        }
     }
 </style>
