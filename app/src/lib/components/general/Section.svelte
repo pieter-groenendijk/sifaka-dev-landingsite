@@ -17,7 +17,7 @@
         box-sizing: border-box;
         margin-inline: auto;
         max-width: 1920px;
-        min-height: 90vh;
+        min-height: clamp(600px, 90vw, 90vh);
         padding-inline: var(--gap-128);
         padding-block: var(--gap-96) var(--gap-128);
     }

@@ -41,12 +41,12 @@
             <span class="feature__title">{feature.title}</span><span class="feature__status">{#if isOpen}−{:else}+{/if}</span>
         </button>
         <div
-            class="feature__description feature__description--displayed"
+            class="feature__description feature__description--styled"
             style="--max-height: {featureMaxHeights[index]}px"
         >
             {feature.description}
             <div
-                class="feature__description feature__description--measurement"
+                class="feature__description--styled feature__description--measurement"
                 aria-hidden="true"
                 bind:clientHeight={featureMaxHeights[index]}
             >
@@ -90,7 +90,6 @@
         container-name: hor-divided;
         flex-grow: 1;
         display: flex;
-        grid-template-columns: minmax(300px, 6fr) 8fr;
         gap: var(--gap-128);
     }
 
@@ -98,6 +97,7 @@
         align-self: center;
         flex-grow: 6;
         flex-basis: 0;
+        max-width: 65ch;
     }
 
     .feature {
@@ -120,20 +120,27 @@
         text-align: left;
     }
 
-    .feature__description {
+    .feature__description--styled {
         font-size: var(--font-size-18);
         font-weight: 300;
     }
 
-    .feature__description--displayed {
+    .feature__description {
+        margin-top: 0;
         position: relative;
-        margin-top: var(--gap-16);
         max-height: 0;
         overflow: hidden;
         opacity: 0;
         transition:
-            max-height 300ms ease-in-out,
-            opacity 200ms ease-in-out;
+                margin-top 300ms ease-in-out,
+                max-height 300ms ease-in-out,
+                opacity 200ms ease-in-out;
+    }
+
+    .feature--is-open .feature__description {
+        margin-top: var(--gap-16);
+        max-height: var(--max-height);
+        opacity: 1;
     }
 
     .feature__description--measurement {
@@ -145,16 +152,16 @@
         pointer-events: none;
     }
 
-    .feature--is-open .feature__description--displayed {
-        max-height: var(--max-height);
-        opacity: 1;
-    }
 
     .demo {
         flex-grow: 8;
         background-color: var(--dark);
 
         @container hor-divided (max-width: 1300px) {
+            display: none;
+        }
+
+        @media (pointer: coarse) {
             display: none;
         }
     }

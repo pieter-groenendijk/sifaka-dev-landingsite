@@ -8,6 +8,7 @@
 html {
     scroll-behavior: smooth;
     scrollbar-color: var(--light) var(--dark);
+    -webkit-tap-highlight-color: transparent;
 
     /* Based on viewport between min: 320px, max 1240px */
 

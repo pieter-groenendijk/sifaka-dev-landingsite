@@ -58,6 +58,7 @@
             element.scrollIntoView({
                 behavior: "smooth",
                 inline: "center",
+                block: "center",
             });
         });
         element.addEventListener("click", onClick);
@@ -141,6 +142,7 @@
     }
 
     .milestone {
+        cursor: pointer;
         scroll-snap-align: center;
 
         @container milestones (max-width: 450px) {
