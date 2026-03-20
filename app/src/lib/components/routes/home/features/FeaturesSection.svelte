@@ -69,6 +69,7 @@
 <!--            <button></button>-->
         </div>
     </div>
+    <div class="early-dev-disclaimer">* Currently in early development. Described features are currently being implemented.</div>
 </Section>
 
 <style>
@@ -152,7 +153,6 @@
         pointer-events: none;
     }
 
-
     .demo {
         flex-grow: 8;
         background-color: var(--dark);
@@ -164,5 +164,11 @@
         @media (pointer: coarse) {
             display: none;
         }
+    }
+
+    .early-dev-disclaimer {
+        font-size: var(--font-size-14);
+        color: var(--light);
+        opacity: 0.7;
     }
 </style>

@@ -9,7 +9,7 @@
     <FeaturesSection/>
     <RoadmapSection/>
 </main>
-<div class="wip-notice">Early development</div>
+<div class="wip-notice">Early concept</div>
 <svg class="noise-overlay" aria-hidden="true">
     <defs>
         <filter id="noise-filter">
