@@ -8,26 +8,24 @@
 
     const features = [
         {
-            title: "Be productive",
-            description: "Built to deeply understand any given domain to provide you the tools you need and want. It guides the development without undermining your control; No AI. Just like an IDE.",
+            title: "Practice-oriented",
+            description: "The engine is driven by effect, not academic perfection. Database-specific theory and best-practices are combined with your access patterns and domain for effective support. Built for incremental version-controlled development.",
         },
         {
-            title: "Cross-compatible",
-            description: "Any database has structure to some capacity. Design databases for many modern paradigms & platforms. Or perhaps design a domain to multiple databases effectively.",
+            title: "Low-barrier",
+            description: "The tool passively guides you by automating grunt work, providing real-time feedback, and proposing options for more subjective decisions. It's built to be learned by doing, with an extensive wiki and docs safety net.",
         },
         {
-            title: "Enjoyable",
-            description: "Our tool is dumb enough that it doesn’t come in your way. It’s smart enough to support what you want.",
+            title: "Time-efficient",
+            description: "Designs and databases evolve as new information is discoved over time. The tool embraces this by specializing in incremental design and results. In-process the tool uses it's deep understanding to automate grunt work, and guide where more opinionated. Structure is inspected to provide errors, warnings and hints to efficiently inform you. Like an IDE, but more visual and hands-on. The aim is to enable you to focus on making informed critical decisions, instead of having to reason about every detail, or manually determine that which can be calculated.",
         },
         {
-            title: "No shenanigans",
-            description: "Built to deeply understand any given domain to provide you the tools you need and want. It guides the development without undermining your control; No AI. Just like an IDE.",
+            title: "Broad compatiblity",
+            description: "Supports a multitude of database platforms with specialized engines based on database-specific theory and best-practices. Moreso, projects can design a domain in full or part towards multiple paradigms & platforms.",
         },
     ];
-
-    let openedFeature = $state(0);
-
     const featureMaxHeights = $state(new Array(features.length));
+    let openedFeature = $state(0);
 </script>
 
 {#snippet Feature(feature: Feature, index: number)}
@@ -57,17 +55,16 @@
 {/snippet}
 
 <Section id="section--features">
-    <h2 class="title">Made to be used</h2>
+    <h2 class="title">Solves real problems</h2>
     <div class="hor-divided">
         <ul class="features">
             {#each features as feature, index}
                 {@render Feature(feature, index)}
             {/each}
         </ul>
-        <div class="demo">
-            <div class="demo-placeholder"></div>
-<!--            <button></button>-->
-        </div>
+<!--        <div class="demo">-->
+<!--            <div class="demo-placeholder"></div>-->
+<!--        </div>-->
     </div>
     <div class="early-dev-disclaimer">* Currently in early development. Described features are currently being implemented.</div>
 </Section>
@@ -168,6 +165,7 @@
 
     .early-dev-disclaimer {
         font-size: var(--font-size-14);
+        font-weight: 300;
         color: var(--light);
         opacity: 0.7;
     }

@@ -1,6 +1,6 @@
 <script lang="ts">
     import {onMount} from "svelte";
-    import {debounced} from "$lib/logic/perf/perf.ts";
+    import {debounced} from "$lib/logic/perf/perf";
     import Section from "$lib/components/general/Section.svelte";
 
     const viewMinX = $state(0);
@@ -88,11 +88,11 @@
 {/snippet}
 
 <Section id="section--hero">
-    <div id="section--hero__elem--one" class="section--hero__elem">No shenanigans</div>
-    <div id="section--hero__elem--two" class="section--hero__elem">Enjoyable</div>
+    <div id="section--hero__elem--one" class="section--hero__elem">Practice-oriented</div>
+    <div id="section--hero__elem--two" class="section--hero__elem">Low-barrier</div>
     <h1 id="section--hero__elem--main">Design databases —<strong>without grunt work</strong></h1>
-    <div id="section--hero__elem--three" class="section--hero__elem">Cross-compatible</div>
-    <div id="section--hero__elem--four" class="section--hero__elem">Be productive</div>
+    <div id="section--hero__elem--three" class="section--hero__elem">Time-efficient</div>
+    <div id="section--hero__elem--four" class="section--hero__elem">Broad compatibility</div>
 
     <svg
         bind:clientWidth={viewWidth} bind:clientHeight={viewHeight}

@@ -150,6 +150,10 @@
         }
     }
 
+    .milestone--current {
+        cursor: unset;
+    }
+
     .milestone__time-container {
         margin-inline: calc(-0.5 * var(--gap)); /* extend out of the element to cover the gap */
         margin-bottom: var(--gap-64);
