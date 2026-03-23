@@ -1,12 +1,12 @@
 # Todo
 ## MUST
-- [ ] Roadmap section
+- [x] Roadmap section
   - [ ] Always shows another element partly to signal scrollable
   - [x] Click to go to section
 - [x] WIP notice
-- [ ] SEO
-- [ ] Make the content actually good
-- [ ] Responsive
+- [x] SEO
+- [x] Make the content actually good
+- [x] Responsive
 - [x] Convert to sveltekit
 
 ## SHOULD
@@ -15,6 +15,8 @@
   - [ ] Initially start at the released one
 - [ ] Header
 - [ ] Developer/Business toggle
+- [ ] Interactive demo
+- [ ] Mention of LinkedIn?
 - [ ] Feature visualisations
 - [ ] View transitions
 - [ ] Tooltips for additional info

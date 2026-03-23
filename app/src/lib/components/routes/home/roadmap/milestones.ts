@@ -7,103 +7,54 @@ export interface Milestone {
 
 export const milestones: Milestone[] = [
     {
-        title: "The outer shell",
         timeLabel: "March 2026",
-        summary: "This major update focuses on the essential UI/UX flow, where complete simulation of expected intelligence can be tried and determined.",
+        title: "The outer shell",
+        summary: "UI & presentational logic as to define an optimized incremental workflow before any heavy logic is put in.",
         keyPoints: [
-            "Project view with 80% of planned layout and style.",
-            "Interactive diagrams",
-            "Fully navigational",
+            "Diagram notations",
+            "Projects & workspaces",
+            "Incremental workflow",
+            "(MongoDB taken as case)"
         ],
     },
     {
-        title: "Intelligent engine",
+        timeLabel: "April 2026",
+        title: "The steering wheel",
+        summary: "The core that facilitates operating on a project. Be that the user, or the automation.",
+        keyPoints: [
+            "Fundamental project operations",
+            "Fundamental diagram operations",
+            "(MongoDB taken as case)"
+        ],
+    },
+    {
+        timeLabel: "May 2026",
+        title: "Cruise control",
+        summary: "The complex automation empowering the workflow, letting you focus on things that matter.",
+        keyPoints: [
+            "Schema generation & synchronization",
+            "Change propagation",
+            "(MongoDB taken as case)"
+        ],
+    },
+    {
         timeLabel: "June 2026",
-        summary: "This major update implements the engine that deeply understands your domain.",
+        title: "Sat nav",
+        summary: "Functions that inform and guide you with making effective decisions.",
         keyPoints: [
-            "Project view with 80% of planned layout and style.",
-            "Interactive diagrams",
-            "Fully navigational",
+            "Real-time validation",
+            "Structural options",
+            "Context-aware actions",
+            "(MongoDB taken as case)"
         ],
     },
     {
-        title: "Imports & exports",
-        timeLabel: "Unknown",
-        summary: "This major update focuses on the essential UI/UX flow, where complete simulation of expected intelligence can be tried and determined.",
+        timeLabel: "Looking ahead",
+        title: "Beyond",
+        summary: "This is as far the roadmap will go for now. The rest is still up for debate. Open for suggestions!",
         keyPoints: [
-            "Project view with 80% of planned layout and style.",
-            "Interactive diagrams",
-            "Fully navigational",
+            "Broadening compatibility",
+            "To be decided"
         ],
     },
-    {
-        title: "The outer shell",
-        timeLabel: "March 2026",
-        summary: "This major update focuses on the essential UI/UX flow, where complete simulation of expected intelligence can be tried and determined.",
-        keyPoints: [
-            "Project view with 80% of planned layout and style.",
-            "Interactive diagrams",
-            "Fully navigational",
-        ],
-    },
-    {
-        title: "Intelligent engine",
-        timeLabel: "June 2026",
-        summary: "This major update implements the engine that deeply understands your domain.",
-        keyPoints: [
-            "Project view with 80% of planned layout and style.",
-            "Interactive diagrams",
-            "Fully navigational",
-        ],
-    },
-    {
-        title: "Imports & exports",
-        timeLabel: "Unknown",
-        summary: "This major update focuses on the essential UI/UX flow, where complete simulation of expected intelligence can be tried and determined.",
-        keyPoints: [
-            "Project view with 80% of planned layout and style.",
-            "Interactive diagrams",
-            "Fully navigational",
-        ],
-    },
-    {
-        title: "The outer shell",
-        timeLabel: "March 2026",
-        summary: "This major update focuses on the essential UI/UX flow, where complete simulation of expected intelligence can be tried and determined.",
-        keyPoints: [
-            "Project view with 80% of planned layout and style.",
-            "Interactive diagrams",
-            "Fully navigational",
-        ],
-    },
-    {
-        title: "The outer shell",
-        timeLabel: "March 2026",
-        summary: "This major update focuses on the essential UI/UX flow, where complete simulation of expected intelligence can be tried and determined.",
-        keyPoints: [
-            "Project view with 80% of planned layout and style.",
-            "Interactive diagrams",
-            "Fully navigational",
-        ],
-    },
-    {
-        title: "Intelligent engine",
-        timeLabel: "June 2026",
-        summary: "This major update implements the engine that deeply understands your domain.",
-        keyPoints: [
-            "Project view with 80% of planned layout and style.",
-            "Interactive diagrams",
-            "Fully navigational",
-        ],
-    },
-    {
-        title: "Imports & exports",
-        timeLabel: "Unknown",
-        summary: "This major update focuses on the essential UI/UX flow, where complete simulation of expected intelligence can be tried and determined.",
-        keyPoints: [
-            "Project view with 80% of planned layout and style.",
-            "Interactive diagrams",
-            "Fully navigational",
-        ],
-    }
 ];
