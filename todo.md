@@ -21,6 +21,8 @@
 - [ ] View transitions
 - [ ] Tooltips for additional info
 - [ ] Read more functionality for features
+- [ ] E-mail release signup
+- [ ] Organizational preconditions (Vision & mission)
 
 ## COULD
 - [ ] Convert perf package to npm package
