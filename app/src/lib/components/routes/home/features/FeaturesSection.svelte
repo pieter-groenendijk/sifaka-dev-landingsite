@@ -8,20 +8,20 @@
 
     const features = [
         {
+            title: "Time-efficient",
+            description: "Focus on critical decisions, not every detail. Optimized for an incremental workflow, the engine generates most schema structures and propagates your changes through all derivatives. Real-time validation, structural options and context actions translate intent into implementation.",
+        },
+        {
             title: "Practice-oriented",
             description: "The engine is driven by effect, not academic perfection. Database-specific theory and best-practices are combined with your access patterns and domain for effective support. Built for incremental version-controlled development.",
         },
         {
-            title: "Low-barrier",
-            description: "The tool passively guides you by automating grunt work, providing real-time feedback, and proposing options for more subjective decisions. It's built to be learned by doing, with an extensive wiki and docs safety net.",
-        },
-        {
-            title: "Time-efficient",
-            description: "Designs and databases evolve as new information is discoved over time. The tool embraces this by specializing in incremental design and results. In-process the tool uses it's deep understanding to automate grunt work, and guide where more opinionated. Structure is inspected to provide errors, warnings and hints to efficiently inform you. Like an IDE, but more visual and hands-on. The aim is to enable you to focus on making informed critical decisions, instead of having to reason about every detail, or manually determine that which can be calculated.",
-        },
-        {
             title: "Broad compatiblity",
             description: "Supports a multitude of database platforms with specialized engines based on database-specific theory and best-practices. Moreso, projects can design a domain in full or part towards multiple paradigms & platforms.",
+        },
+        {
+            title: "Low-barrier",
+            description: "The tool passively guides you by automating grunt work, providing real-time feedback, and proposing options for more subjective decisions. It's built to be learned by doing, with an extensive wiki and docs safety net.",
         },
     ];
     const featureMaxHeights = $state(new Array(features.length));
