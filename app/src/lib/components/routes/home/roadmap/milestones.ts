@@ -8,44 +8,45 @@ export interface Milestone {
 export const milestones: Milestone[] = [
     {
         timeLabel: "March 2026",
-        title: "The outer shell",
+        title: "The Outer Shell",
         summary: "UI & presentational logic as to define an optimized incremental workflow before any heavy logic is put in.",
         keyPoints: [
             "Diagram notations",
             "Projects & workspaces",
             "Incremental workflow",
-            "(MongoDB taken as case)"
+            "(MongoDB taken as case)",
         ],
     },
     {
         timeLabel: "April 2026",
-        title: "The steering wheel",
+        title: "The Steering Wheel",
         summary: "The core that facilitates operating on a project. Be that the user, or the automation.",
         keyPoints: [
-            "Fundamental project operations",
-            "Fundamental diagram operations",
-            "(MongoDB taken as case)"
-        ],
-    },
-    {
-        timeLabel: "May 2026",
-        title: "Cruise control",
-        summary: "The complex automation empowering the workflow, letting you focus on things that matter.",
-        keyPoints: [
-            "Schema generation & synchronization",
-            "Change propagation",
-            "(MongoDB taken as case)"
+            "Fundamental project & diagram operations",
+            "Imports & exports",
+            "Organizational preconditions",
+            "(MongoDB taken as case)",
         ],
     },
     {
         timeLabel: "June 2026",
-        title: "Sat nav",
-        summary: "Functions that inform and guide you with making effective decisions.",
+        title: "Cruise Control",
+        summary: "The complex automation empowering the workflow, letting you focus on things that matter.",
+        keyPoints: [
+            "Schema generation & synchronization",
+            "Change propagation",
+            "(MongoDB taken as case)",
+        ],
+    },
+    {
+        timeLabel: "July 2026",
+        title: "Sat Nav",
+        summary: "Functions that inform and guide you into making more better decisions in an effect-driven manner.",
         keyPoints: [
             "Real-time validation",
             "Structural options",
             "Context-aware actions",
-            "(MongoDB taken as case)"
+            "(MongoDB taken as case)",
         ],
     },
     {
