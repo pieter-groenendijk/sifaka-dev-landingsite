@@ -150,7 +150,7 @@
         height: fit-content;
         padding-inline: var(--gap-16);
         padding-block: var(--gap-8);
-        border: var(--gap-16) solid var(--green);
+        outline: var(--gap-16) solid var(--green);
         background-color: var(--dark-green);
         font-size: var(--font-size-32);
         font-weight: 700;
