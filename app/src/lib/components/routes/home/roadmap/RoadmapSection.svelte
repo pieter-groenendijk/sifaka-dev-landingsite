@@ -1,9 +1,17 @@
 <script lang="ts">
-    import {throttled} from "$lib/logic/perf/perf";
+    import {throttled, trailThrottled} from "$lib/logic/perf/perf";
     import Section from "$lib/components/general/Section.svelte";
     import {milestones} from "./milestones.ts";
 
-    let currMilestoneAt = $state(Math.trunc(milestones.length / 2));
+    let currMilestoneAt = $state(0);
+
+    function toMilestone(elem: Element) {
+        elem.scrollIntoView({
+            behavior: "smooth",
+            inline: "center",
+            block: "center",
+        });
+    }
 
     function initScrollContainer(scrollContainerElem: HTMLOListElement) {
         const children = scrollContainerElem.children as HTMLCollectionOf<HTMLElement>;
@@ -42,30 +50,30 @@
                 return;
             }
         }
-        const onScroll = throttled(100, updateCurrentMilestoneAt);
+        const onScroll = trailThrottled(100, updateCurrentMilestoneAt);
         scrollContainerElem.addEventListener("scroll", onScroll);
 
+        scrollContainerElem.scrollLeft = children[currMilestoneAt].offsetLeft - (scrollContainerElem.offsetWidth / 2) + (children[currMilestoneAt].offsetWidth / 2); // Scroll current milestone to the middle, prevents mobile bug where it starts at 0, meaning every milestone is invisble.
         updateCurrentMilestoneAt();
 
-        return () => {
-            scrollContainerElem.removeEventListener("scroll", onScroll);
-        }
+        $effect(() => {
+            return () => {
+                scrollContainerElem.removeEventListener("scroll", onScroll);
+            }
+        });
     }
 
-    function attachToMilestone(element: HTMLLIElement) {
+    function initMilestone(element: HTMLLIElement) {
         const onClick = throttled(300, () => {
-            console.log("execute");
-            element.scrollIntoView({
-                behavior: "smooth",
-                inline: "center",
-                block: "center",
-            });
+            toMilestone(element);
         });
         element.addEventListener("click", onClick);
 
-        return () => {
-            element.removeEventListener("click", onClick);
-        }
+        $effect(() => {
+            return () => {
+                element.removeEventListener("click", onClick);
+            }
+        });
     }
 </script>
 
@@ -76,7 +84,7 @@
         class:milestone--before={at === currMilestoneAt - 1}
         class:milestone--after={at === currMilestoneAt + 1}
 
-        {@attach attachToMilestone}
+        use:initMilestone
     >
         <div class="milestone__time-container">
             <div class="milestone__time">{milestone.timeLabel}</div>
@@ -95,7 +103,10 @@
 
 <Section id="section--timeline">
     <h2 class="section__title">Roadmap</h2>
-    <ol class="milestones" {@attach initScrollContainer}>
+    <ol
+        class="milestones"
+        use:initScrollContainer
+    >
         {#each milestones as milestone, at}
             {@render MilestoneSnip(milestone, at)}
         {/each}
