@@ -62,9 +62,6 @@
                 {@render Feature(feature, index)}
             {/each}
         </ul>
-<!--        <div class="demo">-->
-<!--            <div class="demo-placeholder"></div>-->
-<!--        </div>-->
     </div>
     <div class="early-dev-disclaimer">* Currently in early development. Described features are currently being implemented.</div>
 </Section>
@@ -72,6 +69,7 @@
 <style>
     :global(#section--features .section__content) {
         max-width: 1600px;
+        min-height: 700px;
         display: flex;
         flex-direction: column;
     }
@@ -92,6 +90,8 @@
     }
 
     .features {
+        container-type: inline-size;
+        container-name: features;
         align-self: center;
         flex-grow: 6;
         flex-basis: 0;
@@ -121,6 +121,11 @@
     .feature__description--styled {
         font-size: var(--font-size-18);
         font-weight: 300;
+
+        @container features (max-width: 50ch) {
+            text-align: justify;
+            hyphens: auto;
+        }
     }
 
     .feature__description {
@@ -148,19 +153,6 @@
         max-height: unset;
         visibility: hidden;
         pointer-events: none;
-    }
-
-    .demo {
-        flex-grow: 8;
-        background-color: var(--dark);
-
-        @container hor-divided (max-width: 1300px) {
-            display: none;
-        }
-
-        @media (pointer: coarse) {
-            display: none;
-        }
     }
 
     .early-dev-disclaimer {

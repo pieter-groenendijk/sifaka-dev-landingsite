@@ -120,7 +120,7 @@
                 "one two"
                 "main main"
                 "three four";
-            row-gap: var(--gap-96);
+            row-gap: max(var(--gap-96), 80px);
         }
     }
 

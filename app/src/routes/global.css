@@ -9,7 +9,9 @@ html {
     scroll-behavior: smooth;
     scrollbar-color: var(--light) var(--dark);
     -webkit-tap-highlight-color: transparent;
+    text-size-adjust: none;
 
+    /* https://www.solite.in/responsive-typography-calculator.html */
     /* Based on viewport between min: 320px, max 1240px */
 
     --font-size-14: 0.875rem; /* 14 */
@@ -27,7 +29,7 @@ html {
     --gap-32: clamp(1rem, 0.652rem + 1.739vw, 2rem); /* 16 - 32 */
     --gap-64: clamp(1.5rem, 0.63rem + 4.348vw, 4rem); /* 24 - 64 */
     --gap-96: clamp(2rem, 0.609rem + 6.957vw, 6rem); /* 32 - 96 */
-    --gap-128: clamp(3rem, 1.261rem + 8.696vw, 8rem); /* 48 - 128 */
+    --gap-128: clamp(2.5rem, 0.587rem + 9.565vw, 8rem); /* 40 - 128 */
 }
 
 body {
