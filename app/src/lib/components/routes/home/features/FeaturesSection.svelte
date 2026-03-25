@@ -9,19 +9,19 @@
     const features = [
         {
             title: "Time-efficient",
-            description: "Focus on critical decisions, not every detail. Optimized for an incremental workflow, the engine generates most schema structures and propagates your changes through all derivatives. Real-time validation, structural options and context actions translate intent into implementation.",
+            description: "Work at any depth, whether high-level or hyper-detailed, without grunt work. The engine incrementally generates schema and propagates changes through every derivative. Real-time validation, structural options and context-aware actions translate intent into implementation.",
         },
         {
             title: "Practice-oriented",
-            description: "The engine is driven by effect, not academic perfection. Database-specific theory and best-practices are combined with your access patterns and domain for effective support. Built for incremental version-controlled development.",
+            description: "The engine is driven by practical effect, not academic perfection. Database-specific theory and best-practices are combined with your access patterns and domain for automation and non-blocking feedback. Designed for versioning and incremental workflows.",
+        },
+        {
+            title: "Easy-to-use",
+            description: "It's built to be learned by doing, with an wiki and docs to fallback on. The tool passively guides you by automating grunt work, providing real-time feedback, and proposing options when more opinionated. ",
         },
         {
             title: "Broad compatibility",
             description: "Supports a multitude of database platforms with specialized engines based on database-specific theory and best-practices. Moreso, projects can design a domain in full or part towards multiple paradigms & platforms.",
-        },
-        {
-            title: "Easy-to-use",
-            description: "The tool passively guides you by automating grunt work, providing real-time feedback, and proposing options for more subjective decisions. It's built to be learned by doing, with an extensive wiki and docs safety net.",
         },
     ];
     const featureMaxHeights = $state(new Array(features.length));

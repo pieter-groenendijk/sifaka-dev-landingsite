@@ -88,10 +88,10 @@
 {/snippet}
 
 <Section id="section--hero">
-    <div id="section--hero__elem--one" class="section--hero__elem">Practice-oriented</div>
-    <div id="section--hero__elem--two" class="section--hero__elem">Easy-to-use</div>
+    <div id="section--hero__elem--one" class="section--hero__elem">Time-efficient</div>
+    <div id="section--hero__elem--two" class="section--hero__elem">Practice-oriented</div>
     <h1 id="section--hero__elem--main">Design databases —<strong>without grunt work</strong></h1>
-    <div id="section--hero__elem--three" class="section--hero__elem">Time-efficient</div>
+    <div id="section--hero__elem--three" class="section--hero__elem">Easy-to-use</div>
     <div id="section--hero__elem--four" class="section--hero__elem">Broad compatibility</div>
 
     <svg
