@@ -9,8 +9,7 @@
     <FeaturesSection/>
     <RoadmapSection/>
 </main>
-<div class="wip-notice">Early concept</div>
-<svg class="noise-overlay" aria-hidden="true">
+<svg class="effect-overlay" aria-hidden="true">
     <defs>
         <filter id="noise-filter">
             <feTurbulence
@@ -20,20 +19,54 @@
                 stitchTiles="stitch"
             />
         </filter>
+
+        <radialGradient 
+            id="vignette"
+
+            cx="50%"
+            cy="50%"
+
+            fr="50%"
+            r="100%"
+        >
+            <stop offset="0%" stop-color="transparent"/>
+            <stop offset="100%" stop-color="black" stop-opacity="0.3"/>
+        </radialGradient>
     </defs>
 
-    <rect width="100%" height="100%" fill="#000000"/>
-    <rect width="100%" height="100%" filter="url(#noise-filter)"/>
+
+    <g class="noise-effect">
+        <rect 
+            width="100%" 
+            height="100%" 
+            fill="#000000"
+        />
+        <rect 
+            width="100%" 
+            height="100%" 
+            filter="url(#noise-filter)"
+        />
+    </g>
+
+    <rect
+        width="100%"
+        height="100%"
+        fill="url(#vignette)"
+    />
 </svg>
+<div class="wip-notice">Early concept</div>
 
 <style>
-    .noise-overlay {
+    .effect-overlay {
         position: fixed;
         inset: 0;
         width: 100%;
         height: 100%;
-        opacity: 0.075;
         pointer-events: none;
+    }
+
+    .noise-effect {
+        opacity: 0.075;
     }
 
     .wip-notice {
