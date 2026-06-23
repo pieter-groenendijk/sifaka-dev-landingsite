@@ -11,7 +11,7 @@
             <form class="news-form">
                 <label 
                     class="news-form__label"
-                    for="email"
+                    for="news-email-input"
                 >Down for a ~monthly two-way e-mail?</label>
                 <div class="news-form__control">
                     <input 
