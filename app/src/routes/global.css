@@ -57,6 +57,12 @@ button {
     user-select: auto;
     cursor: pointer;
     color: unset;
+    font-family: inherit;
+}
+
+input {
+    outline: unset;
+    font-family: inherit;
 }
 
 ol, ul {

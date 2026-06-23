@@ -84,7 +84,7 @@
         font-weight: 500;
         letter-spacing: -5%;
         white-space: nowrap;
-        background-color: var(--yellow);
+        background-color: var(--light);
         color: var(--dark);
         transform:
                 translateX(calc(cos(var(--angle)) * 100% * -1)) /* Move left to perfectly fit it in the corner */

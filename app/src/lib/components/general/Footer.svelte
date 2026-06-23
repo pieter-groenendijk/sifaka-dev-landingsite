@@ -12,7 +12,6 @@
                 </div>
                 <div class="legal-info__copyright">© 2026 Pieter Groenendijk. All rights reserved.</div>
             </div>
-            <!-- <div class="honestly-thankful">Thank you for taking the precious time to visit :)</div> -->
         </div>
         <div class="footer__middle">
         </div>
@@ -51,7 +50,7 @@
                 <label 
                     class="news-form__label"
                     for="news-email-input"
-                >Down for a ~monthly two-way e-mail?</label>
+                ><strong>Want to get updates, and/or give feedback?</strong> <a href="/privacy-policy">(No funny business!)</a></label>
                 <div class="news-form__control">
                     <input 
                         id="news-email-input"
@@ -74,7 +73,6 @@
     .footer {
         background-color: var(--brown);
     }
-
     .footer__content {
         margin-inline: auto;
         padding-inline: var(--gap-128);
@@ -83,7 +81,6 @@
         display: flex;
         gap: var(--gap-32);
     }
-
     .footer__content > * {
         flex-shrink: 0;
         flex-grow: 1;
@@ -97,10 +94,6 @@
         gap: var(--gap-64);
     }
 
-    .honestly-thankful {
-        color: var(--light);
-    }
-
     .brand__name {
         text-decoration: none;
         font-size: var(--font-size-64);
@@ -108,7 +101,6 @@
         letter-spacing: 0.05ch;
         color: var(--yellow);
     }
-
     .brand__slogan {
         color: var(--light);
     }
@@ -119,12 +111,10 @@
         justify-content: start;
         gap: var(--gap-16);
     }
-
     .legal-info__link {
         font-size: var(--font-size-14);
         color: var(--light);
     }
-
     .legal-info__copyright {
         font-size: var(--font-size-14);
         color: var(--light);
@@ -154,13 +144,20 @@
         color: var(--yellow);
     }
 
-    .news-form {
-    }
     .news-form__label {
         display: block;
         margin-bottom: var(--gap-16);
+        max-width: 30ch;
+    }
+    .news-form__label > strong {
         font-weight: 500;
         color: var(--light);
+    }
+    .news-form__label > a {
+        margin-left: var(--gap-8);
+        font-size: var(--font-size-14);
+        color: var(--light);
+        opacity: 0.8;
     }
     .news-form__control {
         --control-height: clamp(2rem, 1.652rem + 1.739vw, 3rem); /* 32 - 48 */
@@ -184,6 +181,7 @@
     .news-form__input::placeholder {
         font-weight: 400;
         color: var(--yellow);
+        opacity: 0.8;
     }
     .news-form__submit {
         flex: 0 0 auto;
