@@ -2,13 +2,17 @@
     import HeroSection from "$lib/components/routes/home/hero/HeroSection.svelte";
     import FeaturesSection from "$lib/components/routes/home/features/FeaturesSection.svelte";
     import RoadmapSection from "$lib/components/routes/home/roadmap/RoadmapSection.svelte";
+    import Footer from "$lib/components/general/Footer.svelte";
 </script>
+
 
 <main>
     <HeroSection/>
     <FeaturesSection/>
     <RoadmapSection/>
 </main>
+<Footer/>
+
 <svg class="effect-overlay" aria-hidden="true">
     <defs>
         <filter id="noise-filter">
@@ -55,6 +59,7 @@
     />
 </svg>
 <div class="wip-notice">Early concept</div>
+
 
 <style>
     .effect-overlay {
