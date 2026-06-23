@@ -3,17 +3,15 @@
         <div class="footer__left">
             <div class="brand">
                 <a class="brand__name" href="/">Sifaka.dev</a>
-                <div class="brand__slogan">Develop databases — without grunt work</div>
+                <div class="brand__slogan">Develop databases —<wbr/> without grunt work</div>
             </div>
             <div class="legal-info">
                 <div class="legal-info__links">
                     <a class="legal-info__link" href="/terms-of-use">Terms of Use</a>
                     <a class="legal-info__link" href="/privacy-policy">Privacy Policy</a>
                 </div>
-                <div class="legal-info__copyright">© 2026 Pieter Groenendijk. All rights reserved.</div>
+                <div class="legal-info__copyright">© 2026 Pieter Groenendijk. <wbr/>All rights reserved.</div>
             </div>
-        </div>
-        <div class="footer__middle">
         </div>
         <div class="footer__right">
             <div class="socials">
@@ -75,6 +73,8 @@
 
 <style>
     .footer {
+        box-shadow: 0 -5px 10px -3px var(--brown);
+        contain: content;
         background-color: var(--brown);
     }
     .footer__content {
@@ -83,11 +83,9 @@
         padding-block: var(--gap-96) var(--gap-128);
         max-width: 1600px;
         display: flex;
-        gap: var(--gap-32);
-    }
-    .footer__content > * {
-        flex-shrink: 0;
-        flex-grow: 1;
+        justify-content: space-between;
+        flex-wrap: wrap-reverse;
+        gap: var(--gap-128);
     }
 
 
@@ -125,26 +123,23 @@
     }
 
 
-    .footer__middle {
-        display: flex;
-    }
-
-
-
     .footer__right {
+        margin-left: auto;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        align-items: end;
+        gap: var(--gap-16);
     }
 
     .socials {
         display: flex;
+        justify-content: end;
         gap: var(--gap-16);
     }
     .social__icon {
-        width: var(--gap-32);
-        height: var(--gap-32);
+        --size: calc(max(24px, var(--gap-32)));
+        width: var(--size);
+        height: var(--size);
         color: var(--yellow);
     }
 
@@ -170,7 +165,7 @@
         gap: var(--gap-8);
     }
     .news-form__input {
-        flex: 1 1 32ch;
+        flex: 1 1 0;
         display: block;
         box-sizing: border-box;
         border: 2px solid var(--yellow);
