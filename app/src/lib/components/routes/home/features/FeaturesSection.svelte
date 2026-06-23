@@ -116,6 +116,7 @@
 
     .feature__title {
         text-align: left;
+        font-weight: 500;
     }
 
     .feature__description--styled {
