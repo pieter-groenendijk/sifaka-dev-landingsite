@@ -115,7 +115,7 @@
 
 <style>
     :global(#section--timeline) {
-        background-color: var(--dark);
+        background-color: var(--dark-turquose);
 
         :global(.section__content) {
             content-visibility: auto;
@@ -186,8 +186,9 @@
     }
 
     .milestone__time {
-        width: var(--gap-16);
-        height: var(--gap-16);
+        --size: var(--gap-16);
+        width: var(--size);
+        height: var(--size);
         background-color: var(--light);
         font-weight: 500;
         opacity: 0.1;
@@ -245,11 +246,11 @@
         margin-inline: auto;
         padding: var(--gap-12) var(--gap-8);
         width: fit-content;
-        background-color: var(--dark-green);
         font-size: var(--font-size-22);
         font-weight: 500;
         text-transform: uppercase;
-        color: var(--yellow);
+        color: var(--dark);
+        background-color: var(--yellow);
     }
 
     .milestone__summary {

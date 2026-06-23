@@ -30,7 +30,7 @@
             r="100%"
         >
             <stop offset="0%" stop-color="transparent"/>
-            <stop offset="100%" stop-color="black" stop-opacity="0.3"/>
+            <stop offset="100%" stop-color="black" stop-opacity="0.6"/>
         </radialGradient>
     </defs>
 
