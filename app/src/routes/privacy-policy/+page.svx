@@ -1,0 +1,38 @@
+<script>
+    import Section from "$lib/components/general/Section.svelte";
+</script>
+
+<Section>
+
+# Privacy Policy
+This privacy policy describes how sifaka.dev ("sifaka.dev", "we", "us") processes personal information, and what legal rights individuals have concerning their personal information and how to exercise those rights.
+
+## Cases of use
+### Newsletter
+1. Basis: Consent, through submitting one of the respective forms for subscribing to sifaka.dev's newsletter.
+2. Information: E-mail address.
+3. Retention: Until you unsubscribe.
+4. Purpose: To send you e-mails regarding news of sifaka.dev's services. We strive to not send more than one e-mail per month.
+5. Unsubscribing: Consent can be withdrawn, by using the "unsubscribe" link provided in each received newsletter e-mail. 
+
+## Rights
+Under the GDPR, you have rights you can exercise regarding your personal information. Please review their exact definitions and conditions in the [official regulations](https://www.autoriteitpersoonsgegevens.nl/en/themes/basic-gdpr/privacy-rights-under-the-gdpr). 
+
+- **The right to access**: You have the right to request us for copies of your personal data. We may charge you a small fee for this service.
+
+- **The right to rectification**: You have the right to request that we correct any information you believe is inaccurate. You also have the right to request us to complete the information you believe is incomplete.
+
+- **The right to erasure**: You have the right to request that we erase your personal data, under certain conditions.
+
+- **The right to restrict processing**: You have the right to request that we restrict the processing of your personal data, under certain conditions.
+
+- **The right to object to processing**: You have the right to object to us processing of your personal data, under certain conditions.
+
+- **The right to data portability**: You have the right to request that we transfer the data that we have collected to another organization, or directly to you, under certain conditions.
+
+If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please [contact us](#contact).
+
+## Contact
+[contact@sifaka.dev](mailto:contact@sifaka.dev)
+
+</Section>
