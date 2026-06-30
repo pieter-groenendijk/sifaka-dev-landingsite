@@ -74,10 +74,6 @@
 
 
 <style>
-    main {
-        min-height: 100vh;
-    }
-
     .effect-overlay {
         position: fixed;
         inset: 0;
