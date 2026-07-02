@@ -16,6 +16,7 @@
         const elemsLength = elems.length;
 
         // Random movement
+        let intervalIds: number[] = [];
         {
             const maxPixelDistance = 10;
             const averageMsDuration = 2000;
@@ -23,7 +24,7 @@
             for (let i = 0; i < elemsLength; ++i) {
                 const msDuration = Math.random() * averageMsDuration * 0.5 + averageMsDuration;
 
-                setInterval(() => {
+                intervalIds.push(setInterval(() => {
                     const angle = Math.random() * 2 * Math.PI;
                     const distance = Math.sqrt(Math.random()) * maxPixelDistance;
 
@@ -37,7 +38,7 @@
                         element.style.setProperty("--offsetX", `${offsetX}px`);
                         element.style.setProperty("--offsetY", `${offsetY}px`);
                     });
-                }, msDuration);
+                }, msDuration));
             }
         }
 
@@ -76,7 +77,13 @@
             disconnectObserver = observer.disconnect.bind(observer);
         };
 
-        return disconnectObserver;
+        return () => {
+            const numOfIntervalIds = intervalIds.length;
+            for (let intervalIdAt = 0; intervalIdAt < numOfIntervalIds; ++intervalIdAt) {
+                clearInterval(intervalIds[intervalIdAt]);
+            }
+            disconnectObserver();
+        };
     });
 </script>
 

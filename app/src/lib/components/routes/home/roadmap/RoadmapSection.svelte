@@ -1,7 +1,7 @@
 <script lang="ts">
     import {throttled, trailThrottled} from "$lib/logic/perf/perf";
     import Section from "$lib/components/general/Section.svelte";
-    import {milestones} from "./milestones.ts";
+    import {milestones, type Milestone} from "./milestones.ts";
 
     let currMilestoneAt = $state(0);
 
@@ -87,7 +87,7 @@
         use:initMilestone
     >
         <div class="milestone__time-container">
-            <div class="milestone__time">{milestone.timeLabel}</div>
+            <div class="milestone__time"></div>
         </div>
         <div class="milestone__content">
             <div class="milestone__title">{milestone.title}</div>
@@ -115,7 +115,7 @@
 
 <style>
     :global(#section--timeline) {
-        background-color: var(--dark);
+        background-color: var(--dark-turquose);
 
         :global(.section__content) {
             content-visibility: auto;
@@ -186,10 +186,11 @@
     }
 
     .milestone__time {
-        width: fit-content;
-        font-size: var(--font-size-20);
+        --size: var(--gap-16);
+        width: var(--size);
+        height: var(--size);
+        background-color: var(--light);
         font-weight: 500;
-        color: var(--light);
         opacity: 0.1;
         transition: opacity 400ms ease-in-out;
     }
@@ -245,11 +246,11 @@
         margin-inline: auto;
         padding: var(--gap-12) var(--gap-8);
         width: fit-content;
-        background-color: var(--dark-green);
         font-size: var(--font-size-22);
         font-weight: 500;
         text-transform: uppercase;
-        color: var(--yellow);
+        color: var(--dark);
+        background-color: var(--yellow);
     }
 
     .milestone__summary {

@@ -1,0 +1,90 @@
+<script>
+    import Section from "$lib/components/general/Section.svelte";
+</script>
+
+<Section id="section--generic">
+
+# Privacy Policy
+This privacy policy describes how sifaka.dev ("sifaka.dev", "we", "us") processes personal information, and what legal rights individuals have concerning their personal information and how to exercise those rights.
+
+## Cases of use
+### Newsletter
+1. Basis: Consent, through submitting one of the respective forms for subscribing to sifaka.dev's newsletter.
+2. Information: E-mail address.
+3. Retention: Until you unsubscribe.
+4. Purpose: To send you e-mails regarding news of sifaka.dev's services. We strive to not send more than one e-mail per month.
+5. Unsubscribing: Consent can be withdrawn, by using the "unsubscribe" link provided in each received newsletter e-mail. 
+
+## Rights
+Under the GDPR, you have rights you can exercise regarding your personal information. Please review their exact definitions and conditions in the [official regulations](https://www.autoriteitpersoonsgegevens.nl/en/themes/basic-gdpr/privacy-rights-under-the-gdpr). 
+
+- **The right to access**: You have the right to request us for copies of your personal data. We may charge you a small fee for this service.
+- **The right to rectification**: You have the right to request that we correct any information you believe is inaccurate. You also have the right to request us to complete the information you believe is incomplete.
+- **The right to erasure**: You have the right to request that we erase your personal data, under certain conditions.
+- **The right to restrict processing**: You have the right to request that we restrict the processing of your personal data, under certain conditions.
+- **The right to object to processing**: You have the right to object to us processing of your personal data, under certain conditions.
+- **The right to data portability**: You have the right to request that we transfer the data that we have collected to another organization, or directly to you, under certain conditions.
+
+If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please [contact us](#contact).
+
+## Contact 
+[contact@sifaka.dev](mailto:contact@sifaka.dev)
+
+</Section>
+
+
+<style>
+    :global(#section--generic) {
+        background-color: var(--dark-turquose);
+
+        :global(.section__content) {
+            max-width: 700px;
+            box-sizing: content-box;
+            content-visibility: auto;
+        }
+
+        :global(h1) {
+            margin-bottom: var(--gap-32);
+            font-size: var(--font-size-64);
+            font-weight: 800;
+            color: var(--yellow);
+        }
+
+        :global(h2) {
+            margin-top: calc(var(--gap-32) * 1.2);
+            font-size: var(--font-size-32);
+            font-weight: 800;
+            color: var(--yellow);
+        }
+
+        :global(h3) {
+            margin-top: calc(var(--gap-16) * 1.1);
+            text-transform: uppercase;
+            font-size: var(--font-size-22);
+            font-weight: 500;
+            color: var(--yellow);
+        }
+
+        :global(p, ol, ul) {
+            margin-top: calc(var(--gap-16) * 1.3);
+        }
+
+        :global(p, li) {
+            font-size: var(--font-size-18);
+            font-weight: 300;
+            color: var(--light);
+            line-height: 1.5;
+        }
+
+        :global(li) {
+            margin-top: var(--gap-8);
+            list-style-type: "› ";
+            list-style-position: inside;
+        }
+
+        :global(strong) {
+            font-weight: 500;
+        }
+    }
+
+</style>
