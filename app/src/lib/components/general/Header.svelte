@@ -45,8 +45,8 @@
         display: inline-block;
         margin-left: var(--spacing);
         max-width: 200px;
-        transition-property: opacity font-stretch margin-inline max-width;
-        transition-duration: 300ms;
+        transition-property: opacity, font-stretch, margin-inline, max-width;
+        transition-duration: 200ms, 300ms, 300ms, 300ms;
         transition-timing-function: ease-in-out;
         transition-delay: 150ms;
     }
