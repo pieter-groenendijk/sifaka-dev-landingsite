@@ -36,30 +36,34 @@
         font-weight: 800;
         letter-spacing: -5%;
         color: var(--yellow);
-        transition: transform 300ms 300ms ease-in-out;
+        transition-property: transform;
+        transition-duration: 300ms;
+        transition-timing-function: ease-in-out;
+        transition-delay: 0;
     }
     .logo__name {
         display: inline-block;
         margin-left: var(--spacing);
         max-width: 200px;
-        transition: 
-            opacity 200ms ease-in-out,
-            font-stretch 200ms ease-in-out,
-            margin-inline 300ms ease-in-out,
-            max-width 300ms ease-in-out
-            ;
+        transition-property: opacity font-stretch margin-inline max-width;
+        transition-duration: 300ms;
+        transition-timing-function: ease-in-out;
+        transition-delay: 150ms;
     }
     .logo__bracket {
         display: inline-block;
-        transition:
-            transform 200ms ease-in-out;
     }
     .logo__bracket-2 {
         margin-left: var(--spacing);
+        transition-property: transform;
+        transition-duration: 200ms;
+        transition-timing-function: ease-in-out;
+        transition-delay: 150ms;
     }
     .header:hover {
         & .logo {
             transform: rotate(-90deg);
+            transition-delay: 150ms;
         }
 
         & .logo__name {
@@ -67,10 +71,20 @@
             max-width: 0;
             font-stretch: 50%;
             opacity: 0;
+            transition-delay: 0ms;
+            /* transition: 
+                opacity 200ms ease-in-out,
+                font-stretch 300ms ease-in-out,
+                margin-inline 300ms ease-in-out,
+                max-width 300ms ease-in-out
+                ; */
         }
 
         & .logo__bracket-2 {
             transform: scaleX(-1);
+            transition-delay: 0ms;
+            /* transition:
+                transform 200ms ease-in-out; */
         }
     }
 </style>
