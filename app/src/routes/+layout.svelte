@@ -1,5 +1,6 @@
 <script lang="ts">
     import Footer from "$lib/components/general/Footer.svelte";
+    import Header from "$lib/components/general/Header.svelte";
 
     let { children } = $props();
 
@@ -17,8 +18,10 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&display=swap" rel="stylesheet">
 </svelte:head>
 
+<Header/>
 <main>
     {@render children()}
 </main>
@@ -101,8 +104,7 @@
         transform:
                 translateX(calc(cos(var(--angle)) * 100% * -1)) /* Move left to perfectly fit it in the corner */
                 translateY(-100%) /* Left-bottom anchored to top of page */
-                rotate(var(--angle))
-    ;
+                rotate(var(--angle));
         transform-origin: left bottom;
         animation: 300ms ease-in-out var(--animation-stage-three) both fade-in;
     }
