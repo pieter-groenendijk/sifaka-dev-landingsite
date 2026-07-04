@@ -53,6 +53,7 @@
         font-family: "Bricolage Grotesque";
         font-weight: 800;
         letter-spacing: -5%;
+        text-shadow: 0 0 10px rgb(from var(--dark-green) r g b / 1);
         color: var(--yellow);
         transition-property: transform;
         transition-duration: 200ms;
@@ -77,7 +78,7 @@
     }
     .logo__bracket-2 {
         margin-left: var(--spacing);
-        transition-property: transform;
+        transition-property: transform margin-left;
         transition-duration: 150ms;
         transition-timing-function: ease-in-out;
         transition-delay: 150ms;
@@ -97,6 +98,7 @@
         }
 
         & .logo__bracket-2 {
+            margin-left: 0.14ch;
             transform: scaleX(-1); 
             transition-delay: 0ms;
         }

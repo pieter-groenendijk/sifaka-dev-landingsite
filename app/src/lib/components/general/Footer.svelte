@@ -95,7 +95,7 @@
     .brand__logo__icon {
         margin-right: 0.5ch;
         display: inline-block;
-        letter-spacing: 2px;
+        letter-spacing: 0.05ch;
         transform: rotate(-90deg);
     }
     .brand__slogan {
