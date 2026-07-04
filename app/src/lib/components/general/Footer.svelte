@@ -7,7 +7,7 @@
     <div class="footer__content">
         <div class="footer__left">
             <div class="brand">
-                <a class="brand__name" href="/">Sifaka.dev</a>
+                <a class="brand__logo" href="/"><span class="brand__logo__icon">&#123;&#123;</span>Sifaka.dev</a>
                 <div class="brand__slogan">Develop databases —<wbr/> without grunt work</div>
             </div>
             <div class="legal-info">
@@ -84,14 +84,23 @@
         gap: var(--gap-64);
     }
 
-    .brand__name {
+    .brand__logo {
         text-decoration: none;
+        font-family: "Bricolage Grotesque";
         font-size: var(--font-size-64);
-        font-weight: 600;
-        letter-spacing: 0.05ch;
+        font-weight: 800;
+        letter-spacing: -5%;
         color: var(--yellow);
     }
+    .brand__logo__icon {
+        margin-right: 0.5ch;
+        display: inline-block;
+        letter-spacing: 2px;
+        transform: rotate(-90deg);
+    }
     .brand__slogan {
+        text-wrap: pretty;
+        font-size: var(--font-size-18);
         color: var(--light);
     }
 
