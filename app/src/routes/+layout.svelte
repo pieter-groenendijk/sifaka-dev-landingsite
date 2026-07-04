@@ -86,6 +86,7 @@
         width: 100%;
         height: 100%;
         pointer-events: none;
+        z-index: 2;
     }
 
     .noise-effect {
@@ -109,6 +110,7 @@
                 translateY(-100%) /* Left-bottom anchored to top of page */
                 rotate(var(--angle));
         transform-origin: left bottom;
+        z-index: 3;
         animation: 300ms ease-in-out var(--animation-stage-three) both fade-in;
     }
 </style>

@@ -19,7 +19,18 @@
         position: fixed;
         top: 0;
         width: 100%;
-        z-index: 1;
+        z-index: 2;
+        background: linear-gradient(
+            45deg, 
+            rgb(from var(--dark) r g b / 0.3) -20%, 
+            rgb(from var(--dark) r g b / 0) 40% 
+        );
+        animation: onScroll ease-in-out;
+        animation-timeline: scroll(root block);
+        animation-range: 0 150px;
+        animation-fill-mode: both;
+        backdrop-filter: blur(10px);
+        contain: content;
     }
     .header__content {
         box-sizing: border-box;
@@ -28,25 +39,36 @@
         padding-block: var(--gap-16);
     }
 
+    @keyframes onScroll {
+        from {
+            font-size: var(--font-size-48);
+        }
+
+        to {
+            font-size: var(--font-size-32);
+        }
+    }
     .logo {
         --spacing: 0.3ch;
         font-family: "Bricolage Grotesque";
-        font-size: var(--font-size-48);
-        /* font-size: var(--font-size-32); */
         font-weight: 800;
         letter-spacing: -5%;
         color: var(--yellow);
         transition-property: transform;
-        transition-duration: 300ms;
+        transition-duration: 200ms;
         transition-timing-function: ease-in-out;
         transition-delay: 0;
+        animation: onScroll ease-in-out;
+        animation-timeline: scroll(root block);
+        animation-range: 0 150px;
+        animation-fill-mode: both;
     }
     .logo__name {
         display: inline-block;
         margin-left: var(--spacing);
         max-width: 200px;
         transition-property: opacity, font-stretch, margin-inline, max-width;
-        transition-duration: 200ms, 300ms, 300ms, 300ms;
+        transition-duration: 150ms, 200ms, 200ms, 200ms;
         transition-timing-function: ease-in-out;
         transition-delay: 150ms;
     }
@@ -56,7 +78,7 @@
     .logo__bracket-2 {
         margin-left: var(--spacing);
         transition-property: transform;
-        transition-duration: 200ms;
+        transition-duration: 150ms;
         transition-timing-function: ease-in-out;
         transition-delay: 150ms;
     }
@@ -72,19 +94,11 @@
             font-stretch: 50%;
             opacity: 0;
             transition-delay: 0ms;
-            /* transition: 
-                opacity 200ms ease-in-out,
-                font-stretch 300ms ease-in-out,
-                margin-inline 300ms ease-in-out,
-                max-width 300ms ease-in-out
-                ; */
         }
 
         & .logo__bracket-2 {
-            transform: scaleX(-1);
+            transform: scaleX(-1); 
             transition-delay: 0ms;
-            /* transition:
-                transform 200ms ease-in-out; */
         }
     }
 </style>

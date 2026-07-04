@@ -67,6 +67,10 @@
 </Section>
 
 <style>
+    :global(#section--features) {
+        background-color: var(--dark-green);
+    }
+
     :global(#section--features .section__content) {
         max-width: 1600px;
         min-height: 700px;
