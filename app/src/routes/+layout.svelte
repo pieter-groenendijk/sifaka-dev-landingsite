@@ -25,7 +25,7 @@
 </svelte:head>
 
 <Header/>
-<main>
+<main class="main">
     {@render children()}
 </main>
 <Footer/>
@@ -80,6 +80,10 @@
 
 
 <style>
+    .main {
+        padding-top: 80px;
+    }
+
     .effect-overlay {
         position: fixed;
         inset: 0;

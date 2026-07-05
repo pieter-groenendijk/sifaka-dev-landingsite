@@ -8,3 +8,10 @@
 <HeroSection/>
 <FeaturesSection/>
 <RoadmapSection/>
+
+
+<style>
+    :global(.main) {
+        background-color: var(--green);
+    }
+</style>

@@ -34,6 +34,10 @@ If you make a request, we have one month to respond to you. If you would like to
 
 
 <style>
+    :global(.main) {
+        background-color: var(--dark-turquose);
+    }
+
     :global(#section--generic) {
         background-color: var(--dark-turquose);
 
@@ -71,7 +75,7 @@ If you make a request, we have one month to respond to you. If you would like to
 
         :global(p, li) {
             font-size: var(--font-size-18);
-            font-weight: 300;
+            font-weight: 400;
             color: var(--light);
             line-height: 1.5;
         }
@@ -83,7 +87,7 @@ If you make a request, we have one month to respond to you. If you would like to
         }
 
         :global(strong) {
-            font-weight: 500;
+            font-weight: 700;
         }
     }
 
