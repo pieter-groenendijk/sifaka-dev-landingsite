@@ -15,7 +15,16 @@
 
 
 <style>
+    @keyframes headerOnScroll {
+        from {
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0);
+        }
+        to {
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+        }
+    }
     .header {
+        --on-scroll-range: 150px;
         position: fixed;
         top: 0;
         width: 100%;
@@ -25,10 +34,14 @@
             rgb(from var(--dark) r g b / 0.3) -20%, 
             rgb(from var(--dark) r g b / 0) 40% 
         );
-        animation: onScroll ease-in-out;
-        animation-timeline: scroll(root block);
+        animation: 
+            fade-in 300ms var(--animation-stage-two) ease-in-out both,
+            headerOnScroll ease-in-out both;
+        animation-timeline: 
+            auto,
+            scroll(root block)
+        ;
         animation-range: 0 150px;
-        animation-fill-mode: both;
         backdrop-filter: blur(5px);
         contain: content;
     }
@@ -39,15 +52,13 @@
         padding-block: var(--gap-16);
     }
 
-    @keyframes onScroll {
+    @keyframes logoOnScroll {
         from {
             font-size: var(--font-size-48);
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0);
         }
 
         to {
             font-size: var(--font-size-32);
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
         }
     }
     .logo {
@@ -60,10 +71,10 @@
         transition-property: transform;
         transition-duration: 200ms;
         transition-timing-function: ease-in-out;
-        transition-delay: 0;
-        animation: onScroll ease-in-out;
+        transition-delay: 0ms;
+        animation: logoOnScroll ease-in-out;
         animation-timeline: scroll(root block);
-        animation-range: 0 150px;
+        animation-range: 0 var(--on-scroll-range);
         animation-fill-mode: both;
     }
     .logo__name {
