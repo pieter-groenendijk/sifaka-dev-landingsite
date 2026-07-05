@@ -29,7 +29,7 @@
         animation-timeline: scroll(root block);
         animation-range: 0 150px;
         animation-fill-mode: both;
-        backdrop-filter: blur(10px);
+        backdrop-filter: blur(5px);
         contain: content;
     }
     .header__content {
@@ -42,10 +42,12 @@
     @keyframes onScroll {
         from {
             font-size: var(--font-size-48);
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0);
         }
 
         to {
             font-size: var(--font-size-32);
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
         }
     }
     .logo {
@@ -78,7 +80,7 @@
     }
     .logo__bracket-2 {
         margin-left: var(--spacing);
-        transition-property: transform margin-left;
+        transition-property: transform, margin-left;
         transition-duration: 150ms;
         transition-timing-function: ease-in-out;
         transition-delay: 150ms;
