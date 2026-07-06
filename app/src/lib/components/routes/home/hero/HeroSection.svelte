@@ -8,8 +8,9 @@
     let viewWidth = $state(0);
     let viewHeight = $state(0);
 
-    let mainRect: DOMRect | undefined = $state();
-    let rects: DOMRect[] | undefined = $state();
+    let sectionElemRect: DOMRect | undefined = $state();
+    let mainElemRect: DOMRect | undefined = $state();
+    let elemRects: DOMRect[] | undefined = $state();
 
     onMount(() => {
         const elems = document.getElementsByClassName("section--hero__elem") as HTMLCollectionOf<HTMLElement>;
@@ -43,54 +44,51 @@
         }
 
 
-        // Keeping track of positions
-        let disconnectObserver;
-        {
-            // Gather elements
-            const sectionElem = document.getElementById("section--hero");
-            if (!sectionElem) {
-                return;
-            }
 
-            const mainElem = document.getElementById("section--hero__elem--main");
-            if (!mainElem) {
-                return;
-            }
+        const sectionElem = document.getElementById("section--hero");
+        if (!sectionElem) {
+            return;
+        }
 
-            // Create observer
-            const observer = new ResizeObserver(debounced(300, () => {
-                mainRect = mainElem.getBoundingClientRect();
+        const mainElem = document.getElementById("section--hero__elem--main");
+        if (!mainElem) {
+            return;
+        }
 
-                rects = new Array(elemsLength);
-                for (let i = 0; i < elemsLength; ++i) {
-                    rects[i] = elems[i].getBoundingClientRect();
-                }
-            }));
+        // Create observer
+        const observer = new ResizeObserver(debounced(300, () => {
+            sectionElemRect = sectionElem.getBoundingClientRect();
 
-            // Observe elements that could change the placement of the lines
-            observer.observe(sectionElem);
-            observer.observe(mainElem);
+            mainElemRect = mainElem.getBoundingClientRect();
+
+            elemRects = new Array(elemsLength);
             for (let i = 0; i < elemsLength; ++i) {
-                observer.observe(elems[i]);
+                elemRects[i] = elems[i].getBoundingClientRect();
             }
+        }));
 
-            disconnectObserver = observer.disconnect.bind(observer);
-        };
+        // Observe elements that could change the placement of the lines
+        observer.observe(sectionElem);
+        observer.observe(mainElem);
+        for (let i = 0; i < elemsLength; ++i) {
+            observer.observe(elems[i]);
+        }
+
 
         return () => {
             const numOfIntervalIds = intervalIds.length;
             for (let intervalIdAt = 0; intervalIdAt < numOfIntervalIds; ++intervalIdAt) {
                 clearInterval(intervalIds[intervalIdAt]);
             }
-            disconnectObserver();
+            observer.disconnect();
         };
     });
 </script>
 
 {#snippet line(rectOne: DOMRect, rectTwo: DOMRect)}
     <line
-        x1={rectOne.x + rectOne.width / 2 + window.scrollX} y1={rectOne.y + rectOne.height / 2 + window.scrollY}
-        x2={rectTwo.x + rectTwo.width / 2 + window.scrollX} y2={rectTwo.y + rectTwo.height / 2 + window.scrollY}
+        x1={rectOne.x + rectOne.width / 2 - sectionElemRect.x} y1={rectOne.y + rectOne.height / 2 - sectionElemRect.y}
+        x2={rectTwo.x + rectTwo.width / 2 - sectionElemRect.x} y2={rectTwo.y + rectTwo.height / 2 - sectionElemRect.y}
     />
 {/snippet}
 
@@ -105,8 +103,8 @@
         bind:clientWidth={viewWidth} bind:clientHeight={viewHeight}
         viewBox="{viewMinX} {viewMinY} {viewWidth} {viewHeight}"
     >
-        {#each rects as rect}
-            {@render line(mainRect, rect)}
+        {#each elemRects as elemRect}
+            {@render line(mainElemRect, elemRect)}
         {/each}
     </svg>
 </Section>
