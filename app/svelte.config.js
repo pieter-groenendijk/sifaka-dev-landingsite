@@ -5,8 +5,13 @@ import slug from "remark-slug";
 import headings from "remark-autolink-headings";
 
 /** @type {import('@sveltejs/kit').Config} */
-const config = {
-	kit: { adapter: adapter() },
+export const config = {
+	kit: { 
+		adapter: adapter(),
+		env: {
+			publicPrefix: "PUBLIC_",
+		},
+	},
 	vitePlugin: {
 		dynamicCompileOptions: ({ filename }) => filename.includes('node_modules') ? undefined : { }
 	},
