@@ -1,21 +1,32 @@
 <script lang="ts">
+    import { getMailURL } from "$lib/logic/host/host";
+
     function onSubmit(elem: HTMLFormElement) {
         elem.addEventListener("submit", (event: SubmitEvent) => {
             event.preventDefault();
 
-            let data = Object.fromEntries(new FormData(elem));
+            const url = getMailURL();
+            url.pathname = "/api/public/subscription";
 
-            // fetch("", {
-            //     method: "POST",
-            //     body: JSON.stringify({
-            //         email: data["email"],
-            //         list_uuids: [],
-            //     }),
-            // }).then(() => {
+            const data = Object.fromEntries(new FormData(elem));
+            
+            fetch(url.toString(), {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    email: data["email"],
+                    list_uuids: ["599fc681-22f2-458e-96e4-1fb405169497"],
+                }),
+            })
+            .then(async (resp) => {
+                if (!resp.ok) {
+                    console.error(resp);
+                }
 
-            // }).catch(() => {
-
-            // });
+                console.log(await resp.json())
+            });
         });
     }
 </script>
