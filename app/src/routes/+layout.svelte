@@ -1,13 +1,10 @@
 <script lang="ts">
     import Footer from "$lib/components/general/Footer.svelte";
     import Header from "$lib/components/general/Header.svelte";
-    import { getHostURL } from "$lib/logic/host/host";
     import "./critical.css";
     import "./global.css";
 
     let { children } = $props();
-
-    console.log(getHostURL());
 </script>
 
 
