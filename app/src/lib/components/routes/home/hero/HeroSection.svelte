@@ -12,6 +12,8 @@
     let mainElemRect: DOMRect | undefined = $state();
     let elemRects: DOMRect[] | undefined = $state();
 
+
+
     onMount(() => {
         const elems = document.getElementsByClassName("section--hero__elem") as HTMLCollectionOf<HTMLElement>;
         const elemsLength = elems.length;
@@ -85,12 +87,6 @@
     });
 </script>
 
-{#snippet line(rectOne: DOMRect, rectTwo: DOMRect)}
-    <line
-        x1={rectOne.x + rectOne.width / 2 - sectionElemRect.x} y1={rectOne.y + rectOne.height / 2 - sectionElemRect.y}
-        x2={rectTwo.x + rectTwo.width / 2 - sectionElemRect.x} y2={rectTwo.y + rectTwo.height / 2 - sectionElemRect.y}
-    />
-{/snippet}
 
 <Section id="section--hero">
     <div id="section--hero__elem--one" class="section--hero__elem">Time-efficient</div>
@@ -99,14 +95,21 @@
     <div id="section--hero__elem--three" class="section--hero__elem">Easy-to-use</div>
     <div id="section--hero__elem--four" class="section--hero__elem">Broad compatibility</div>
 
-    <svg
-        bind:clientWidth={viewWidth} bind:clientHeight={viewHeight}
-        viewBox="{viewMinX} {viewMinY} {viewWidth} {viewHeight}"
-    >
-        {#each elemRects as elemRect}
-            {@render line(mainElemRect, elemRect)}
-        {/each}
-    </svg>
+    {#if sectionElemRect !== undefined && mainElemRect !== undefined}
+        <svg
+            bind:clientWidth={viewWidth} bind:clientHeight={viewHeight}
+            viewBox="{viewMinX} {viewMinY} {viewWidth} {viewHeight}"
+        >
+            {#each elemRects as elemRect}
+                <line
+                    x1={mainElemRect.x + mainElemRect.width / 2 - sectionElemRect.x} 
+                    y1={mainElemRect.y + mainElemRect.height / 2 - sectionElemRect.y}
+                    x2={elemRect.x + elemRect.width / 2 - sectionElemRect.x} 
+                    y2={elemRect.y + elemRect.height / 2 - sectionElemRect.y}
+                />
+            {/each}
+        </svg>
+    {/if}
 </Section>
 
 <style>
