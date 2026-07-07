@@ -2,12 +2,41 @@
     import { getMailURL } from "$lib/logic/host/host";
 
     function onSubmit(elem: HTMLFormElement) {
-        elem.addEventListener("submit", (event: SubmitEvent) => {
+        elem.addEventListener("submit", async (event: SubmitEvent) => {
             event.preventDefault();
 
             const url = getMailURL();
-            url.pathname = "/api/public/subscription";
+            url.pathname = "/api/public/lists";
 
+            const newsletterListUUID = await fetch(url.toString(), {method: "GET"})
+                .then(async (resp) => {
+                    if (!resp.ok) {
+                        // show error
+                    }
+
+                    const data: {
+                        uuid: string,
+                        name: string,
+                    }[] = await resp.json();
+                    
+                    const newsletterList = data.find((value) => value.name === "Newsletter")
+                    if (newsletterList === undefined) {
+                        // error
+                        return;
+                    }
+
+                    return newsletterList.uuid;
+                })
+                .catch((reason) => {
+
+                });
+
+            if (typeof newsletterListUUID !== "string") {
+                // error
+            }
+
+
+            url.pathname = "/api/public/subscription";
             const data = Object.fromEntries(new FormData(elem));
             
             fetch(url.toString(), {
@@ -17,7 +46,7 @@
                 },
                 body: JSON.stringify({
                     email: data["email"],
-                    list_uuids: ["599fc681-22f2-458e-96e4-1fb405169497"],
+                    list_uuids: [newsletterListUUID],
                 }),
             })
             .then(async (resp) => {
@@ -80,10 +109,6 @@
     .news-form__input {
         flex: 1 1 0;
     }
-    @property --background-color {
-        syntax: '<color>';
-        inherits: true;
-    }
     .input {
         --_border-width: var(--border-width, 2px);
         --_border-radius: var(--border-radius, var(--gap-8));
@@ -139,7 +164,8 @@
         width: var(--control-height);
         height: var(--control-height);
         border-radius: var(--control-border-radius);
-        /* font-size: var(--gap-32); */
+        font-size: var(--gap-32);
+        font-weight: 400;
         color: var(--dark);
         background-color: var(--yellow);
     }
