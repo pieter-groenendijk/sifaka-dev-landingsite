@@ -1,5 +1,6 @@
 <script lang="ts">
     import NewsletterForm from "./NewsletterForm.svelte";
+    import "$lib/styling/interactions.css";
 </script>
 
 
@@ -7,7 +8,7 @@
     <div class="footer__content">
         <div class="footer__left">
             <div class="brand">
-                <a class="brand__logo" href="/"><span class="brand__logo__icon">&#123;&#123;</span>Sifaka.dev</a>
+                <a class="brand__logo pressable" href="/"><span class="brand__logo__icon">&#123;&#123;</span>Sifaka.dev</a>
                 <div class="brand__slogan">Develop databases —<wbr/> without grunt work</div>
             </div>
             <div class="legal-info">
@@ -21,7 +22,7 @@
         <div class="footer__right">
             <div class="socials">
                 <a 
-                    class="social"
+                    class="social pressable"
                     href="https://github.com/pieter-groenendijk" 
                     aria-label="Github"
                     target="_blank"
@@ -29,7 +30,7 @@
                     <svg class="social__icon" viewBox="0 0 24 24"><path fill="currentColor" d="M21 5.3q1.4 1.5 1.4 3.8c0 5.3-3 6.8-5.8 7.3q.4 1 .4 2v3.8q0 .6-.6.7a1 1 0 0 1-.7-.7v-3.7a3 3 0 0 0-.8-2.1l.5-1.2c2.8-.4 5.7-1.3 5.7-6.2q0-1.8-1.2-3.2l-.2-.7a4 4 0 0 0 0-2.8 7 7 0 0 0-2.9 1.4l-.5.1a13 13 0 0 0-6.5 0h-.6Q7 2.3 6.2 2.3a4 4 0 0 0 0 2.8v.7Q4.6 7.3 4.6 9c0 4.8 2.8 5.8 5.8 6.2l.3 1.1q-.8 1-.7 2v3.9a1 1 0 0 1-.7.7 1 1 0 0 1-.7-.7v-2.1c-3 .6-4.2-1-5.1-2.1q-.7-1-1.3-1.1-.3-.2-.3-.8.2-.7.8-.5 1.4.5 2 1.6c.9 1 1.7 2 4.1 1.5v-.3q0-1.2.5-2.1c-2.7-.6-6-2.1-6-7.3q0-2.2 1.4-3.8-.3-2 .3-3.8l.5-.3c.1-.1 1.4-.4 4 1.2a14 14 0 0 1 6.7 0C18.8.6 20.2.9 20.3 1l.5.3q.6 2 .1 3.9"/></svg>
                 </a>
                 <a
-                    class="social"
+                    class="social pressable"
                     href="https://www.linkedin.com/in/pieter-groenendijk-4753ba2ab/"
                     aria-label="LinkedIn"
                     target="_blank"
@@ -37,7 +38,7 @@
                     <svg class="social__icon" viewBox="0 0 1920 1920"><path fill="currentColor" fill-rule="evenodd" d="M1168 601v75c72-45 156-71 283-71 412 0 465 309 465 578v733l-477 4v-701c0-118-42-140-120-140-74 0-120 23-120 140v701l-484-4V601zm-688 0v1318H0V601zM360 721H120v1078h240zm688 0H835v1076l244 2v-580c0-227 150-260 240-260 109 0 240 45 240 260v580l237-2v-614c0-334-93-458-345-458-152 0-217 45-282 99l-16 14h-105zM240 0a240 240 0 1 1 0 481 240 240 0 0 1 0-481m0 120a120 120 0 1 0 1 241 120 120 0 0 0-1-241"/></svg>
                 </a>
                 <a
-                    class="social"
+                    class="social pressable"
                     href="https://mastodon.social/@Compeuter"
                     aria-label="Mastodon"
                     target="_blank"
@@ -45,7 +46,7 @@
                     <svg class="social__icon" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" clip-rule="evenodd" viewBox="0 0 192 192"><path fill="currentColor" d="M96 16q-32 0-50 8c-1 0-25 10-25 47v25q1 26 7 46 9 23 32 30 22 5 36 4c19-1 29-7 29-7l3-5v-13l-3-4-5-1s-11 3-24 3q-6 1-14-2-6-1-9-7a185 185 0 0 0 53 1q19-4 31-13 9-8 11-16c3-17 3-41 3-41 0-37-24-47-25-47q-18-8-50-8m60 94c3-16 3-38 3-38 0-28-17-36-17-36h-1q-16-7-45-7-28 0-45 7h-1s-17 8-17 36v25q0 23 6 42 7 17 24 22 19 5 33 4l20-4v-1l-20 2c-16-1-33-3-35-23l-1-5 3-5 5-1s12 3 28 4l29-2q15-2 25-11 5-3 6-8m-54-37c1-2 4-12 14-12 11 0 11 12 11 12v34a6 6 0 0 0 12 0V72s-1-23-23-23q-15 1-20 10-6-9-21-10-10 0-15 5c-6 6-6 15-6 17v36a6 6 0 0 0 12 0V70q-1-1 2-7l7-2c11 0 14 10 15 12v21a6 6 0 0 0 12 0z"/></svg>
                 </a>
                 <a
-                    class="social"
+                    class="social pressable"
                     href="mailto:contact@sifaka.dev"
                     aria-label="E-mail"
                     target="_blank"

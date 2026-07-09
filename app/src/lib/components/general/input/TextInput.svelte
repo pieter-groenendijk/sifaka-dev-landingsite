@@ -2,6 +2,8 @@
     @component A well-styled input field for text. This component may only communicate validation but does not validate it's input itself, this is possible done by it's parent.
 -->
 <script lang="ts">
+    import "$lib/styling/interactions.css";
+
     let { 
         className = "",
         name, 
@@ -43,7 +45,7 @@
 
 
 <div 
-    class="input-wrapper"
+    class="input-wrapper pressable"
     class:input--processing={isProcessing}
     class:input--good={isGood !== undefined && isGood}
     class:input--bad={isGood !== undefined && !isGood}

@@ -1,0 +1,9 @@
+.pressable {
+    will-change: transform;
+    transition: transform 70ms ease-in-out;
+    cursor: pointer;
+}
+
+.pressable:active {
+    transform: scale(.97);
+}

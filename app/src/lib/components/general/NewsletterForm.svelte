@@ -1,6 +1,7 @@
 <script lang="ts">
     import { getMailURL } from "$lib/logic/host/host";
     import TextInput from "./input/TextInput.svelte";
+    import "$lib/styling/interactions.css";
 
     let isProcessing: boolean = $state(false);
 
@@ -108,7 +109,7 @@
                 autocomplete: "email",
             }}
         />
-        <button class="news-form__submit" type="submit">➔</button>
+        <button class="news-form__submit pressable" type="submit">➔</button>
     </div>
 </form>
 
