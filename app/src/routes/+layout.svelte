@@ -1,6 +1,7 @@
 <script lang="ts">
     import Footer from "$lib/components/general/Footer.svelte";
     import Header from "$lib/components/general/Header.svelte";
+    import GlobalMessageFeed from "$lib/components/general/input/message-feed/GlobalMessageFeed.svelte";
     import "./critical.css";
     import "./global.css";
 
@@ -28,6 +29,8 @@
     {@render children()}
 </main>
 <Footer/>
+
+<GlobalMessageFeed/>
 
 <svg class="effect-overlay" aria-hidden="true">
     <defs>
@@ -79,6 +82,14 @@
 
 
 <style>
+    :root {
+        --z-below: -1;
+        --z-main: 0;
+        --z-above: 1;
+        --z-above-2: 2;
+        --z-effects: 3;
+    }
+
     .main {
         padding-top: 80px;
     }
@@ -89,7 +100,7 @@
         width: 100%;
         height: 100%;
         pointer-events: none;
-        z-index: 2;
+        z-index: var(--z-effects);
     }
 
     .noise-effect {
@@ -113,7 +124,7 @@
                 translateY(-100%) /* Left-bottom anchored to top of page */
                 rotate(var(--angle));
         transform-origin: left bottom;
-        z-index: 3;
+        z-index: var(--z-effects);
         animation: 300ms ease-in-out var(--animation-stage-three) both fade-in;
     }
 </style>

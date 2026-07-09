@@ -26,32 +26,45 @@
         judge?: (value: string) => void,
     } = $props();
 
+    let isJudged: boolean;
     let autoJudgeTimeoutId: number; 
     function onInput() {
         isGood = undefined;
         message = "";
 
+        isJudged = false;
+
+
         clearTimeout(autoJudgeTimeoutId);
         autoJudgeTimeoutId = setTimeout(() => {
+            isJudged = true;
             judge(value);
         }, 500);
     }
 
     function onChange() {
         clearTimeout(autoJudgeTimeoutId);
-        judge(value);
+        if (!isJudged) {
+            judge(value);
+            isJudged = true;
+        } 
     }
 </script>
 
 
 <div 
-    class="input-wrapper pressable"
-    class:input--processing={isProcessing}
-    class:input--good={isGood !== undefined && isGood}
-    class:input--bad={isGood !== undefined && !isGood}
+    // class="input-wrapper pressable"
+    // class:input--processing={isProcessing}
+    // class:input--good={isGood !== undefined && isGood}
+    // class:input--bad={isGood !== undefined && !isGood}
+    class="interactable-wrapper input-wrapper pressable"
+    class:interactable-wrapper--judging={isProcessing}
+    class:interactable-wrapper--good={isGood !== undefined && isGood}
+    class:interactable-wrapper--bad={isGood !== undefined && !isGood}
 >
     <input 
-        class="input {className}"
+        //class="input {className}"
+        class="interactable {className}"
 
         name={name}
         type="text"
@@ -72,6 +85,10 @@
 
 <style>
     .input-wrapper {
+        position: relative;
+    }
+
+    /* .input-wrapper {
         --border-width: 2px;
         --border-radius: var(--gap-8);
         --highlight-color: var(--yellow);
@@ -120,10 +137,10 @@
         --background-color: #402626; 
     }
     /* active */
-    :has( .input:where(:focus-within, :hover)) {
+    /* :has( .input:where(:focus-within, :hover)) {
         --border-width: 4px;
         --border-radius: calc(var(--gap-8) * 1.4);
-    }
+    } */
 
     .input__message {
         position: absolute;
@@ -134,8 +151,8 @@
         padding: 2px var(--gap-16);
         font-size: var(--font-size-14);
         font-weight: 450;
-        color: var(--background-color);
-        background-color: var(--highlight-color);
+        color: var(--color-dark);
+        background-color: var(--color-light);
         transition:
             border-radius 100ms ease-in-out,
             background-color 100ms ease-in-out,

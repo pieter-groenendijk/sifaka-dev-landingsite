@@ -2,11 +2,11 @@
     import { getMailURL } from "$lib/logic/host/host";
     import TextInput from "./input/TextInput.svelte";
     import "$lib/styling/interactions.css";
+    import { globalMessageFeed, messfeed_Add } from "./input/message-feed/GlobalMessageFeed.svelte";
 
     let isProcessing: boolean = $state(false);
 
-    function onSubmit(elem: HTMLFormElement) {
-
+    function addSubmitListener(elem: HTMLFormElement) {
         elem.addEventListener("submit", async (event: SubmitEvent) => {
             event.preventDefault();
 
@@ -39,6 +39,7 @@
 
             if (typeof newsletterListUUID !== "string") {
                 // error
+                messfeed_Add(globalMessageFeed, renderUnexpectedErrorMessage);
             }
 
 
@@ -71,6 +72,7 @@
         if (emailValue.length === 0) {
             emailIsGood = false;
             emailMessage = "Enter an e-mail"
+            messfeed_Add(globalMessageFeed, renderUnexpectedErrorMessage);
             return;
         }
 
@@ -79,6 +81,7 @@
         if (!validEmailRegex.test(emailValue)) {
             emailIsGood = false;
             emailMessage = "Enter an valid email"
+            messfeed_Add(globalMessageFeed, renderUnexpectedErrorMessage);
             return;
         }
 
@@ -87,7 +90,14 @@
 </script>
 
 
-<form {@attach onSubmit} class="news-form">
+{#snippet renderUnexpectedErrorMessage()}
+    <div class="news-form__unexpected-error pressable">Sorry, something went unexpectedly wrong at our end while trying to add you to our newsletter list. Please try again or contact me.</div>
+{/snippet}
+
+<form 
+    class="news-form"
+    {@attach addSubmitListener}
+>
     <label 
         class="news-form__label"
         for="news-email-input"
@@ -115,6 +125,16 @@
 
 
 <style>
+    .news-form__unexpected-error {
+        border-radius: var(--interactive-border-radius);
+        border: var(--interactive-border-width) solid var(--bad-color-light);
+        border-bottom-width: calc(var(--interactive-border-width) * 2);
+        padding: var(--gap-8);
+        background-color: var(--bad-color-dark);
+        font-weight: 450;
+        color: var(--bad-color-light);
+        text-wrap: pretty;
+    }
     .news-form__label {
         display: block;
         margin-bottom: var(--gap-16);

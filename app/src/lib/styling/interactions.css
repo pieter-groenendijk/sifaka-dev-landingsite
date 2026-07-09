@@ -1,3 +1,63 @@
+:root {
+    --bad-color-light: #CD726A;
+    --bad-color-dark: #402626;
+    --good-color-light: var(--green);
+    --good-color-dark: var(--dark-turquose);
+
+    --interactive-border-width: 2px;
+    --interactive-border-radius: var(--gap-8);
+}
+
+.interactable-wrapper {
+    --border-width: var(--interactive-border-width);
+    --border-radius: var(--interactive-border-radius);
+    --color-light: var(--yellow);
+    --color-dark: var(--brown);
+}
+
+.interactable {
+    box-sizing: border-box;
+    outline: var(--border-width) solid var(--color-light);
+    border-radius: var(--border-radius);
+    height: var(--control-height);
+    padding-inline: var(--gap-16);
+    font-size: var(--font-size-16);
+    font-weight: 500;
+    color: var(--color-light);
+    background-color: var(--color-dark);
+    transition: 
+        outline 100ms ease-in-out,
+        border-width 100ms ease-in-out,
+        border-radius 100ms ease-in-out,
+        background-color 100ms ease-in-out,
+        color 100ms ease-in-out;
+}
+.interactable::placeholder {
+    font-weight: 450;
+    color: rgb(from var(--color-light) r g b / 0.7);
+}
+.interactable-wrapper--good {
+    --border-radius: calc(var(--gap-8) * 0.8);
+    --color-light: var(--green);
+    --color-dark: rgb(38, 64, 57);
+}
+.interactable-wrapper--bad {
+    --border-radius: calc(var(--gap-8) * 0.8);
+    --color-light: #CD726A; 
+    --color-dark: #402626; 
+}
+.interactable-wrapper--judging {
+    --border-width: 2px;
+    --border-radius: calc(var(--gap-8) * 0.8);
+    --color-light: var(--yellow);
+    --color-dark: rgb(from var(--yellow) r g b / 0.3);
+    cursor: not-allowed;
+}
+:has( .interactable:where(:focus-within, :hover)) {
+    --border-width: 4px;
+    --border-radius: calc(var(--gap-8) * 1.4);
+}
+
 .pressable {
     will-change: transform;
     transition: transform 70ms ease-in-out;
