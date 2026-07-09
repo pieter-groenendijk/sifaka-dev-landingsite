@@ -2,7 +2,10 @@
     import { getMailURL } from "$lib/logic/host/host";
     import TextInput from "./input/TextInput.svelte";
 
+    let isProcessing: boolean = $state(false);
+
     function onSubmit(elem: HTMLFormElement) {
+
         elem.addEventListener("submit", async (event: SubmitEvent) => {
             event.preventDefault();
 
@@ -60,6 +63,26 @@
             });
         });
     }
+
+    let emailIsGood: boolean|undefined = $state(undefined);
+    let emailMessage: string = $state("");
+    function judgeEmail(emailValue: string) {
+        if (emailValue.length === 0) {
+            emailIsGood = false;
+            emailMessage = "Enter an e-mail"
+            return;
+        }
+
+        // Valid email
+        const validEmailRegex = /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/;
+        if (!validEmailRegex.test(emailValue)) {
+            emailIsGood = false;
+            emailMessage = "Enter an valid email"
+            return;
+        }
+
+        emailIsGood = true;
+    }
 </script>
 
 
@@ -73,9 +96,11 @@
             name="email"
             placeholder="pleasesayyes@mail.com"
 
-            isProcessing={false}
-            isGood={false}
-            message={"Invalid e-mailaddress"}
+            isProcessing={isProcessing}
+            bind:isGood={emailIsGood}
+            bind:message={emailMessage}
+
+            judge={judgeEmail}
 
             className="news-form__input"
             attr={{

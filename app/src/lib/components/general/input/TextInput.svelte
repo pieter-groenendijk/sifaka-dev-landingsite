@@ -7,24 +7,36 @@
         name, 
         placeholder, 
         attr, 
-        value = $bindable(""), 
+        value = $bindable(), 
         isProcessing = false, 
-        isGood = $bindable(),
-        message = "",
+        isGood = $bindable(undefined),
+        message = $bindable(""),
+        judge = (value: string) => {}, 
     }: {
         className?: string,
         name: string,
         placeholder: string,
         attr?: object,
-        value?: string,
+        value: string,
         isProcessing: boolean,
         isGood?: boolean|undefined,
         message?: string,
+        judge: (value: string) => void,
     } = $props();
 
-    function resetJudgement() {
+    let autoJudgeTimeoutId: number; 
+    function onInput() {
         isGood = undefined;
         message = "";
+
+        clearTimeout(autoJudgeTimeoutId);
+        autoJudgeTimeoutId = setTimeout(() => {
+            judge(value);
+        }, 800);
+    }
+
+    function onChange() {
+        judge(value);
     }
 </script>
 
@@ -42,12 +54,16 @@
         type="text"
         placeholder={placeholder}
         bind:value={value}
-
-        oninput={resetJudgement}
+        
+        disabled={isProcessing}
+        oninput={onInput}
+        onchange={onChange}
 
         {...attr}
     />
-    <div class="input__message" aria-live="polite">{message}</div>
+    {#if !isProcessing}
+        <div class="input__message" aria-live="polite">{message}</div>
+    {/if}
 </div>
 
 
@@ -72,7 +88,7 @@
         background-color: var(--background-color);
         transition: 
             outline 100ms ease-in-out,
-            border-width 50ms ease-in-out,
+            border-width 100ms ease-in-out,
             border-radius 100ms ease-in-out,
             background-color 100ms ease-in-out,
             color 100ms ease-in-out;
@@ -81,30 +97,29 @@
         font-weight: 450;
         color: rgb(from var(--highlight-color) r g b / 0.7);
     }
-    /* active */
-    .input-wrapper:has( .input:hover, .input:focus-within) {
-        --border-width: 3px;
-        --border-radius: calc(var(--gap-8) * 1.4);
-        --highlight-color: var(--yellow);
-        --background-color: var(--brown);
-    }
     .input--processing {
-        --border-width: 1px;
+        --border-width: 2px;
         --border-radius: calc(var(--gap-8) * 0.8);
         --highlight-color: var(--yellow);
         --background-color: rgb(from var(--yellow) r g b / 0.3);
+        cursor: not-allowed;
     }
     .input--good {
-        --border-width: 1.5px;
+        --border-width: 2px;
         --border-radius: calc(var(--gap-8) * 0.8);
         --highlight-color: var(--green);
         --background-color: rgb(38, 64, 57);
     }
     .input--bad {
-        --border-width: 1.5px;
+        --border-width: 2px;
         --border-radius: calc(var(--gap-8) * 0.8);
         --highlight-color: #CD726A; 
         --background-color: #402626; 
+    }
+    /* active */
+    :has( .input:where(:focus-within, :hover)) {
+        --border-width: 4px;
+        --border-radius: calc(var(--gap-8) * 1.4);
     }
 
     .input__message {
