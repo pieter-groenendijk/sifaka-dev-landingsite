@@ -7,7 +7,7 @@
         name, 
         placeholder, 
         attr, 
-        value = $bindable(), 
+        value = $bindable(""), 
         isProcessing = false, 
         isGood = $bindable(undefined),
         message = $bindable(""),
@@ -17,11 +17,11 @@
         name: string,
         placeholder: string,
         attr?: object,
-        value: string,
-        isProcessing: boolean,
+        value?: string,
+        isProcessing?: boolean,
         isGood?: boolean|undefined,
         message?: string,
-        judge: (value: string) => void,
+        judge?: (value: string) => void,
     } = $props();
 
     let autoJudgeTimeoutId: number; 
@@ -32,10 +32,11 @@
         clearTimeout(autoJudgeTimeoutId);
         autoJudgeTimeoutId = setTimeout(() => {
             judge(value);
-        }, 800);
+        }, 500);
     }
 
     function onChange() {
+        clearTimeout(autoJudgeTimeoutId);
         judge(value);
     }
 </script>
