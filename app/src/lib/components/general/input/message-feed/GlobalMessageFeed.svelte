@@ -1,5 +1,6 @@
 <script module>
     import type { Snippet } from 'svelte';
+    import { fade } from 'svelte/transition';
 
     export interface MessageFeedMessage {
         id: number,
@@ -42,7 +43,7 @@
 
 <ol class="feed">
     {#each data.messages as message}
-        <li class="feed__message pressable">{@render message.render()}</li>
+        <li class="feed__message pressable" transition:fade={{duration: 100}}>{@render message.render()}</li>
     {/each}
 </ol>
 

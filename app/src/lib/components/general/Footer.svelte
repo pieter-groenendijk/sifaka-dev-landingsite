@@ -13,8 +13,8 @@
             </div>
             <div class="legal-info">
                 <div class="legal-info__links">
-                    <a class="legal-info__link" href="/terms-of-use">Terms of Use</a>
-                    <a class="legal-info__link" href="/privacy-policy">Privacy Policy</a>
+                    <a class="legal-info__link pressable" href="/terms-of-use">Terms of Use</a>
+                    <a class="legal-info__link pressable" href="/privacy-policy">Privacy Policy</a>
                 </div>
                 <div class="legal-info__copyright">© 2026 Pieter Groenendijk. <wbr/>All rights reserved.</div>
             </div>
@@ -102,6 +102,7 @@
     .brand__slogan {
         text-wrap: pretty;
         font-size: var(--font-size-18);
+        font-weight: 600;
         color: var(--light);
     }
 
