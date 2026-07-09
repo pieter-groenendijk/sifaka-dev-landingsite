@@ -1,5 +1,6 @@
 <script lang="ts">
     import { getMailURL } from "$lib/logic/host/host";
+    import TextInput from "./input/TextInput.svelte";
 
     function onSubmit(elem: HTMLFormElement) {
         elem.addEventListener("submit", async (event: SubmitEvent) => {
@@ -8,7 +9,8 @@
             const url = getMailURL();
             url.pathname = "/api/public/lists";
 
-            const newsletterListUUID = await fetch(url.toString(), {method: "GET"})
+            const newsletterListUUID = await 
+                fetch(url.toString(), {method: "GET"})
                 .then(async (resp) => {
                     if (!resp.ok) {
                         // show error
@@ -63,19 +65,23 @@
 
 <form {@attach onSubmit} class="news-form">
     <label 
-    class="news-form__label"
-    for="news-email-input"
+        class="news-form__label"
+        for="news-email-input"
     ><strong>Want to get updates, and/or give feedback?</strong> <a href="/privacy-policy">(No funny business!)</a></label>
     <div class="news-form__control">
-        <input 
-            id="news-email-input"
-            class="news-form__input input"
+        <TextInput
             name="email"
-
-            type="email" 
-            autocomplete="email" 
             placeholder="pleasesayyes@mail.com"
-            required
+
+            isProcessing={false}
+            isGood={false}
+            message={"Invalid e-mailaddress"}
+
+            className="news-form__input"
+            attr={{
+                id: "news-email-input",
+                autocomplete: "email",
+            }}
         />
         <button class="news-form__submit" type="submit">➔</button>
     </div>
@@ -108,55 +114,6 @@
     }
     .news-form__input {
         flex: 1 1 0;
-    }
-    .input {
-        --_border-width: var(--border-width, 2px);
-        --_border-radius: var(--border-radius, var(--gap-8));
-        --_highlight-color: var(--highlight-color, var(--yellow));
-        --_background-color: var(--background-color, var(--brown));
-        box-sizing: border-box;
-        outline: var(--_border-width) solid var(--_highlight-color);
-        border-radius: var(--_border-radius);
-        height: var(--control-height);
-        padding-inline: var(--gap-16);
-        font-size: var(--font-size-16);
-        font-weight: 500;
-        color: var(--_highlight-color);
-        background-color: var(--_background-color);
-        transition: 
-            outline 100ms ease-in-out,
-            border-radius 100ms ease-in-out,
-            background-color 100ms ease-in-out,
-            color 100ms ease-in-out;
-    }
-    .input::placeholder {
-        font-weight: 450;
-        color: rgb(from var(--highlight-color) r g b / 0.7);
-    }
-    /* active */
-    .input:hover, .input:focus-within {
-        --border-width: 3px;
-        --border-radius: calc(var(--gap-8) * 1.4);
-        --highlight-color: var(--yellow);
-        --background-color: var(--brown);
-    }
-    .input--processing {
-        --border-width: 1px;
-        --border-radius: calc(var(--gap-8) * 0.8);
-        --highlight-color: var(--yellow);
-        --background-color: rgb(from var(--yellow) r g b / 0.3);
-    }
-    .input--good {
-        --border-width: 1px;
-        --border-radius: calc(var(--gap-8) * 0.8);
-        --highlight-color: var(--green);
-        --background-color: rgb(38, 64, 57);
-    }
-    .input--bad {
-        --border-width: 1px;
-        --border-radius: calc(var(--gap-8) * 0.8);
-        --highlight-color: #CD726A; 
-        --background-color: #402626; 
     }
     .news-form__submit {
         flex: 0 0 0;
