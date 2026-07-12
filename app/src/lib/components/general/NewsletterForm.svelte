@@ -3,7 +3,7 @@
     import TextInput from "./input/TextInput.svelte";
     import "$lib/styling/interactions.css";
     import { globalMessageFeed, messfeed_Add } from "./input/message-feed/MessageFeed.svelte";
-    import Button from "./input/Button.svelte";
+    import SubmitButton from "./input/SubmitButton.svelte";
 
     let emailValue: string = $state("");
     let emailIsGood: boolean|undefined = $state(undefined);
@@ -121,13 +121,11 @@
                 autocomplete: "email",
             }}
         />
-        <Button 
-            className="news-form__submit" 
-            type="submit"
-
+        <SubmitButton 
+            className="news-form__submit"
             isProcessing={isProcessing}
             isGood={isGood}
-        >➔</Button>
+        />
     </div>
 </form>
 

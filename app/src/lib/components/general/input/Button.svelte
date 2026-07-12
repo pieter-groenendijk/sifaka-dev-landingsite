@@ -5,7 +5,7 @@
         children,
         className = "",
         isProcessing = false,
-        isGood = $bindable(undefined),
+        isGood = undefined,
         ...attr
     }: {
         children?: Snippet,
