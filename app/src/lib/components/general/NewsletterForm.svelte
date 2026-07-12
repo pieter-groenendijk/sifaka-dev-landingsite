@@ -3,7 +3,7 @@
     import TextInput from "./input/TextInput.svelte";
     import "$lib/styling/interactions.css";
     import { globalMessageFeed, messfeed_Add } from "./input/message-feed/MessageFeed.svelte";
-    import SubmitButton from "./input/SubmitButton.svelte";
+    import Button from "./input/Button.svelte";
 
     let emailValue: string = $state("");
     let emailIsGood: boolean|undefined = $state(undefined);
@@ -33,7 +33,7 @@
     function onSubmit(event: SubmitEvent) {
         event.preventDefault();
 
-        isProcessing = false;
+        isProcessing = true;
 
         const url = getMailURL();
         url.pathname = "/api/public/lists";
@@ -88,6 +88,31 @@
                 console.warn(reason);
             });
     }
+
+    const submitButtonText = $derived.by(() => {
+        if (isGood === undefined) {
+            return "➔";
+        }
+
+
+        if (isGood) {
+            return ":)";
+        } else {
+            return ":(";
+        }
+    });
+
+    let timeoutId: number;
+    $effect(function clearJudgementAfterTimeout() {
+        if (isGood === undefined) {
+            return;
+        }
+
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            isGood = undefined;
+        }, 5000);
+    });
 </script>
 
 
@@ -121,11 +146,12 @@
                 autocomplete: "email",
             }}
         />
-        <SubmitButton 
+        <Button
             className="news-form__submit"
+            type="submit"
             isProcessing={isProcessing}
             isGood={isGood}
-        />
+        >{submitButtonText}</Button>
     </div>
 </form>
 
