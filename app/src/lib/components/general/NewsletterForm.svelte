@@ -4,6 +4,7 @@
     import "$lib/styling/interactions.css";
     import { globalMessageFeed, messfeed_Add } from "./input/message-feed/MessageFeed.svelte";
     import Button from "./input/Button.svelte";
+    import { mailSocialHref } from "$lib/ext-links/ext-links";
 
     let emailValue: string = $state("");
     let emailIsGood: boolean|undefined = $state(undefined);
@@ -117,7 +118,7 @@
 
 
 {#snippet renderUnexpectedErrorMessage()}
-    <div class="news-form__unexpected-error pressable">Sorry, something went unexpectedly wrong at our end while trying to add you to our newsletter list. Please try again or contact me.</div>
+    <div class="news-form__unexpected-error pressable">Sorry, something went unexpectedly wrong at our end while trying to add you to our newsletter list. Please try again or <a href={mailSocialHref}>contact</a> me.</div>
 {/snippet}
 
 <form 

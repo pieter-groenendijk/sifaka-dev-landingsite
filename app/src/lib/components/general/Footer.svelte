@@ -1,6 +1,7 @@
 <script lang="ts">
     import NewsletterForm from "./NewsletterForm.svelte";
     import "$lib/styling/interactions.css";
+    import { githubSocialHref, linkedInSocialHref, mastodonSocialHref } from "$lib/ext-links/ext-links";
 </script>
 
 
@@ -23,7 +24,7 @@
             <div class="socials">
                 <a 
                     class="social pressable"
-                    href="https://github.com/pieter-groenendijk" 
+                    href={githubSocialHref}
                     aria-label="Github"
                     target="_blank"
                 >
@@ -31,7 +32,7 @@
                 </a>
                 <a
                     class="social pressable"
-                    href="https://www.linkedin.com/in/pieter-groenendijk-4753ba2ab/"
+                    href={linkedInSocialHref}
                     aria-label="LinkedIn"
                     target="_blank"
                 >
@@ -39,7 +40,7 @@
                 </a>
                 <a
                     class="social pressable"
-                    href="https://mastodon.social/@Compeuter"
+                    href={mastodonSocialHref}
                     aria-label="Mastodon"
                     target="_blank"
                 >
