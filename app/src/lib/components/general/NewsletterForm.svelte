@@ -2,7 +2,7 @@
     import { getMailURL } from "$lib/logic/host/host";
     import TextInput from "./input/TextInput.svelte";
     import "$lib/styling/interactions.css";
-    import { globalMessageFeed, messfeed_Add } from "./input/message-feed/GlobalMessageFeed.svelte";
+    import { globalMessageFeed, messfeed_Add } from "./input/message-feed/MessageFeed.svelte";
     import Button from "./input/Button.svelte";
 
     let emailValue: string = $state("");
@@ -29,8 +29,11 @@
     }
 
     let isProcessing: boolean = $state(false);
-    async function onSubmit(event: SubmitEvent) {
+    let isGood: boolean | undefined = $state(undefined);
+    function onSubmit(event: SubmitEvent) {
         event.preventDefault();
+
+        isProcessing = false;
 
         const url = getMailURL();
         url.pathname = "/api/public/lists";
@@ -40,7 +43,7 @@
             // Preprocess response
             .then((resp) => {
                 if (!resp.ok) {
-                    throw "400 or 500 error";
+                    throw "Failed to fetch newsletter list UUID: 400/500 error";
                 } 
 
                 return resp.json();
@@ -74,8 +77,13 @@
                 if (!resp.ok) {
                     throw "400/500 error while subscribing to newsletter";
                 }
+
+                isGood = true;
+                isProcessing = false;
             })
             .catch((reason) => {
+                isGood = false;
+                isProcessing = false;
                 messfeed_Add(globalMessageFeed, renderUnexpectedErrorMessage);
                 console.warn(reason);
             });
@@ -113,7 +121,13 @@
                 autocomplete: "email",
             }}
         />
-        <Button className="news-form__submit" type="submit">➔</Button>
+        <Button 
+            className="news-form__submit" 
+            type="submit"
+
+            isProcessing={isProcessing}
+            isGood={isGood}
+        >➔</Button>
     </div>
 </form>
 
@@ -158,7 +172,5 @@
         width: var(--control-height);
         height: var(--control-height);
         font-size: var(--gap-32);
-        color: var(--dark);
-        background-color: var(--yellow);
     }
 </style>

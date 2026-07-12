@@ -1,7 +1,7 @@
 <script lang="ts">
     import Footer from "$lib/components/general/Footer.svelte";
     import Header from "$lib/components/general/Header.svelte";
-    import GlobalMessageFeed from "$lib/components/general/input/message-feed/GlobalMessageFeed.svelte";
+    import GlobalMessageFeed from "$lib/components/general/input/message-feed/MessageFeed.svelte";
     import "./critical.css";
     import "./global.css";
 

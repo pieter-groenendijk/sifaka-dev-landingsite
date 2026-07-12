@@ -53,10 +53,6 @@
 
 
 <div 
-    // class="input-wrapper pressable"
-    // class:input--processing={isProcessing}
-    // class:input--good={isGood !== undefined && isGood}
-    // class:input--bad={isGood !== undefined && !isGood}
     class="interactable-wrapper input-wrapper pressable"
     class:interactable-wrapper--judging={isProcessing}
     class:interactable-wrapper--good={isGood !== undefined && isGood}

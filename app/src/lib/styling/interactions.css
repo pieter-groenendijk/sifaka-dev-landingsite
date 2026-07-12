@@ -32,6 +32,11 @@
         background-color 100ms ease-in-out,
         color 100ms ease-in-out;
 }
+.interactable--alt {
+    outline-color: var(--color-light);
+    background-color: var(--color-light);
+    color: var(--dark);
+}
 .interactable::placeholder {
     font-weight: 450;
     color: rgb(from var(--color-light) r g b / 0.7);
