@@ -5,71 +5,10 @@
     import { globalMessageFeed, messfeed_Add } from "./input/message-feed/GlobalMessageFeed.svelte";
     import Button from "./input/Button.svelte";
 
-    let isProcessing: boolean = $state(false);
-
-    function addSubmitListener(elem: HTMLFormElement) {
-        elem.addEventListener("submit", async (event: SubmitEvent) => {
-            event.preventDefault();
-
-            const url = getMailURL();
-            url.pathname = "/api/public/lists";
-
-            const newsletterListUUID = await 
-                fetch(url.toString(), {method: "GET"})
-                .then(async (resp) => {
-                    if (!resp.ok) {
-                        // show error
-                    }
-
-                    const data: {
-                        uuid: string,
-                        name: string,
-                    }[] = await resp.json();
-                    
-                    const newsletterList = data.find((value) => value.name === "Newsletter")
-                    if (newsletterList === undefined) {
-                        // error
-                        return;
-                    }
-
-                    return newsletterList.uuid;
-                })
-                .catch((reason) => {
-
-                });
-
-            if (typeof newsletterListUUID !== "string") {
-                // error
-                messfeed_Add(globalMessageFeed, renderUnexpectedErrorMessage);
-            }
-
-
-            url.pathname = "/api/public/subscription";
-            const data = Object.fromEntries(new FormData(elem));
-            
-            fetch(url.toString(), {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    email: data["email"],
-                    list_uuids: [newsletterListUUID],
-                }),
-            })
-            .then(async (resp) => {
-                if (!resp.ok) {
-                    console.error(resp);
-                }
-
-                console.log(await resp.json())
-            });
-        });
-    }
-
+    let emailValue: string = $state("");
     let emailIsGood: boolean|undefined = $state(undefined);
     let emailMessage: string = $state("");
-    function judgeEmail(emailValue: string) {
+    function judgeEmail() {
         if (emailValue.length === 0) {
             emailIsGood = false;
             emailMessage = "Enter an e-mail"
@@ -88,6 +27,59 @@
 
         emailIsGood = true;
     }
+
+    let isProcessing: boolean = $state(false);
+    async function onSubmit(event: SubmitEvent) {
+        event.preventDefault();
+
+        const url = getMailURL();
+        url.pathname = "/api/public/lists";
+
+        // Retrieve the UUID of the newsletter to add to
+        fetch(url.toString(), {method: "GET"})
+            // Preprocess response
+            .then((resp) => {
+                if (!resp.ok) {
+                    throw "400 or 500 error";
+                } 
+
+                return resp.json();
+            })
+            // Filter and find the Newsletter UUID
+            .then((lists: {uuid: string, name: string}[]) => {
+                const newsletterList = lists.find((value) => value.name === "Newsletter")
+                if (newsletterList === undefined) {
+                    throw "Newsletter list is not defined";
+                }
+
+                return newsletterList.uuid;
+            })
+            // Add the email as a subscriber to the found newsletter UUID
+            .then((newsletterListUUID) => {
+                url.pathname = "/api/public/subscription";
+                
+                return fetch(url.toString(), {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        email: emailValue,
+                        list_uuids: [newsletterListUUID],
+                    }),
+                })
+            })
+            // Happy days if success
+            .then((resp) => {
+                if (!resp.ok) {
+                    throw "400/500 error while subscribing to newsletter";
+                }
+            })
+            .catch((reason) => {
+                messfeed_Add(globalMessageFeed, renderUnexpectedErrorMessage);
+                console.warn(reason);
+            });
+    }
 </script>
 
 
@@ -97,7 +89,7 @@
 
 <form 
     class="news-form"
-    {@attach addSubmitListener}
+    onsubmit={onSubmit}
 >
     <label 
         class="news-form__label"
@@ -111,6 +103,7 @@
             isProcessing={isProcessing}
             bind:isGood={emailIsGood}
             bind:message={emailMessage}
+            bind:value={emailValue}
 
             judge={judgeEmail}
 
