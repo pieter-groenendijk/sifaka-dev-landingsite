@@ -1,7 +1,9 @@
 <script lang="ts">
-    import NewsletterForm from "./NewsletterForm.svelte";
+    // import NewsletterForm from "./NewsletterForm.svelte";
     import "$lib/styling/interactions.css";
     import { githubSocialHref, linkedInSocialHref, mastodonSocialHref } from "$lib/ext-links/ext-links";
+
+    const NewsLetterForm = import("./NewsletterForm.svelte").then(m => m.default);
 </script>
 
 
@@ -55,7 +57,11 @@
                     <svg class="social__icon" viewBox="0 0 22 22"><path stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="m3 8 8 5h2l8-5M5 19h14l2-2V7l-2-2H5L3 7v10z"/></svg>
                 </a>
             </div>
-            <NewsletterForm/>
+            {#await NewsLetterForm}
+                Newsletter is loading...
+            {:then NewsletterForm} 
+                <NewsletterForm/>
+            {/await}
         </div>
     </div>
 </footer>

@@ -171,7 +171,8 @@
     .news-form__label {
         display: block;
         margin-bottom: var(--gap-16);
-        max-width: 30ch;
+        max-width: 25ch;
+        text-align: justify;
     }
     .news-form__label > strong {
         font-weight: 500;

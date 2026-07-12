@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {throttled, trailThrottled} from "$lib/logic/perf/perf";
+    import {throttled, trailThrottled} from "$lib/logic/perf/timing";
     import Section from "$lib/components/general/Section.svelte";
     import {milestones, type Milestone} from "./milestones.ts";
 
