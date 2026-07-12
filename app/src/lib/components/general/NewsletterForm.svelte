@@ -3,6 +3,7 @@
     import TextInput from "./input/TextInput.svelte";
     import "$lib/styling/interactions.css";
     import { globalMessageFeed, messfeed_Add } from "./input/message-feed/GlobalMessageFeed.svelte";
+    import Button from "./input/Button.svelte";
 
     let isProcessing: boolean = $state(false);
 
@@ -119,7 +120,7 @@
                 autocomplete: "email",
             }}
         />
-        <button class="news-form__submit pressable" type="submit">➔</button>
+        <Button className="news-form__submit" type="submit">➔</Button>
     </div>
 </form>
 
@@ -158,17 +159,12 @@
         align-items: stretch;
         gap: var(--gap-8);
     }
-    .news-form__input {
-        flex: 1 1 0;
-    }
-    .news-form__submit {
+    :global(.news-form__submit) {
         flex: 0 0 0;
         aspect-ratio: 1 / 1;
         width: var(--control-height);
         height: var(--control-height);
-        border-radius: var(--control-border-radius);
         font-size: var(--gap-32);
-        font-weight: 400;
         color: var(--dark);
         background-color: var(--yellow);
     }

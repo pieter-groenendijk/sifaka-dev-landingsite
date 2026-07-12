@@ -53,7 +53,8 @@
     --color-dark: rgb(from var(--yellow) r g b / 0.3);
     cursor: not-allowed;
 }
-:has( .interactable:where(:focus-within, :hover)) {
+:has( .interactable:where(:focus-within, :hover)),
+.interactable:where(:focus-within, :hover) {
     --border-width: 4px;
     --border-radius: calc(var(--gap-8) * 1.4);
 }
@@ -67,3 +68,4 @@
 .pressable:active {
     transform: scale(.97);
 }
+
