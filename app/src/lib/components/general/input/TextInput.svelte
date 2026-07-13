@@ -6,6 +6,7 @@
 
     let { 
         className = "",
+        outerClassName = "",
         name, 
         placeholder, 
         attr, 
@@ -16,6 +17,7 @@
         judge = (value: string) => {}, 
     }: {
         className?: string,
+        outerClassName?: string,
         name: string,
         placeholder: string,
         attr?: object,
@@ -53,14 +55,13 @@
 
 
 <div 
-    class="interactable-wrapper input-wrapper pressable"
+    class="interactable-wrapper input-wrapper pressable {outerClassName}"
     class:interactable-wrapper--judging={isProcessing}
     class:interactable-wrapper--good={isGood !== undefined && isGood}
     class:interactable-wrapper--bad={isGood !== undefined && !isGood}
 >
     <input 
-        //class="input {className}"
-        class="interactable {className}"
+        class="interactable input {className}"
 
         name={name}
         type="text"

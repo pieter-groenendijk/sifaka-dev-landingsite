@@ -2,7 +2,7 @@
     import { getMailURL } from "$lib/logic/host/host";
     import TextInput from "./input/TextInput.svelte";
     import "$lib/styling/interactions.css";
-    import { globalMessageFeed, messfeed_Add } from "./input/message-feed/MessageFeed.svelte";
+    import { globalMessageFeed, messfeed_Add, renderBad } from "./input/message-feed/MessageFeed.svelte";
     import Button from "./input/Button.svelte";
     import { mailSocialHref } from "$lib/ext-links/ext-links";
 
@@ -116,10 +116,14 @@
     });
 </script>
 
-
 {#snippet renderUnexpectedErrorMessage()}
-    <div class="news-form__unexpected-error pressable">Sorry, something went unexpectedly wrong at our end while trying to add you to our newsletter list. Please try again or <a href={mailSocialHref}>contact</a> me.</div>
+    {#snippet content()}
+        Sorry, something went unexpectedly wrong at our end while trying to add you to our newsletter list. Please try again or <a href={mailSocialHref}>contact</a> me.
+    {/snippet}
+
+    {@render renderBad(content)}
 {/snippet}
+
 
 <form 
     class="news-form"
@@ -141,7 +145,7 @@
 
             judge={judgeEmail}
 
-            className="news-form__input"
+            outerClassName="news-form__input"
             attr={{
                 id: "news-email-input",
                 autocomplete: "email",
@@ -158,16 +162,6 @@
 
 
 <style>
-    .news-form__unexpected-error {
-        border-radius: var(--interactive-border-radius);
-        border: var(--interactive-border-width) solid var(--bad-color-light);
-        border-bottom-width: calc(var(--interactive-border-width) * 2);
-        padding: var(--gap-8);
-        background-color: var(--bad-color-dark);
-        font-weight: 450;
-        color: var(--bad-color-light);
-        text-wrap: pretty;
-    }
     .news-form__label {
         display: block;
         margin-bottom: var(--gap-16);
@@ -185,18 +179,15 @@
         opacity: 0.8;
     }
     .news-form__control {
-        --control-height: clamp(2rem, 1.652rem + 1.739vw, 3rem); /* 32 - 48 */
-        --control-border-radius: var(--gap-8);
         display: flex;
-        justify-content: stretch;
-        align-items: stretch;
-        gap: var(--gap-8);
+        gap: var(--gap-12);
     }
+    :global(.news-form__input) {
+        flex: 1 1 0;
+    }
+
     :global(.news-form__submit) {
-        flex: 0 0 0;
-        aspect-ratio: 1 / 1;
-        width: var(--control-height);
-        height: var(--control-height);
         font-size: var(--gap-32);
+        line-height: calc(1.2 * var(--font-size-16));
     }
 </style>

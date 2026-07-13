@@ -34,7 +34,40 @@
     export const globalMessageFeed: MessageFeed = $state(Object.seal({
         messages: [],
     }));
+
+    export { renderNeutral, renderBad, renderGood };
 </script>
+
+{#snippet renderNeutral(message: Snippet)}
+    <div
+        class="interactable-wrapper pressable"
+    >
+        <div 
+            class="interactable"
+        >{@render message()}</div>
+    </div>
+{/snippet}
+
+{#snippet renderBad(message: Snippet)}
+    <div
+        class="interactable-wrapper interactable-wrapper--bad pressable"
+    >
+        <div 
+            class="interactable"
+        >{@render message()}</div>
+    </div>
+{/snippet}
+
+{#snippet renderGood(message: Snippet)}
+    <div
+        class="interactable-wrapper interactable-wrapper--good pressable"
+    >
+        <div 
+            class="interactable"
+        >{@render message()}</div>
+    </div>
+{/snippet}
+
 
 <script lang="ts">
     const { data = globalMessageFeed }: { data?: MessageFeed } = $props();

@@ -19,8 +19,8 @@
     box-sizing: border-box;
     outline: var(--border-width) solid var(--color-light);
     border-radius: var(--border-radius);
-    height: var(--control-height);
     padding-inline: var(--gap-16);
+    padding-block: var(--gap-12);
     font-size: var(--font-size-16);
     font-weight: 500;
     color: var(--color-light);
