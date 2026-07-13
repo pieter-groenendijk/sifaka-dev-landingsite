@@ -35,6 +35,7 @@
         event.preventDefault();
 
         isProcessing = true;
+        isGood = undefined;
 
         const url = getMailURL();
         url.pathname = "/api/public/lists";

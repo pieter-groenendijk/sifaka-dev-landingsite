@@ -27,6 +27,7 @@
 >
     <button
         class="interactable {className}"
+        disabled={isProcessing}
         {...attr}
     >{@render children?.()}</button>
 </div>
