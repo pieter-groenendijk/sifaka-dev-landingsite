@@ -12,8 +12,7 @@
     function judgeEmail() {
         if (emailValue.length === 0) {
             emailIsGood = false;
-            emailMessage = "Enter an e-mail"
-            messfeed_Add(globalMessageFeed, renderUnexpectedErrorMessage);
+            emailMessage = "Enter an e-mail";
             return;
         }
 
@@ -21,8 +20,7 @@
         const validEmailRegex = /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/;
         if (!validEmailRegex.test(emailValue)) {
             emailIsGood = false;
-            emailMessage = "Enter an valid email"
-            messfeed_Add(globalMessageFeed, renderUnexpectedErrorMessage);
+            emailMessage = "Enter an valid email";
             return;
         }
 
@@ -33,6 +31,11 @@
     let isGood: boolean | undefined = $state(undefined);
     function onSubmit(event: SubmitEvent) {
         event.preventDefault();
+
+        judgeEmail();
+        if (!emailIsGood) {
+            return;
+        }
 
         isProcessing = true;
         isGood = undefined;
