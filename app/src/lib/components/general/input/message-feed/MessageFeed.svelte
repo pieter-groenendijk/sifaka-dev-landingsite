@@ -1,3 +1,26 @@
+{#snippet renderMessage(message: Snippet, className: string)}
+    <div
+        class="interactable-wrapper message__content {className}"
+    >
+        <div 
+            class="interactable"
+            aria-live="polite"
+        >{@render message()}</div>
+    </div>
+{/snippet}
+
+{#snippet renderNeutral(message: Snippet)}
+    {@render renderMessage(message, "")}
+{/snippet}
+
+{#snippet renderBad(message: Snippet)}
+    {@render renderMessage(message, "interactable-wrapper--bad")}
+{/snippet}
+
+{#snippet renderGood(message: Snippet)}
+    {@render renderMessage(message, "interactable-wrapper--good")}
+{/snippet}
+
 <script module lang="ts">
     import type { Snippet } from 'svelte';
     import { fade } from 'svelte/transition';
@@ -6,6 +29,8 @@
         id: number,
         render: Snippet,
     }
+
+    export { renderNeutral, renderBad, renderGood };
 
     export interface MessageFeed {
         messages: MessageFeedMessage[],
@@ -34,49 +59,28 @@
     export const globalMessageFeed: MessageFeed = $state(Object.seal({
         messages: [],
     }));
-
-    export { renderNeutral, renderBad, renderGood };
 </script>
 
-{#snippet renderNeutral(message: Snippet)}
-    <div
-        class="interactable-wrapper pressable"
-    >
-        <div 
-            class="interactable"
-        >{@render message()}</div>
-    </div>
-{/snippet}
-
-{#snippet renderBad(message: Snippet)}
-    <div
-        class="interactable-wrapper interactable-wrapper--bad pressable"
-    >
-        <div 
-            class="interactable"
-        >{@render message()}</div>
-    </div>
-{/snippet}
-
-{#snippet renderGood(message: Snippet)}
-    <div
-        class="interactable-wrapper interactable-wrapper--good pressable"
-    >
-        <div 
-            class="interactable"
-        >{@render message()}</div>
-    </div>
-{/snippet}
 
 
 <script lang="ts">
-    const { data = globalMessageFeed }: { data?: MessageFeed } = $props();
+    import Button from "../Button.svelte";
+
+    const { feed = globalMessageFeed }: { feed?: MessageFeed } = $props();
 </script>
 
 
 <ol class="feed">
-    {#each data.messages as message}
-        <li class="feed__message pressable" transition:fade={{duration: 100}}>{@render message.render()}</li>
+    {#each feed.messages as message}
+        <li class="message" transition:fade={{duration: 100}}>
+            {@render message.render()}
+            <Button 
+                outerClassName="message__close" 
+                className="message__close__button" 
+                aria-label="Delete this notification"
+                onclick={() => messfeed_Remove(feed, message.id)}
+            >×</Button>
+        </li>
     {/each}
 </ol>
 
@@ -84,7 +88,7 @@
 <style>
     .feed {
         --max-item-width: 450px;
-        padding: var(--gap-32);
+        padding: var(--gap-32) 40px var(--gap-32) var(--gap-32);
         display: flex;
         flex-direction: column;
         justify-content: end;
@@ -105,8 +109,27 @@
     .feed:empty {
         opacity: 0;
     }
-    .feed__message {
-        pointer-events: all;
+    .message {
+        position: relative;
         max-width: var(--max-item-width);
+        pointer-events: all;
+    }
+    .message__content {
+        text-align: justify;
+    }
+    :global(.message__close) {
+        --border-width: 0;
+        --color-light: var(--light);
+        --color-dark: transparent;
+        /* --color-dark: rgb(from var(--dark) r g b / 0.8); */
+        position: absolute;
+        top: 50%;
+        right: 0;
+        translate: 100% -50%;
+    }
+    :global(.message__close__button) {
+        font-size: var(--font-size-32);
+        font-weight: 300;
+        line-height: calc(1.2 * var(--font-size-16));
     }
 </style>

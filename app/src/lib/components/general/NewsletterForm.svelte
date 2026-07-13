@@ -152,7 +152,7 @@
             }}
         />
         <Button
-            className="news-form__submit"
+            className="news-form__submit interactable--alt"
             type="submit"
             isProcessing={isProcessing}
             isGood={isGood}

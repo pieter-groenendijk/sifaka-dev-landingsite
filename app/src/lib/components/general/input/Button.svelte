@@ -4,12 +4,14 @@
     let {
         children,
         className = "",
+        outerClassName = "",
         isProcessing = false,
         isGood = undefined,
         ...attr
     }: {
         children?: Snippet,
         className?: string,
+        outerClassName?: string,
         isProcessing?: boolean,
         isGood?: boolean | undefined,
         [key: string]: unknown,
@@ -18,13 +20,13 @@
 
 
 <div 
-    class="interactable-wrapper pressable"
+    class="interactable-wrapper pressable {outerClassName}"
     class:interactable-wrapper--judging={isProcessing}
     class:interactable-wrapper--good={isGood !== undefined && isGood}
     class:interactable-wrapper--bad={isGood !== undefined && !isGood}
 >
     <button
-        class="interactable interactable--alt {className}"
+        class="interactable {className}"
         {...attr}
     >{@render children?.()}</button>
 </div>
