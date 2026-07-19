@@ -9,7 +9,7 @@
 This privacy policy describes how Sifaka.dev ("sifaka.dev", "we", "us", "our") processes personal information, and what legal rights individuals have concerning their personal information and how to exercise those rights. 
 
 ## Cases of use
-### Interactions with our sites
+### Interacting with our sites
 Cloudflare, Inc. (101 Townsend Street San Francisco, CA 94107 USA) acts as our data processor in this regard.
 
 1. Basis: A legitimate interest, in ensuring secure, fast and reliable interaction with our websites.
@@ -19,8 +19,10 @@ Cloudflare, Inc. (101 Townsend Street San Francisco, CA 94107 USA) acts as our d
 5. International Tranfer: Information may be transferred and processed in the US by Cloudflare that is self-certified under the EU-U.S. Data Privacy Framework.
 
 ### Newsletter
+Vercom S.A. (Wierzbięcice 1B, 61-569 Poznań, PL) acts as a data processor in this regard.
+
 1. Basis: Consent, by submitting one of the respective forms.
-2. Information: E-mail address.
+2. Information: E-mail address
 3. Purpose: To send you e-mails regarding news of sifaka.dev's services (at most once a month). 
 4. Retention: Deleted upon unsubscribing.
 5. Withdrawal of consent: By using the "unsubscribe" link provided in each newsletter e-mail received.
