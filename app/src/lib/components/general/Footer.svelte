@@ -16,7 +16,7 @@
             </div>
             <div class="legal-info">
                 <div class="legal-info__links">
-                    <a class="legal-info__link pressable" href="/terms-of-use">Terms of Use</a>
+                    <!-- <a class="legal-info__link pressable" href="/terms-of-use">Terms of Use</a> -->
                     <a class="legal-info__link pressable" href="/privacy-policy">Privacy Policy</a>
                 </div>
                 <div class="legal-info__copyright">© 2026 Pieter Groenendijk. <wbr/>All rights reserved.</div>

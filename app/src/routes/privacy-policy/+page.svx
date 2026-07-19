@@ -1,34 +1,46 @@
 <script>
     import Section from "$lib/components/general/Section.svelte";
+    import { mailSocialHref } from "$lib/ext-links/ext-links";
 </script>
 
 <Section id="section--generic">
 
 # Privacy Policy
-This privacy policy describes how sifaka.dev ("sifaka.dev", "we", "us") processes personal information, and what legal rights individuals have concerning their personal information and how to exercise those rights.
+This privacy policy describes how Sifaka.dev ("sifaka.dev", "we", "us", "our") processes personal information, and what legal rights individuals have concerning their personal information and how to exercise those rights. 
 
 ## Cases of use
+### Interactions with our sites
+Cloudflare, Inc. (101 Townsend Street San Francisco, CA 94107 USA) acts as our data processor in this regard.
+
+1. Basis: A legitimate interest, in ensuring secure, fast and reliable interaction with our websites.
+2. Information: Network log data and traffic metadata (including IP address, browser type, operating system, requested URLs and request timestamps).
+3. Purpose: Ensuring secure, fast and reliable interactions (such as by using Cloudflare's CDN, DDoS mitigation and automated threat filtering).
+4. Retention: Deleted or anonymized once the technical purpose is complete.
+5. International Tranfer: Information may be transferred and processed in the US by Cloudflare that is self-certified under the EU-U.S. Data Privacy Framework.
+
 ### Newsletter
-1. Basis: Consent, through submitting one of the respective forms for subscribing to sifaka.dev's newsletter.
+1. Basis: Consent, by submitting one of the respective forms.
 2. Information: E-mail address.
-3. Retention: Until you unsubscribe.
-4. Purpose: To send you e-mails regarding news of sifaka.dev's services. We strive to not send more than one e-mail per month.
-5. Unsubscribing: Consent can be withdrawn, by using the "unsubscribe" link provided in each received newsletter e-mail. 
+3. Purpose: To send you e-mails regarding news of sifaka.dev's services (at most once a month). 
+4. Retention: Deleted upon unsubscribing.
+5. Withdrawal of consent: By using the "unsubscribe" link provided in each newsletter e-mail received.
 
 ## Rights
 Under the GDPR, you have rights you can exercise regarding your personal information. Please review their exact definitions and conditions in the [official regulations](https://www.autoriteitpersoonsgegevens.nl/en/themes/basic-gdpr/privacy-rights-under-the-gdpr). 
 
-- **The right to access**: You have the right to request us for copies of your personal data. We may charge you a small fee for this service.
+- **The right to information**: You have the right to be provided with easily understandable information about how we collect and use your personal information (Note: We fulfill this by providing you with this privacy policy). 
+- **The right to access**: You have the right to request us for copies of your personal data.
 - **The right to rectification**: You have the right to request that we correct any information you believe is inaccurate. You also have the right to request us to complete the information you believe is incomplete.
 - **The right to erasure**: You have the right to request that we erase your personal data, under certain conditions.
 - **The right to restrict processing**: You have the right to request that we restrict the processing of your personal data, under certain conditions.
-- **The right to object to processing**: You have the right to object to us processing of your personal data, under certain conditions.
+- **The right to object**: You have the right to object to us processing of your personal data, under certain conditions.
 - **The right to data portability**: You have the right to request that we transfer the data that we have collected to another organization, or directly to you, under certain conditions.
+- **The right to human intervention in decision-making processes**: You have the right not to be subject to decision based solely on automated processing (Note: We do not use any automated decision-making systems.).
 
 If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please [contact us](#contact).
 
 ## Contact 
-[contact@sifaka.dev](mailto:contact@sifaka.dev)
+Please contact us via email: [contact@sifaka.dev]({mailSocialHref}).
 
 </Section>
 
