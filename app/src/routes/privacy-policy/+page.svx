@@ -8,18 +8,21 @@
 # Privacy Policy
 This privacy policy describes how Sifaka.dev ("sifaka.dev", "we", "us", "our") processes personal information, and what legal rights individuals have concerning their personal information and how to exercise those rights. 
 
+It has been last updated as of July 2026.
+
 ## Cases of use
-### Interacting with our sites
-Cloudflare, Inc. (101 Townsend Street San Francisco, CA 94107 USA) acts as our data processor in this regard.
+### Interacting through our sites
+Cloudflare, Inc. (101 Townsend Street San Francisco, CA 94107 USA) acts as our content delivery network & infrastructure provider, and thus is a data processor.
 
 1. Basis: A legitimate interest, in ensuring secure, fast and reliable interaction with our websites.
 2. Information: Network log data and traffic metadata (including IP address, browser type, operating system, requested URLs and request timestamps).
 3. Purpose: Ensuring secure, fast and reliable interactions (such as by using Cloudflare's CDN, DDoS mitigation and automated threat filtering).
 4. Retention: Deleted or anonymized once the technical purpose is complete.
-5. International Tranfer: Information may be transferred and processed in the US by Cloudflare that is self-certified under the EU-U.S. Data Privacy Framework.
+5. International Tranfers: Information may be transferred and processed in the US by Cloudflare that is self-certified under the EU-U.S. Data Privacy Framework.
 
 ### Newsletter
-Vercom S.A. (Wierzbięcice 1B, 61-569 Poznań, PL) acts as a data processor in this regard.
+Vercom S.A. (Wierzbięcice 1B, 61-569 Poznań, PL) acts as our email delivery service provider, and thus is a data processor.
+Hetzner Online GmbH (Industriestr. 25, 91710 Gunzenhausen, DE) acts as our hosting provider, and thus is a data processor.
 
 1. Basis: Consent, by submitting one of the respective forms.
 2. Information: E-mail address
@@ -30,14 +33,14 @@ Vercom S.A. (Wierzbięcice 1B, 61-569 Poznań, PL) acts as a data processor in t
 ## Rights
 Under the GDPR, you have rights you can exercise regarding your personal information. Please review their exact definitions and conditions in the [official regulations](https://www.autoriteitpersoonsgegevens.nl/en/themes/basic-gdpr/privacy-rights-under-the-gdpr). 
 
-- **The right to information**: You have the right to be provided with easily understandable information about how we collect and use your personal information (Note: We fulfill this by providing you with this privacy policy). 
-- **The right to access**: You have the right to request us for copies of your personal data.
-- **The right to rectification**: You have the right to request that we correct any information you believe is inaccurate. You also have the right to request us to complete the information you believe is incomplete.
-- **The right to erasure**: You have the right to request that we erase your personal data, under certain conditions.
-- **The right to restrict processing**: You have the right to request that we restrict the processing of your personal data, under certain conditions.
-- **The right to object**: You have the right to object to us processing of your personal data, under certain conditions.
-- **The right to data portability**: You have the right to request that we transfer the data that we have collected to another organization, or directly to you, under certain conditions.
-- **The right to human intervention in decision-making processes**: You have the right not to be subject to decision based solely on automated processing (Note: We do not use any automated decision-making systems.).
+- **Information**: You reasonably know how we use your information (fulfilled by this policy). 
+- **Access**: Request a copy of your information.
+- **Rectification**: Request to rectify inaccurate or incomplete information.
+- **Erasure**: Request that we fully delete your information.
+- **Restriction & Objection**: Request that we limit or stop processing your information.
+- **Portability**: Request that we transfer your information to another organization, or directly to you.
+- **Human intervention**: Object to purely automated profiling or decisions (Note: We do not use such systems.).
+- **Lodge a complaint**: Complain to a Data Protection Authority (DPA) if you believe we are processing data unlawfully.
 
 If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please [contact us](#contact).
 
