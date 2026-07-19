@@ -76,6 +76,7 @@
         animation-timeline: scroll(root block);
         animation-range: 0 var(--on-scroll-range);
         animation-fill-mode: both;
+        cursor: default;
     }
     .logo__name {
         display: inline-block;
