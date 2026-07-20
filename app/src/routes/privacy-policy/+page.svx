@@ -9,27 +9,29 @@
 # Privacy Policy
 _Last updated: July 2026_
 
-This privacy policy describes how Sifaka.dev ("sifaka.dev", "we", "us", "our") processes personal information, and what legal rights individuals have concerning their personal information and how to exercise those rights. 
+This policy describes concisely how sifaka.dev (90423216, The Netherlands) ("Sifaka.dev", "we", "us", "our") processes personal information, and what legal exercisable rights individuals have concerning their personal information.
 
 ## Cases of use
 ### Interacting through our sites
 Cloudflare, Inc. (101 Townsend Street San Francisco, CA 94107 USA) acts as our content delivery network & infrastructure provider, and thus is a data processor.
 
-1. Basis: A legitimate interest, in ensuring secure, fast and reliable interaction with our websites.
-2. Information: Network log data and traffic metadata (including IP address, browser type, operating system, requested URLs and request timestamps).
-3. Purpose: Ensuring secure, fast and reliable interactions (such as by using Cloudflare's CDN, DDoS mitigation and automated threat filtering).
-4. Retention: Deleted or anonymized once the technical purpose is complete.
-5. International Tranfers: Information may be transferred and processed in the US by Cloudflare that is self-certified under the EU-U.S. Data Privacy Framework.
+- Provisioning: Technically required, otherwise this use can't be provided (neither a statutory or contractual requirement).
+- Basis: A legitimate interest, in ensuring secure, fast and reliable interaction with our websites.
+- Information: Network log data and traffic metadata (including IP address, browser type, operating system, requested URLs and request timestamps).
+- Purpose: Ensuring secure, fast and reliable interactions (such as by using Cloudflare's CDN, DDoS mitigation and automated threat filtering).
+- Retention: Deleted or anonymized once the technical purpose is complete.
+- International Transfers: Information may be transferred and processed in the US by Cloudflare that is self-certified under the EU-U.S. Data Privacy Framework.
 
 ### Newsletter
+- Provisioning: Voluntary, otherwise this specific use won't be provided. (neither a statutory or contractual requirement).
+- Basis: Consent, by submitting one of the respective forms.
+- Information: E-mail address
+- Purpose: To send you e-mails regarding news of sifaka.dev's services (at most once a month). 
+- Retention: Deleted upon unsubscribing.
+- Withdrawal of consent: By using the "unsubscribe" link provided in each newsletter e-mail received.
+
 Vercom S.A. (Wierzbięcice 1B, 61-569 Poznań, PL) acts as our email delivery service provider, and thus is a data processor.
 Hetzner Online GmbH (Industriestr. 25, 91710 Gunzenhausen, DE) acts as our hosting provider, and thus is a data processor.
-
-1. Basis: Consent, by submitting one of the respective forms.
-2. Information: E-mail address
-3. Purpose: To send you e-mails regarding news of sifaka.dev's services (at most once a month). 
-4. Retention: Deleted upon unsubscribing.
-5. Withdrawal of consent: By using the "unsubscribe" link provided in each newsletter e-mail received.
 
 ## Rights
 Under the GDPR, you have rights you can exercise regarding your personal information. Please review their exact definitions and conditions in the [official regulations](https://www.autoriteitpersoonsgegevens.nl/en/themes/basic-gdpr/privacy-rights-under-the-gdpr). 
@@ -41,9 +43,10 @@ Under the GDPR, you have rights you can exercise regarding your personal informa
 - **Restriction & Objection**: Request that we limit or stop processing your information.
 - **Portability**: Request that we transfer your information to another organization, or directly to you.
 - **Human intervention**: Object to purely automated profiling or decisions (Note: We do not use such systems.).
-- **Lodge a complaint**: Complain to a Data Protection Authority (DPA) if you believe we are processing data unlawfully.
 
 If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please [contact us](#contact).
+
+Additionally you have **the right to lodge a complaint** to a Data Protection Authority (DPA) if you believe we're processing information unlawfully. 
 
 ## Contact 
 Please contact us via email: [contact@sifaka.dev]({mailSocialHref}).
@@ -67,21 +70,21 @@ Please contact us via email: [contact@sifaka.dev]({mailSocialHref}).
         }
 
         :global(h1) {
-            margin-bottom: var(--gap-32);
+            margin-bottom: var(--gap-64);
             font-size: var(--font-size-64);
             font-weight: 800;
             color: var(--yellow);
         }
 
         :global(h2) {
-            margin-top: calc(var(--gap-32) * 1.2);
+            margin-top: var(--gap-32);
             font-size: var(--font-size-32);
             font-weight: 800;
             color: var(--yellow);
         }
 
         :global(h3) {
-            margin-top: calc(var(--gap-16) * 1.1);
+            margin-top: calc(var(--gap-16) * 1.7);
             text-transform: uppercase;
             font-size: var(--font-size-22);
             font-weight: 500;
@@ -89,7 +92,7 @@ Please contact us via email: [contact@sifaka.dev]({mailSocialHref}).
         }
 
         :global(p, ol, ul) {
-            margin-top: calc(var(--gap-16) * 1.3);
+            margin-top: var(--gap-16);
         }
 
         :global(p, li) {
