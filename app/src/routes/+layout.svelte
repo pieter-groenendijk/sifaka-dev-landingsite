@@ -25,9 +25,7 @@
 </svelte:head>
 
 <Header/>
-<main class="main">
-    {@render children()}
-</main>
+{@render children()}
 <Footer/>
 
 <GlobalMessageFeed/>
@@ -90,7 +88,7 @@
         --z-effects: 3;
     }
 
-    .main {
+    :global(main) {
         padding-top: 80px;
     }
 

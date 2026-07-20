@@ -5,13 +5,15 @@
 </script>
 
 
-<HeroSection/>
-<FeaturesSection/>
-<RoadmapSection/>
+<main>
+    <HeroSection/>
+    <FeaturesSection/>
+    <RoadmapSection/>
+</main>
 
 
 <style>
-    :global(.main) {
+    main {
         background-color: var(--green);
     }
 </style>

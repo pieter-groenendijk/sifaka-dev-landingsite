@@ -3,12 +3,13 @@
     import { mailSocialHref } from "$lib/ext-links/ext-links";
 </script>
 
-<Section id="section--generic">
+<main>
+    <Section id="section--generic">
 
 # Privacy Policy
-This privacy policy describes how Sifaka.dev ("sifaka.dev", "we", "us", "our") processes personal information, and what legal rights individuals have concerning their personal information and how to exercise those rights. 
+_Last updated: July 2026_
 
-It has been last updated as of July 2026.
+This privacy policy describes how Sifaka.dev ("sifaka.dev", "we", "us", "our") processes personal information, and what legal rights individuals have concerning their personal information and how to exercise those rights. 
 
 ## Cases of use
 ### Interacting through our sites
@@ -47,11 +48,12 @@ If you make a request, we have one month to respond to you. If you would like to
 ## Contact 
 Please contact us via email: [contact@sifaka.dev]({mailSocialHref}).
 
-</Section>
+    </Section>
+</main>
 
 
 <style>
-    :global(.main) {
+    main {
         background-color: var(--dark-turquose);
     }
 
