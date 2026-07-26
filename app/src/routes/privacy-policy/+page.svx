@@ -9,29 +9,29 @@
 <Section id="section--generic">
 
 # Privacy Policy
-This privacy policy describes how Sifaka.dev ("sifaka.dev", "we", "us", "our") processes personal information, and what legal rights individuals have concerning their personal information and how to exercise those rights.
+_Last updated: July 2026_
 
-It has been last updated as of July 2026.
+This privacy policy describes how Sifaka.dev ("sifaka.dev", "we", "us", "our") processes personal information, and what legal rights individuals have concerning their personal information and how to exercise those rights.
 
 ## Cases of use
 ### Interacting through our sites
-Cloudflare, Inc. (101 Townsend Street San Francisco, CA 94107 USA) acts as our content delivery network & infrastructure provider, and thus is a data processor.
-
 1. Basis: A legitimate interest, in ensuring secure, fast and reliable interaction with our websites.
 2. Information: Network log data and traffic metadata (including IP address, browser type, operating system, requested URLs and request timestamps).
 3. Purpose: Ensuring secure, fast and reliable interactions (such as by using Cloudflare's CDN, DDoS mitigation and automated threat filtering).
 4. Retention: Deleted or anonymized once the technical purpose is complete.
 5. International Tranfers: Information may be transferred and processed in the US by Cloudflare that is self-certified under the EU-U.S. Data Privacy Framework.
 
-### Newsletter
-Vercom S.A. (Wierzbięcice 1B, 61-569 Poznań, PL) acts as our email delivery service provider, and thus is a data processor.
-Hetzner Online GmbH (Industriestr. 25, 91710 Gunzenhausen, DE) acts as our hosting provider, and thus is a data processor.
+Cloudflare, Inc. (101 Townsend Street San Francisco, CA 94107 USA) acts as our content delivery network & infrastructure provider, and thus is a data processor.
 
+### Newsletter
 1. Basis: Consent, by submitting one of the respective forms.
 2. Information: E-mail address
-3. Purpose: To send you e-mails regarding news of sifaka.dev's services (at most once a month).
+3. Purpose: To send you (replyable) e-mails containing technical deep dives related to sifaka.dev's services (at most once a month).
 4. Retention: Deleted upon unsubscribing.
 5. Withdrawal of consent: By using the "unsubscribe" link provided in each newsletter e-mail received.
+
+Vercom S.A. (Wierzbięcice 1B, 61-569 Poznań, PL) acts as our email delivery service provider, and thus is a data processor.
+Hetzner Online GmbH (Industriestr. 25, 91710 Gunzenhausen, DE) acts as our hosting provider, and thus is a data processor.
 
 ## Rights
 Under the GDPR, you have rights you can exercise regarding your personal information. Please review their exact definitions and conditions in the [official regulations](https://www.autoriteitpersoonsgegevens.nl/en/themes/basic-gdpr/privacy-rights-under-the-gdpr).
