@@ -5,26 +5,13 @@
     import { globalMessageFeed, messfeed_Add, renderBad } from "./input/message-feed/MessageFeed.svelte";
     import Button from "./input/Button.svelte";
     import { mailSocialHref } from "$lib/ext-links/ext-links";
+    import { judgeEmail } from "$lib/logic/validation/client";
 
-    let emailValue: string = $state("");
+    let email: string = $state("");
     let emailIsGood: boolean|undefined = $state(undefined);
     let emailMessage: string = $state("");
-    function judgeEmail() {
-        if (emailValue.length === 0) {
-            emailIsGood = false;
-            emailMessage = "Enter an e-mail";
-            return;
-        }
-
-        // Valid email
-        const validEmailRegex = /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/;
-        if (!validEmailRegex.test(emailValue)) {
-            emailIsGood = false;
-            emailMessage = "Enter an valid email";
-            return;
-        }
-
-        emailIsGood = true;
+    function _judgeEmail() {
+      ({isGood: emailIsGood, message: emailMessage} = judgeEmail(email));
     }
 
     let isProcessing: boolean = $state(false);
@@ -36,7 +23,7 @@
         isGood = undefined;
 
 
-        judgeEmail();
+        _judgeEmail();
         if (!emailIsGood) {
             isProcessing = false;
             isGood = false;
@@ -75,7 +62,7 @@
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        email: emailValue,
+                        email: email,
                         list_uuids: [newsletterListUUID],
                     }),
                 })
@@ -148,9 +135,9 @@
             isProcessing={isProcessing}
             bind:isGood={emailIsGood}
             bind:message={emailMessage}
-            bind:value={emailValue}
+            bind:value={email}
 
-            judge={judgeEmail}
+            judge={_judgeEmail}
 
             outerClassName="news-form__input"
             attr={{
