@@ -1,7 +1,13 @@
+<script module lang="ts">
+    export const contentBodyBgColor: {css: string} = $state(Object.seal({css: "var(--green)"}));
+</script>
+
+
 <script lang="ts">
     import Footer from "$lib/components/general/Footer.svelte";
     import Header from "$lib/components/general/Header.svelte";
     import GlobalMessageFeed from "$lib/components/general/input/message-feed/MessageFeed.svelte";
+    import { onMount } from "svelte";
     import "./critical.css";
     import "./global.css";
 
@@ -24,14 +30,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap" rel="stylesheet">
 </svelte:head>
 
-<Header/>
-<main class="main">
-    {@render children()}
-</main>
-<Footer/>
+
+<div style="background-color: {contentBodyBgColor.css}">
+    <Header/>
+    <main>{@render children()}</main>
+    <Footer/>
+</div>
 
 <GlobalMessageFeed/>
-
 <svg class="effect-overlay" aria-hidden="true">
     <defs>
         <filter id="noise-filter">
@@ -43,7 +49,7 @@
             />
         </filter>
 
-        <radialGradient 
+        <radialGradient
             id="vignette"
 
             cx="50%"
@@ -59,14 +65,14 @@
 
 
     <g class="noise-effect">
-        <rect 
-            width="100%" 
-            height="100%" 
+        <rect
+            width="100%"
+            height="100%"
             fill="#000000"
         />
-        <rect 
-            width="100%" 
-            height="100%" 
+        <rect
+            width="100%"
+            height="100%"
             filter="url(#noise-filter)"
         />
     </g>
@@ -77,7 +83,6 @@
         fill="url(#vignette)"
     />
 </svg>
-
 <div class="wip-notice">Early concept</div>
 
 
@@ -88,10 +93,6 @@
         --z-above: 1;
         --z-above-2: 2;
         --z-effects: 3;
-    }
-
-    .main {
-        padding-top: 80px;
     }
 
     .effect-overlay {

@@ -1,12 +1,15 @@
 <script>
     import Section from "$lib/components/general/Section.svelte";
     import { mailSocialHref } from "$lib/ext-links/ext-links";
+    import { contentBodyBgColor } from "../+layout.svelte";
+
+    contentBodyBgColor.css = "var(--dark-turquose)";
 </script>
 
 <Section id="section--generic">
 
 # Privacy Policy
-This privacy policy describes how Sifaka.dev ("sifaka.dev", "we", "us", "our") processes personal information, and what legal rights individuals have concerning their personal information and how to exercise those rights. 
+This privacy policy describes how Sifaka.dev ("sifaka.dev", "we", "us", "our") processes personal information, and what legal rights individuals have concerning their personal information and how to exercise those rights.
 
 It has been last updated as of July 2026.
 
@@ -26,14 +29,14 @@ Hetzner Online GmbH (Industriestr. 25, 91710 Gunzenhausen, DE) acts as our hosti
 
 1. Basis: Consent, by submitting one of the respective forms.
 2. Information: E-mail address
-3. Purpose: To send you e-mails regarding news of sifaka.dev's services (at most once a month). 
+3. Purpose: To send you e-mails regarding news of sifaka.dev's services (at most once a month).
 4. Retention: Deleted upon unsubscribing.
 5. Withdrawal of consent: By using the "unsubscribe" link provided in each newsletter e-mail received.
 
 ## Rights
-Under the GDPR, you have rights you can exercise regarding your personal information. Please review their exact definitions and conditions in the [official regulations](https://www.autoriteitpersoonsgegevens.nl/en/themes/basic-gdpr/privacy-rights-under-the-gdpr). 
+Under the GDPR, you have rights you can exercise regarding your personal information. Please review their exact definitions and conditions in the [official regulations](https://www.autoriteitpersoonsgegevens.nl/en/themes/basic-gdpr/privacy-rights-under-the-gdpr).
 
-- **Information**: You reasonably know how we use your information (fulfilled by this policy). 
+- **Information**: You reasonably know how we use your information (fulfilled by this policy).
 - **Access**: Request a copy of your information.
 - **Rectification**: Request to rectify inaccurate or incomplete information.
 - **Erasure**: Request that we fully delete your information.
@@ -44,17 +47,13 @@ Under the GDPR, you have rights you can exercise regarding your personal informa
 
 If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please [contact us](#contact).
 
-## Contact 
+## Contact
 Please contact us via email: [contact@sifaka.dev]({mailSocialHref}).
 
 </Section>
 
 
 <style>
-    :global(.main) {
-        background-color: var(--dark-turquose);
-    }
-
     :global(#section--generic) {
         background-color: var(--dark-turquose);
 
