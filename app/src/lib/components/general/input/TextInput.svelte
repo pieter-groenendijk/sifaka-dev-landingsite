@@ -4,17 +4,17 @@
 <script lang="ts">
     import "$lib/styling/interactions.css";
 
-    let { 
+    let {
         className = "",
         outerClassName = "",
-        name, 
-        placeholder, 
-        attr, 
-        value = $bindable(""), 
-        isProcessing = false, 
+        name,
+        placeholder,
+        attr,
+        value = $bindable(""),
+        isProcessing = false,
         isGood = $bindable(undefined),
         message = $bindable(""),
-        judge = (value: string) => {}, 
+        judge = (value: string) => {},
     }: {
         className?: string,
         outerClassName?: string,
@@ -29,7 +29,7 @@
     } = $props();
 
     let isJudged: boolean;
-    let autoJudgeTimeoutId: number; 
+    let autoJudgeTimeoutId: number;
     function onInput() {
         isGood = undefined;
         message = "";
@@ -49,25 +49,25 @@
         if (!isJudged) {
             judge(value);
             isJudged = true;
-        } 
+        }
     }
 </script>
 
 
-<div 
+<div
     class="interactable-wrapper input-wrapper pressable {outerClassName}"
     class:interactable-wrapper--judging={isProcessing}
     class:interactable-wrapper--good={isGood !== undefined && isGood}
     class:interactable-wrapper--bad={isGood !== undefined && !isGood}
 >
-    <input 
+    <input
         class="interactable input {className}"
 
         name={name}
         type="text"
         placeholder={placeholder}
         bind:value={value}
-        
+
         disabled={isProcessing}
         oninput={onInput}
         onchange={onChange}
@@ -84,7 +84,9 @@
     .input-wrapper {
         position: relative;
     }
-
+    .input {
+        width: 100%;
+    }
     .input__message {
         position: absolute;
         left: 0;

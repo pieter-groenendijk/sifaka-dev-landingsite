@@ -32,18 +32,21 @@
     function onSubmit(event: SubmitEvent) {
         event.preventDefault();
 
-        judgeEmail();
-        if (!emailIsGood) {
-            return;
-        }
-
         isProcessing = true;
         isGood = undefined;
 
-        const url = getMailURL();
-        url.pathname = "/api/public/lists";
+
+        judgeEmail();
+        if (!emailIsGood) {
+            isProcessing = false;
+            isGood = false;
+            return;
+        }
+
 
         // Retrieve the UUID of the newsletter to add to
+        const url = getMailURL();
+        url.pathname = "/api/public/lists";
         fetch(url.toString(), {method: "GET"})
             // Preprocess response
             .then((resp) => {

@@ -24,7 +24,7 @@
         </div>
         <div class="footer__right">
             <div class="socials">
-                <a 
+                <a
                     class="social pressable"
                     href={githubSocialHref}
                     aria-label="Github"
@@ -59,7 +59,7 @@
             </div>
             {#await NewsLetterForm}
                 Newsletter is loading...
-            {:then NewsletterForm} 
+            {:then NewsletterForm}
                 <NewsletterForm/>
             {/await}
         </div>
