@@ -1,3 +1,8 @@
+<script module lang="ts">
+    export const pageBgClr: {css: string} = $state(Object.seal({css: "var(--green)"}));
+</script>
+
+
 <script lang="ts">
     import Footer from "$lib/components/general/Footer.svelte";
     import Header from "$lib/components/general/Header.svelte";
@@ -24,12 +29,15 @@
     <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap" rel="stylesheet">
 </svelte:head>
 
-<Header/>
-{@render children()}
-<Footer/>
+
+<div class="page" style="background-color: {pageBgClr.css}">
+    <Header/>
+    <!-- <main> should be placed by the page itself -->
+    {@render children()}
+    <Footer/>
+</div>
 
 <GlobalMessageFeed/>
-
 <svg class="effect-overlay" aria-hidden="true">
     <defs>
         <filter id="noise-filter">
@@ -41,7 +49,7 @@
             />
         </filter>
 
-        <radialGradient 
+        <radialGradient
             id="vignette"
 
             cx="50%"
@@ -57,14 +65,14 @@
 
 
     <g class="noise-effect">
-        <rect 
-            width="100%" 
-            height="100%" 
+        <rect
+            width="100%"
+            height="100%"
             fill="#000000"
         />
-        <rect 
-            width="100%" 
-            height="100%" 
+        <rect
+            width="100%"
+            height="100%"
             filter="url(#noise-filter)"
         />
     </g>
@@ -75,7 +83,6 @@
         fill="url(#vignette)"
     />
 </svg>
-
 <div class="wip-notice">Early concept</div>
 
 
@@ -88,8 +95,14 @@
         --z-effects: 3;
     }
 
+    .page {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
     :global(main) {
-        padding-top: 80px;
+        flex: 1 0 80vh;
     }
 
     .effect-overlay {

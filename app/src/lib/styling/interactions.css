@@ -25,7 +25,7 @@
     font-weight: 500;
     color: var(--color-light);
     background-color: var(--color-dark);
-    transition: 
+    transition:
         outline 100ms ease-in-out,
         border-width 100ms ease-in-out,
         border-radius 100ms ease-in-out,
@@ -49,8 +49,8 @@
 }
 .interactable-wrapper--bad {
     --border-radius: calc(var(--gap-8) * 0.8);
-    --color-light: #CD726A; 
-    --color-dark: #402626; 
+    --color-light: #CD726A;
+    --color-dark: #402626;
 }
 .interactable-wrapper:where(:focus-within, :hover) {
     --border-width: 4px;
@@ -73,4 +73,3 @@
 .pressable:active {
     transform: scale(.97);
 }
-

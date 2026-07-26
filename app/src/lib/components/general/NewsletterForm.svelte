@@ -5,26 +5,13 @@
     import { globalMessageFeed, messfeed_Add, renderBad } from "./input/message-feed/MessageFeed.svelte";
     import Button from "./input/Button.svelte";
     import { mailSocialHref } from "$lib/ext-links/ext-links";
+    import { judgeEmail } from "$lib/logic/validation/client";
 
-    let emailValue: string = $state("");
+    let email: string = $state("");
     let emailIsGood: boolean|undefined = $state(undefined);
     let emailMessage: string = $state("");
-    function judgeEmail() {
-        if (emailValue.length === 0) {
-            emailIsGood = false;
-            emailMessage = "Enter an e-mail";
-            return;
-        }
-
-        // Valid email
-        const validEmailRegex = /^[\w\-\.]+@([\w-]+\.)+[\w-]{2,}$/;
-        if (!validEmailRegex.test(emailValue)) {
-            emailIsGood = false;
-            emailMessage = "Enter an valid email";
-            return;
-        }
-
-        emailIsGood = true;
+    function _judgeEmail() {
+      ({isGood: emailIsGood, message: emailMessage} = judgeEmail(email));
     }
 
     let isProcessing: boolean = $state(false);
@@ -32,24 +19,27 @@
     function onSubmit(event: SubmitEvent) {
         event.preventDefault();
 
-        judgeEmail();
-        if (!emailIsGood) {
-            return;
-        }
-
         isProcessing = true;
         isGood = undefined;
 
-        const url = getMailURL();
-        url.pathname = "/api/public/lists";
+
+        _judgeEmail();
+        if (!emailIsGood) {
+            isProcessing = false;
+            isGood = false;
+            return;
+        }
+
 
         // Retrieve the UUID of the newsletter to add to
+        const url = getMailURL();
+        url.pathname = "/api/public/lists";
         fetch(url.toString(), {method: "GET"})
             // Preprocess response
             .then((resp) => {
                 if (!resp.ok) {
                     throw "Failed to fetch newsletter list UUID: 400/500 error";
-                } 
+                }
 
                 return resp.json();
             })
@@ -65,14 +55,14 @@
             // Add the email as a subscriber to the found newsletter UUID
             .then((newsletterListUUID) => {
                 url.pathname = "/api/public/subscription";
-                
+
                 return fetch(url.toString(), {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({
-                        email: emailValue,
+                        email: email,
                         list_uuids: [newsletterListUUID],
                     }),
                 })
@@ -129,14 +119,14 @@
 {/snippet}
 
 
-<form 
+<form
     class="news-form"
     onsubmit={onSubmit}
 >
-    <label 
+    <label
         class="news-form__label"
         for="news-email-input"
-    ><strong>Want to get updates, and/or give feedback?</strong> <a href="/privacy-policy">(No funny business!)</a></label>
+    ><strong>Up for technical deep dives? Or discussions?</strong> <a href="/privacy-policy#newsletter">(I'll be respectful)</a></label>
     <div class="news-form__control">
         <TextInput
             name="email"
@@ -145,9 +135,9 @@
             isProcessing={isProcessing}
             bind:isGood={emailIsGood}
             bind:message={emailMessage}
-            bind:value={emailValue}
+            bind:value={email}
 
-            judge={judgeEmail}
+            judge={_judgeEmail}
 
             outerClassName="news-form__input"
             attr={{
