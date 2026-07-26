@@ -1,12 +1,13 @@
 <script>
     import Section from "$lib/components/general/Section.svelte";
     import { mailSocialHref } from "$lib/ext-links/ext-links";
-    import { contentBodyBgColor } from "../+layout.svelte";
+    import { pageBgClr } from "../+layout.svelte";
 
-    contentBodyBgColor.css = "var(--dark-turquose)";
+    pageBgClr.css = "var(--dark-turquose)";
 </script>
 
-<Section id="section--generic">
+<main>
+    <Section id="section--generic">
 
 # Privacy Policy
 _Last updated: July 2026_
@@ -50,7 +51,8 @@ If you make a request, we have one month to respond to you. If you would like to
 ## Contact
 Please contact us via email: [contact@sifaka.dev]({mailSocialHref}).
 
-</Section>
+    </Section>
+</main>
 
 
 <style>

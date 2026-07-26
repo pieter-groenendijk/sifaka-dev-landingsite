@@ -1,5 +1,5 @@
 <script module lang="ts">
-    export const contentBodyBgColor: {css: string} = $state(Object.seal({css: "var(--green)"}));
+    export const pageBgClr: {css: string} = $state(Object.seal({css: "var(--green)"}));
 </script>
 
 
@@ -31,9 +31,10 @@
 </svelte:head>
 
 
-<div style="background-color: {contentBodyBgColor.css}">
+<div class="page" style="background-color: {pageBgClr.css}">
     <Header/>
-    <main>{@render children()}</main>
+    <!-- <main> should be placed by the page itself -->
+    {@render children()}
     <Footer/>
 </div>
 
@@ -93,6 +94,16 @@
         --z-above: 1;
         --z-above-2: 2;
         --z-effects: 3;
+    }
+
+    .page {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    :global(main) {
+        flex: 1 0 80vh;
     }
 
     .effect-overlay {
