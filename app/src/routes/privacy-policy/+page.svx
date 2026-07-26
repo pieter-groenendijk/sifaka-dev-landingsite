@@ -63,18 +63,21 @@ Please contact us via email: [contact@sifaka.dev]({mailSocialHref}).
             content-visibility: auto;
         }
 
+        :global(h1, h2, h3, h4, h5, h6) {
+            scroll-margin-top: 20vh;
+            color: var(--yellow);
+        }
+
         :global(h1) {
             margin-bottom: var(--gap-32);
             font-size: var(--font-size-64);
             font-weight: 800;
-            color: var(--yellow);
         }
 
         :global(h2) {
             margin-top: calc(var(--gap-32) * 1.2);
             font-size: var(--font-size-32);
             font-weight: 800;
-            color: var(--yellow);
         }
 
         :global(h3) {
@@ -82,7 +85,6 @@ Please contact us via email: [contact@sifaka.dev]({mailSocialHref}).
             text-transform: uppercase;
             font-size: var(--font-size-22);
             font-weight: 500;
-            color: var(--yellow);
         }
 
         :global(p, ol, ul) {

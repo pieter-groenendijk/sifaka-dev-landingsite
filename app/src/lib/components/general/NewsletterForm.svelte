@@ -49,7 +49,7 @@
             .then((resp) => {
                 if (!resp.ok) {
                     throw "Failed to fetch newsletter list UUID: 400/500 error";
-                } 
+                }
 
                 return resp.json();
             })
@@ -65,7 +65,7 @@
             // Add the email as a subscriber to the found newsletter UUID
             .then((newsletterListUUID) => {
                 url.pathname = "/api/public/subscription";
-                
+
                 return fetch(url.toString(), {
                     method: "POST",
                     headers: {
@@ -129,14 +129,14 @@
 {/snippet}
 
 
-<form 
+<form
     class="news-form"
     onsubmit={onSubmit}
 >
-    <label 
+    <label
         class="news-form__label"
         for="news-email-input"
-    ><strong>Want to get updates, and/or give feedback?</strong> <a href="/privacy-policy">(No funny business!)</a></label>
+    ><strong>Up for technical deep dives? Or discussions?</strong> <a href="/privacy-policy#newsletter">(I'll be respectful)</a></label>
     <div class="news-form__control">
         <TextInput
             name="email"
