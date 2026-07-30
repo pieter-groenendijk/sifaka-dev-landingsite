@@ -120,6 +120,7 @@
 
 
 <form
+    id="newsletter"
     class="news-form"
     onsubmit={onSubmit}
 >
