@@ -20,5 +20,10 @@
       "pattern": "sifaka.dev",
       "custom_domain": true
     }
-  ]
+  ],
+  "vars": {
+    "PUBLIC_HOST": "https://sifaka.dev",
+    "PUBLIC_MAIL_HOST": "https://mail.sifaka.dev",
+    "PUBLIC_TOOL_HOST": "https://tool.sifaka.dev",
+  }
 }
