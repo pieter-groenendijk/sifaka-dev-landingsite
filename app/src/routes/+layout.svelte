@@ -1,139 +1,82 @@
 <script module lang="ts">
-    export const pageBgClr: {css: string} = $state(Object.seal({css: "var(--green)"}));
+  export const pageBgClr: {css: string} = $state(Object.seal({css: "var(--green)"}));
 </script>
 
 
 <script lang="ts">
-    import Footer from "$lib/components/general/Footer.svelte";
-    import Header from "$lib/components/general/Header.svelte";
-    import GlobalMessageFeed from "$lib/components/general/input/message-feed/MessageFeed.svelte";
-    import "./critical.css";
-    import "./global.css";
+  import EffectOverlay from "$lib/components/general/EffectOverlay.svelte";
+  import Footer from "$lib/components/general/Footer.svelte";
+  import Header from "$lib/components/general/Header.svelte";
+  import GlobalMessageFeed from "$lib/components/general/input/message-feed/MessageFeed.svelte";
+  import "./critical.css";
+  import "./global.css";
 
-    let { children } = $props();
+  let { children } = $props();
 </script>
 
 
 <svelte:head>
-    <!-- Branding -->
-    <title>Sifaka.dev › Database design without grunt work</title>
-    <meta name="description" content="Pragmatic database design for MongoDB, PostgreSQL and other platforms. A time-efficient, easy-to-use tool that translates intent into implementation."/>
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <!-- Branding -->
+  <title>Sifaka.dev › Database design without grunt work</title>
+  <meta name="description" content="Pragmatic database design for MongoDB, PostgreSQL and other platforms. A time-efficient, easy-to-use tool that translates intent into implementation."/>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 
     <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&display=swap" rel="stylesheet">
 </svelte:head>
 
 
 <div class="page" style="background-color: {pageBgClr.css}">
-    <Header/>
-    <!-- <main> should be placed by the page itself -->
-    {@render children()}
-    <Footer/>
+  <Header/>
+  <!-- <main> should be placed by the page itself -->
+  {@render children()}
+  <Footer/>
 </div>
-
 <GlobalMessageFeed/>
-<svg class="effect-overlay" aria-hidden="true">
-    <defs>
-        <filter id="noise-filter">
-            <feTurbulence
-                type="fractalNoise"
-                baseFrequency="0.5"
-                numOctaves="1"
-                stitchTiles="stitch"
-            />
-        </filter>
-
-        <radialGradient
-            id="vignette"
-
-            cx="50%"
-            cy="50%"
-
-            fr="50%"
-            r="100%"
-        >
-            <stop offset="0%" stop-color="transparent"/>
-            <stop offset="100%" stop-color="black" stop-opacity="0.6"/>
-        </radialGradient>
-    </defs>
-
-
-    <g class="noise-effect">
-        <rect
-            width="100%"
-            height="100%"
-            fill="#000000"
-        />
-        <rect
-            width="100%"
-            height="100%"
-            filter="url(#noise-filter)"
-        />
-    </g>
-
-    <rect
-        width="100%"
-        height="100%"
-        fill="url(#vignette)"
-    />
-</svg>
+<EffectOverlay/>
 <div class="wip-notice">Early concept</div>
 
 
 <style>
-    :root {
-        --z-below: -1;
-        --z-main: 0;
-        --z-above: 1;
-        --z-above-2: 2;
-        --z-effects: 3;
-    }
+  :root {
+    --z-below: -1;
+    --z-main: 0;
+    --z-above: 1;
+    --z-above-2: 2;
+    --z-effects: 3;
+  }
 
-    .page {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-    }
+  .page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
 
-    :global(main) {
-        flex: 1 0 80vh;
-    }
+  :global(main) {
+    flex: 1 0 80vh;
+  }
 
-    .effect-overlay {
-        position: fixed;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        z-index: var(--z-effects);
-    }
-
-    .noise-effect {
-        opacity: 0.075;
-    }
-
-    .wip-notice {
-        --angle: 45deg;
-        padding: var(--gap-16) var(--gap-64);
-        position: fixed;
-        top: 0;
-        left: 100%;
-        font-size: var(--font-size-16);
-        font-weight: 500;
-        letter-spacing: -5%;
-        white-space: nowrap;
-        background-color: var(--light);
-        color: var(--dark);
-        transform:
-                translateX(calc(cos(var(--angle)) * 100% * -1)) /* Move left to perfectly fit it in the corner */
-                translateY(-100%) /* Left-bottom anchored to top of page */
-                rotate(var(--angle));
-        transform-origin: left bottom;
-        z-index: var(--z-effects);
-        animation: 300ms ease-in-out var(--animation-stage-three) both fade-in;
-    }
+  .wip-notice {
+    --angle: 45deg;
+    padding: var(--gap-16) var(--gap-64);
+    position: fixed;
+    top: 0;
+    left: 100%;
+    font-size: var(--font-size-16);
+    font-weight: 500;
+    letter-spacing: -5%;
+    white-space: nowrap;
+    background-color: var(--light);
+    color: var(--dark);
+    transform:
+    translateX(calc(cos(var(--angle)) * 100% * -1)) /* Move left to perfectly fit it in the corner */
+    translateY(-100%) /* Left-bottom anchored to top of page */
+    rotate(var(--angle));
+    transform-origin: left bottom;
+    z-index: var(--z-effects);
+    animation: 300ms ease-in-out var(--animation-stage-three) both fade-in;
+  }
 </style>
