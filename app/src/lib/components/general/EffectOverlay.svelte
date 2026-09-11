@@ -1,51 +1,8 @@
-<!--component
-
-A vignette effect that slighly moves towards the mouse. The vignette is centered when the mouse is centered,
-this is it's default state. The distance of possible movement is determined by the screen size, but perhaps
-later limited to avoid large screen issues.
-
-- First of all I need to determine center of the screen.
-- Going to need to mouse position
-
-
--->
-
 <script lang="ts">
-  import { throttled } from "$lib/logic/perf/timing";
-
-  const screen = $state({
-    width: 0,
-    height: 0,
-  });
-  const screenCenter = $derived({
-    x: Math.trunc(screen.width / 2),
-    y: Math.trunc(screen.height / 2),
-  });
-
-  const mousePos = $state({
-    x: screenCenter.x,
-    y: screenCenter.y,
-  });
-  const updateMousePos = throttled(100, (event: MouseEvent) => {
-    mousePos.x = event.screenX;
-    mousePos.y = event.screenY;
-  });
-
-  const vignetteOffset = $derived({
-    x: Math.trunc((mousePos.x - screenCenter.x) * 0.2),
-    y: Math.trunc((mousePos.y - screenCenter.y) * 0.2),
-  });
-  $inspect(vignetteOffset);
 </script>
 
 
-<svelte:window
-  bind:innerWidth={screen.width}
-  bind:innerHeight={screen.height}
-  onmousemove={updateMousePos}
-/>
-
-<svg class="effect-overlay" aria-hidden="true">
+<svg class="effect-overlay noise-svg" aria-hidden="true">
   <defs>
     <filter id="noise-filter">
       <feTurbulence
@@ -55,23 +12,8 @@ later limited to avoid large screen issues.
         stitchTiles="stitch"
       />
     </filter>
-
-    <radialGradient
-      id="vignette"
-
-      cx="50%"
-      cy="50%"
-
-      fr="40%"
-      r="100%"
-    >
-      <stop offset="0%" stop-color="transparent"/>
-      <stop offset="60%" stop-color="black" stop-opacity="0.6"/>
-    </radialGradient>
   </defs>
-
-
-  <g class="noise-effect">
+  <g class="noise-applied">
     <rect
       width="100%"
       height="100%"
@@ -83,15 +25,29 @@ later limited to avoid large screen issues.
       filter="url(#noise-filter)"
     />
   </g>
+</svg>
+<svg class="effect-overlay vignette-svg" aria-hidden="true">
+  <defs>
+    <radialGradient
+      id="vignette"
 
+      cx="50%"
+      cy="50%"
+
+      fr="50%"
+      r="100%"
+    >
+      <stop offset="00%" stop-color="transparent"/>
+      <stop offset="100%" stop-color="black" stop-opacity="0.6"/>
+    </radialGradient>
+  </defs>
   <rect
-    class="vignette-applier"
-    x="-20%"
-    y="-20%"
-    width="140%"
-    height="140%"
+    class="vignette-applied"
+    x="0%"
+    y="0%"
+    width="100%"
+    height="100%"
     fill="url(#vignette)"
-    transform="translate({vignetteOffset.x}, {vignetteOffset.y})"
   />
 </svg>
 
@@ -104,14 +60,22 @@ later limited to avoid large screen issues.
     width: 100%;
     height: 100%;
     pointer-events: none;
+  }
+
+  .noise-svg {
     z-index: var(--z-effects);
   }
 
-  .noise-effect {
+  .vignette-svg {
+    z-index: var(--z-main-effects);
+  }
+
+  .noise-applied {
+    position: relative;
     opacity: 0.075;
   }
 
-  .vignette-applier {
-    transition: transform 200ms ease-out;
+  .vignette-applied {
+    transition: transform 400ms ease-out;
   }
 </style>

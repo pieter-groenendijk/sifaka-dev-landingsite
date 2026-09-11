@@ -44,9 +44,10 @@
   :root {
     --z-below: -1;
     --z-main: 0;
-    --z-above: 1;
-    --z-above-2: 2;
-    --z-effects: 3;
+    --z-main-effects: 1;
+    --z-above: 2;
+    --z-above-2: 3;
+    --z-effects: 4;
   }
 
   .page {
