@@ -15,7 +15,7 @@
             </div>
             <div class="center nav-links">
                 <a class="nav-link" href="/about">About</a>
-                <a class="nav-link" href="/pricing">Pricing</a>
+                <a class="nav-link" href="/buy">Buy</a>
             </div>
             <div class="end">
 
@@ -51,12 +51,12 @@
     animation-timeline:
     auto,
     scroll(root block);
-    animation-range: 0 150px;
+    animation-range: 0 var(--on-scroll-range);
     backdrop-filter: blur(10px);
   }
   @keyframes headerBeforeOnScroll {
     from {
-      transform: translateX(-30%);
+      transform: translateX(-40%);
     }
     to {
       transform: translateX(0%);
@@ -69,14 +69,17 @@
     z-index: -1;
     background: linear-gradient(
       45deg,
-      rgb(from var(--light) r g b / 0.15) 0%,
+      rgb(from var(--light) r g b / 0) 0%,
+      rgb(from var(--light) r g b / 0.1) 10%,
       rgb(from var(--light) r g b / 0) 30%,
-      rgb(from var(--light) r g b / 0.10) 50%,
+
+      rgb(from var(--light) r g b / 0) 40%,
+      rgb(from var(--light) r g b / 0.2) 50%,
       rgb(from var(--light) r g b / 0) 60%
     );
     animation: headerBeforeOnScroll ease-in-out;
     animation-timeline: scroll(root block);
-    animation-range: 0 150px;
+    animation-range: 0 var(--on-scroll-range);
   }
   .header__content {
     box-sizing: border-box;
@@ -179,7 +182,6 @@
   .nav-link {
     position: relative;
     font-family: "Bricolage Grotesque";
-    font-stretch: 100%;
     text-decoration: none;
     text-shadow: 0 0 5px rgb(from var(--dark-green) r g b / 0.5);
     color: var(--light);
