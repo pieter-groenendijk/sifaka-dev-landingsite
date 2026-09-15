@@ -58,10 +58,12 @@ button {
   cursor: pointer;
   color: unset;
   font-family: inherit;
+  text-align: unset;
 }
 input {
   outline: unset;
   font-family: inherit;
+  background-color: unset;
 }
 ol, ul {
   list-style: none;

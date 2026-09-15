@@ -1,4 +1,5 @@
 export interface License {
+  id: string,
   price: string,
   pricePostFix: string|null,
   name: string,
@@ -9,6 +10,7 @@ export interface License {
 
 export const licenses: License[] = [
   {
+    id: "trial",
     price: "Free",
     pricePostFix: null,
     name: "Trial",
@@ -21,6 +23,7 @@ export const licenses: License[] = [
     longTermsURL: "",
   },
   {
+    id: "non-commercial",
     price: "Free",
     pricePostFix: null,
     name: "Non-commercial",
@@ -33,6 +36,7 @@ export const licenses: License[] = [
     longTermsURL: "",
   },
   {
+    id: "rent",
     price: "€ 20",
     pricePostFix: " / month",
     name: "Rent / Pay in Installments",
@@ -47,6 +51,7 @@ export const licenses: License[] = [
     longTermsURL: "",
   },
   {
+    id:"buy",
     price: "€ 240",
     pricePostFix: null,
     name: "Buy Once; Own Forever",
