@@ -23,7 +23,8 @@ html {
   --font-size-48: clamp(1.563rem, 1.171rem + 1.957vw, 2.688rem); /* 25 - 43 */
   --font-size-64: clamp(1.813rem, 1.182rem + 3.152vw, 3.625rem); /* 29 - 58 */
 
-  --gap-8: 0.438rem; /* 7 */
+  --gap-4: 0.25rem;
+  --gap-8: 0.5rem; /* 7 */
   --gap-12: clamp(0.438rem, 0.351rem + 0.435vw, 0.688rem); /* 7 - 11 */
   --gap-16: clamp(0.688rem, 0.622rem + 0.326vw, 0.875rem); /* 11 - 14 */
   --gap-32: clamp(0.875rem, 0.549rem + 1.63vw, 1.813rem); /* 14 - 29 */
@@ -50,7 +51,6 @@ body {
   background-color: var(--light);
   color: var(--dark-green);
 }
-
 button {
   appearance: none;
   background: unset;
@@ -59,16 +59,13 @@ button {
   color: unset;
   font-family: inherit;
 }
-
 input {
   outline: unset;
   font-family: inherit;
 }
-
 ol, ul {
   list-style: none;
 }
-
 a {
   color: unset;
 }
