@@ -2,13 +2,12 @@
 - TODO: Use semantic elements & make accessible in general
 - TODO: Standardize styling with the rest
 - TODO: Animate whether possible
-- TODO: Implement hovering
 - TODO: Implement selecting
 -->
 <script lang="ts">
   import Section from "$lib/components/general/Section.svelte";
-    import { crossfade, fade, scale } from "svelte/transition";
-    import { pageBgClr } from "../+layout.svelte";
+  import { crossfade, fade, scale } from "svelte/transition";
+  import { pageBgClr } from "../+layout.svelte";
   import { licenses } from "./licenses";
 
   let inspectLicenseAt: number|null = $state(null);
@@ -25,11 +24,16 @@
   </header>
   <section class="section--licenses">
     <h2 class="section__title">Licenses</h2>
-    <div class="license-explorer">
+    <div
+      class="license-explorer"
+
+      onmouseleave={() => inspectLicenseAt = null}
+    >
       <ul class="license-list">
         {#each licenses as license, at}
           <li
             class="license"
+            class:license--inspect={inspectLicenseAt === at}
 
             onmouseenter={() => inspectLicenseAt = at}
           >
@@ -85,7 +89,7 @@
   .section--licenses {
     box-sizing: border-box;
     margin-inline: auto;
-    max-width: 1920px;
+    max-width: calc(1920px - var(--gap-128));
     padding-inline: var(--gap-128);
     padding-bottom: var(--gap-128);
   }
@@ -110,7 +114,17 @@
   }
 
   .license {
-    margin-bottom: var(--gap-32);
+    padding-bottom: var(--gap-32);
+    transition: opacity 200ms ease-in-out;
+  }
+  .license-list:has(.license--inspect) {
+    & .license {
+      opacity: 0.3;
+    }
+
+    & .license--inspect {
+      opacity: 1;
+    }
   }
   .license__title {
     margin-bottom: var(--gap-16);
