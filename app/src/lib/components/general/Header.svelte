@@ -42,7 +42,7 @@
     height: var(--gap-96);
   }
   .header {
-    --on-scroll-range: 150px;
+    --on-scroll-range: 130px;
     position: relative;
     width: 100%;
     animation:
@@ -69,10 +69,9 @@
     z-index: -1;
     background: linear-gradient(
       45deg,
-      rgb(from var(--light) r g b / 0) 0%,
-      rgb(from var(--light) r g b / 0.1) 10%,
+      rgb(from var(--light) r g b / 0.2) 0%,
+      rgb(from var(--light) r g b / 0.1) 15%,
       rgb(from var(--light) r g b / 0) 30%,
-
       rgb(from var(--light) r g b / 0) 40%,
       rgb(from var(--light) r g b / 0.2) 50%,
       rgb(from var(--light) r g b / 0) 60%

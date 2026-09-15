@@ -1,214 +1,214 @@
 <script lang="ts">
-    import {onMount} from "svelte";
-    import {debounced} from "$lib/logic/perf/timing";
-    import Section from "$lib/components/general/Section.svelte";
+  import {onMount} from "svelte";
+  import {debounced} from "$lib/logic/perf/timing";
+  import Section from "$lib/components/general/Section.svelte";
 
-    const viewMinX = $state(0);
-    const viewMinY = $state(0);
-    let viewWidth = $state(0);
-    let viewHeight = $state(0);
+  const viewMinX = $state(0);
+  const viewMinY = $state(0);
+  let viewWidth = $state(0);
+  let viewHeight = $state(0);
 
-    let sectionElemRect: DOMRect | undefined = $state();
-    let mainElemRect: DOMRect | undefined = $state();
-    let elemRects: DOMRect[] | undefined = $state();
-
-
-
-    onMount(() => {
-        const elems = document.getElementsByClassName("section--hero__elem") as HTMLCollectionOf<HTMLElement>;
-        const elemsLength = elems.length;
-
-        // Random movement
-        let intervalIds: number[] = [];
-        {
-            const maxPixelDistance = 10;
-            const averageMsDuration = 2000;
-
-            for (let i = 0; i < elemsLength; ++i) {
-                const msDuration = Math.random() * averageMsDuration * 0.5 + averageMsDuration;
-
-                intervalIds.push(setInterval(() => {
-                    const angle = Math.random() * 2 * Math.PI;
-                    const distance = Math.sqrt(Math.random()) * maxPixelDistance;
-
-                    const offsetX = Math.trunc(Math.sin(angle) * distance);
-                    const offsetY = Math.trunc(Math.cos(angle) * distance);
-
-                    // Set goal for positions before next paint
-                    requestAnimationFrame(() => {
-                        const element = elems[i];
-
-                        element.style.setProperty("--offsetX", `${offsetX}px`);
-                        element.style.setProperty("--offsetY", `${offsetY}px`);
-                    });
-                }, msDuration));
-            }
-        }
+  let sectionElemRect: DOMRect | undefined = $state();
+  let mainElemRect: DOMRect | undefined = $state();
+  let elemRects: DOMRect[] | undefined = $state();
 
 
 
-        const sectionElem = document.getElementById("section--hero");
-        if (!sectionElem) {
-            return;
-        }
+  onMount(() => {
+    const elems = document.getElementsByClassName("section--hero__elem") as HTMLCollectionOf<HTMLElement>;
+    const elemsLength = elems.length;
 
-        const mainElem = document.getElementById("section--hero__elem--main");
-        if (!mainElem) {
-            return;
-        }
+    // Random movement
+    let intervalIds: number[] = [];
+    {
+      const maxPixelDistance = 10;
+      const averageMsDuration = 2000;
 
-        // Create observer
-        const observer = new ResizeObserver(debounced(300, () => {
-            sectionElemRect = sectionElem.getBoundingClientRect();
+      for (let i = 0; i < elemsLength; ++i) {
+        const msDuration = Math.random() * averageMsDuration * 0.5 + averageMsDuration;
 
-            mainElemRect = mainElem.getBoundingClientRect();
+        intervalIds.push(setInterval(() => {
+          const angle = Math.random() * 2 * Math.PI;
+          const distance = Math.sqrt(Math.random()) * maxPixelDistance;
 
-            elemRects = new Array(elemsLength);
-            for (let i = 0; i < elemsLength; ++i) {
-                elemRects[i] = elems[i].getBoundingClientRect();
-            }
-        }));
+          const offsetX = Math.trunc(Math.sin(angle) * distance);
+          const offsetY = Math.trunc(Math.cos(angle) * distance);
 
-        // Observe elements that could change the placement of the lines
-        observer.observe(sectionElem);
-        observer.observe(mainElem);
-        for (let i = 0; i < elemsLength; ++i) {
-            observer.observe(elems[i]);
-        }
+          // Set goal for positions before next paint
+          requestAnimationFrame(() => {
+            const element = elems[i];
+
+            element.style.setProperty("--offsetX", `${offsetX}px`);
+            element.style.setProperty("--offsetY", `${offsetY}px`);
+          });
+        }, msDuration));
+      }
+    }
 
 
-        return () => {
-            const numOfIntervalIds = intervalIds.length;
-            for (let intervalIdAt = 0; intervalIdAt < numOfIntervalIds; ++intervalIdAt) {
-                clearInterval(intervalIds[intervalIdAt]);
-            }
-            observer.disconnect();
-        };
-    });
+
+    const sectionElem = document.getElementById("section--hero");
+    if (!sectionElem) {
+      return;
+    }
+
+    const mainElem = document.getElementById("section--hero__elem--main");
+    if (!mainElem) {
+      return;
+    }
+
+    // Create observer
+    const observer = new ResizeObserver(debounced(300, () => {
+      sectionElemRect = sectionElem.getBoundingClientRect();
+
+      mainElemRect = mainElem.getBoundingClientRect();
+
+      elemRects = new Array(elemsLength);
+      for (let i = 0; i < elemsLength; ++i) {
+        elemRects[i] = elems[i].getBoundingClientRect();
+      }
+    }));
+
+    // Observe elements that could change the placement of the lines
+    observer.observe(sectionElem);
+    observer.observe(mainElem);
+    for (let i = 0; i < elemsLength; ++i) {
+      observer.observe(elems[i]);
+    }
+
+
+    return () => {
+      const numOfIntervalIds = intervalIds.length;
+      for (let intervalIdAt = 0; intervalIdAt < numOfIntervalIds; ++intervalIdAt) {
+        clearInterval(intervalIds[intervalIdAt]);
+      }
+      observer.disconnect();
+    };
+  });
 </script>
 
 
 <Section id="section--hero">
-    <div id="section--hero__elem--one" class="section--hero__elem">Time-efficient</div>
-    <div id="section--hero__elem--two" class="section--hero__elem">Practice-oriented</div>
-    <h1 id="section--hero__elem--main">Design databases —<strong>without grunt work</strong></h1>
-    <div id="section--hero__elem--three" class="section--hero__elem">Easy-to-use</div>
-    <div id="section--hero__elem--four" class="section--hero__elem">Broad compatibility</div>
+  <div id="section--hero__elem--one" class="section--hero__elem">Time-efficient</div>
+  <div id="section--hero__elem--two" class="section--hero__elem">Practice-oriented</div>
+  <h1 id="section--hero__elem--main">Design databases —<strong>without grunt work</strong></h1>
+  <div id="section--hero__elem--three" class="section--hero__elem">Easy-to-use</div>
+  <div id="section--hero__elem--four" class="section--hero__elem">Broad compatibility</div>
 
-    {#if sectionElemRect !== undefined && mainElemRect !== undefined}
-        <svg
-            bind:clientWidth={viewWidth} bind:clientHeight={viewHeight}
-            viewBox="{viewMinX} {viewMinY} {viewWidth} {viewHeight}"
-        >
-            {#each elemRects as elemRect}
-                <line
-                    x1={mainElemRect.x + mainElemRect.width / 2 - sectionElemRect.x} 
-                    y1={mainElemRect.y + mainElemRect.height / 2 - sectionElemRect.y}
-                    x2={elemRect.x + elemRect.width / 2 - sectionElemRect.x} 
-                    y2={elemRect.y + elemRect.height / 2 - sectionElemRect.y}
-                />
-            {/each}
-        </svg>
+  {#if sectionElemRect !== undefined && mainElemRect !== undefined}
+    <svg
+      bind:clientWidth={viewWidth} bind:clientHeight={viewHeight}
+      viewBox="{viewMinX} {viewMinY} {viewWidth} {viewHeight}"
+    >
+      {#each elemRects as elemRect}
+        <line
+          x1={mainElemRect.x + mainElemRect.width / 2 - sectionElemRect.x}
+          y1={mainElemRect.y + mainElemRect.height / 2 - sectionElemRect.y}
+          x2={elemRect.x + elemRect.width / 2 - sectionElemRect.x}
+          y2={elemRect.y + elemRect.height / 2 - sectionElemRect.y}
+        />
+        {/each}
+    </svg>
     {/if}
 </Section>
 
 <style>
-    :global(#section--hero) {
-        isolation: isolate;
-        background-color: var(--green);
+  :global(#section--hero) {
+    isolation: isolate;
+    background-color: var(--green);
 
-        :global(.section__content) {
-            max-width: 1200px;
-            display: grid;
-            justify-content: center;
-            align-content: center;
-            grid-template-columns: 1fr 1fr;
-            grid-auto-rows: min-content;
-            grid-template-areas:
-                "one two"
-                "main main"
-                "three four";
-            row-gap: max(var(--gap-96), 80px);
-        }
+    :global(.section__content) {
+      max-width: 1200px;
+      display: grid;
+      justify-content: center;
+      align-content: center;
+      grid-template-columns: 1fr 1fr;
+      grid-auto-rows: min-content;
+      grid-template-areas:
+      "one two"
+      "main main"
+      "three four";
+      row-gap: max(var(--gap-96), 80px);
+    }
+  }
+
+  #section--hero__elem--main {
+    grid-area: main;
+    justify-self: center;
+    align-self: center;
+    background-color: var(--green);
+    border: var(--gap-16) solid var(--green);
+    font-size: var(--font-size-64);
+    font-weight: 400;
+    text-align: center;
+    white-space: nowrap;
+    color: var(--yellow);
+  }
+
+  #section--hero__elem--main strong {
+    display: block;
+    font-weight: 800;
+  }
+
+  .section--hero__elem {
+    position: relative;
+    left: var(--offsetX, 0);
+    top: var(--offsetY, 0);
+    width: max-content;
+    height: fit-content;
+    padding-inline: var(--gap-16);
+    padding-block: var(--gap-8);
+    outline: var(--gap-16) solid var(--green);
+    background-color: var(--dark-green);
+    font-size: var(--font-size-32);
+    font-weight: 700;
+    color: var(--light);
+    animation: 300ms ease-in-out var(--animation-stage-one) both fade-in;
+    transition:
+    left 1500ms ease-in-out,
+    top 1500ms ease-in-out;
+  }
+
+  :is(#section--hero__elem--two, #section--hero__elem--four) {
+    justify-self: right;
+  }
+
+  svg {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    animation: 900ms ease-in-out var(--animation-stage-two) both circle-clip-in;
+  }
+
+  @keyframes circle-clip-in {
+    from {
+      clip-path: circle(0px at center);
     }
 
-    #section--hero__elem--main {
-        grid-area: main;
-        justify-self: center;
-        align-self: center;
-        background-color: var(--green);
-        border: var(--gap-16) solid var(--green);
-        font-size: var(--font-size-64);
-        font-weight: 400;
-        text-align: center;
-        white-space: nowrap;
-        color: var(--yellow);
+    to {
+      clip-path: circle(500px at center);
     }
+  }
 
-    #section--hero__elem--main strong {
-        display: block;
-        font-weight: 800;
-    }
+  line {
+    stroke: color-mix(in srgb, var(--light) 60%, transparent 40%);
+    stroke-width: 4px;
+    animation: 300ms ease-in-out var(--animation-stage-two) both fade-in;
+  }
 
+  @media (max-width: 700px) {
     .section--hero__elem {
-        position: relative;
-        left: var(--offsetX, 0);
-        top: var(--offsetY, 0);
-        width: max-content;
-        height: fit-content;
-        padding-inline: var(--gap-16);
-        padding-block: var(--gap-8);
-        outline: var(--gap-16) solid var(--green);
-        background-color: var(--dark-green);
-        font-size: var(--font-size-32);
-        font-weight: 700;
-        color: var(--light);
-        animation: 300ms ease-in-out var(--animation-stage-one) both fade-in;
-        transition:
-            left 1500ms ease-in-out,
-            top 1500ms ease-in-out;
+      font-size: var(--font-size-22);
+      padding: var(--gap-8) var(--gap-12);
     }
+  }
 
-    :is(#section--hero__elem--two, #section--hero__elem--four) {
-        justify-self: right;
+  @media (max-width: 450px) {
+    .section--hero__elem {
+      font-size: var(--font-size-18);
+      padding: 4px 8px;
     }
-
-    svg {
-        position: absolute;
-        inset: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
-        animation: 900ms ease-in-out var(--animation-stage-two) both circle-clip-in;
-    }
-
-    @keyframes circle-clip-in {
-        from {
-            clip-path: circle(0px at center);
-        }
-
-        to {
-            clip-path: circle(500px at center);
-        }
-    }
-
-    line {
-        stroke: color-mix(in srgb, var(--light) 60%, transparent 40%);
-        stroke-width: 4px;
-        animation: 300ms ease-in-out var(--animation-stage-two) both fade-in;
-    }
-
-    @media (max-width: 700px) {
-        .section--hero__elem {
-            font-size: var(--font-size-22);
-            padding: var(--gap-8) var(--gap-12);
-        }
-    }
-
-    @media (max-width: 450px) {
-        .section--hero__elem {
-            font-size: var(--font-size-18);
-            padding: 4px 8px;
-        }
-    }
+  }
 </style>
