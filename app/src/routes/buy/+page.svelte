@@ -41,17 +41,19 @@
             <div
               class="license__amount"
             >
-              <label for={htmlId} class="license__amount__label">amount</label>
+              <label for={htmlId} class="license__amount__label">seats</label>
               <input id={htmlId} class="license__amount__input" name={`${license.id}-license-amount`} type="number" min="0" max="999" bind:value={licenseAmounts[at]}/>
             </div>
             <button
-              aria-label="Select license to get by setting the amount of this license type to 1 if not already non-zero."
-              onclick={() => {
+              aria-label="Press once to set the amount of seats to get of this license to one. Press again to set it back to zero."
+              aria-controls={htmlId}
+              onclick={(event) => {
                 if (licenseAmounts[at] !== 0) {
-                  return;
+                  licenseAmounts[at] = 0;
+                } else {
+                  licenseAmounts[at] = 1;
+                  document.getElementById(htmlId)?.focus();
                 }
-
-                licenseAmounts[at] = 1;
               }}
             >
               <h3 class="license__title">
