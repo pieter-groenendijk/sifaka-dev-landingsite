@@ -1,21 +1,21 @@
 :root {
-    --green: #57AA87;
-    --dark-green: #20605D;
-    --dark-turquose: #264039;
-    --brown: #231D19;
-    --yellow: #FFEFC5;
-    --dark: #1F242C;
-    --light: #EFEFDD;
+  --green: #57AA87;
+  --dark-green: #20605D;
+  --dark-turquose: #264039;
+  --brown: #231D19;
+  --yellow: #FFEFC5;
+  --dark: #1F242C;
+  --light: #EFEFDD;
 }
 
 *, *::after, *::before {
-    margin: 0;
-    padding: 0;
-    border-width: 0;
+  margin: 0;
+  padding: 0;
+  border-width: 0;
 }
 
 html {
-    font-family: "Rubik", sans-serif;
-    font-optical-sizing: auto;
-    background-color: var(--dark-green);
+  font-family: "Rubik", serif;
+  font-optical-sizing: auto;
+  background-color: var(--dark-green);
 }

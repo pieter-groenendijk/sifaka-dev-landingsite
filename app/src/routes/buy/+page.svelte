@@ -1,16 +1,46 @@
 <!--
 - TODO: Standardize styling with the rest
+  - TODO: Extract regular H1
+  - TODO: Extract regular H2
+  - TODO: Extract regular H3
+  - TODO: Extract p1
+  - TODO: Extract p2
+  - TODO: Extract supplementary link (e.g. "Full terms")
+  - TODO: Extract supplementary note (e.g. "Hover a license for a summary of its terms")
+  - TODO: Extract strong (e.g. "FREE")
+  - TODO: Extract button component
 - TODO: Animate whether possible
 - TODO: Make responsive
+- TODO: Disallow configuring 'seats' and combining with other licenses with free trial
+- TODO: Disallow configuring 'seats' with non-commercial
 -->
 <script lang="ts">
   import { pageBgClr } from "../+layout.svelte";
-  import { licenses } from "./licenses";
+  import { licenses, type License } from "./licenses";
 
   let inspectLicenseAt: number|null = $state(null);
   let licenseAmounts: number[] = $state(new Array(licenses.length).fill(0));
 
-  pageBgClr.css = "var(--dark-turquose)";
+  pageBgClr.css = "var(--dark-green)";
+
+  function inputId(license: License): string {
+    return `license-${license.id}`;
+  }
+
+  function onLicenseAmountChange(event: Event) {
+    const elem = event.currentTarget as HTMLInputElement;
+    if (elem.value === "") {
+      elem.value = "0";
+    }
+  }
+  function toggleSelectLicense(at: number, amountInputId: string) {
+    if (licenseAmounts[at] !== 0) {
+      licenseAmounts[at] = 0;
+    } else {
+      licenseAmounts[at] = 1;
+      document.getElementById(amountInputId)?.focus();
+    }
+  }
 </script>
 
 
@@ -26,11 +56,11 @@
       tabindex="0"
       class="license-explorer"
 
-      onmouseleave={() => inspectLicenseAt = null}
+      onmouseleave={() => inspectLicenseAt = inspectLicenseAt}
     >
       <ul class="license-list">
         {#each licenses as license, at}
-          {@const htmlId = `license-${license.id}`}
+          {@const amountInputId = `license-${license.id}`}
           <li
             class="license"
             class:license--inspected={inspectLicenseAt === at}
@@ -41,20 +71,22 @@
             <div
               class="license__amount"
             >
-              <label for={htmlId} class="license__amount__label">seats</label>
-              <input id={htmlId} class="license__amount__input" name={`${license.id}-license-amount`} type="number" min="0" max="999" bind:value={licenseAmounts[at]}/>
+              <label for={amountInputId} class="license__amount__label">seats</label>
+              <input
+                id={amountInputId}
+                class="license__amount__input"
+                name={`${license.id}-license-amount`}
+                type="number"
+                min="0"
+                max="999"
+                bind:value={licenseAmounts[at]}
+                onchange={onLicenseAmountChange}
+              />
             </div>
             <button
               aria-label="Press once to set the amount of seats to get of this license to one. Press again to set it back to zero."
-              aria-controls={htmlId}
-              onclick={(event) => {
-                if (licenseAmounts[at] !== 0) {
-                  licenseAmounts[at] = 0;
-                } else {
-                  licenseAmounts[at] = 1;
-                  document.getElementById(htmlId)?.focus();
-                }
-              }}
+              aria-controls={amountInputId}
+              onclick={() => toggleSelectLicense(at, amountInputId)}
             >
               <h3 class="license__title">
                 <span class="license__price">{license.price}<span class="license__price-postfix">{license.pricePostFix}</span></span><span class="license__name">{license.name}</span>
@@ -74,7 +106,9 @@
       </ul>
       <div class="license-terms" aria-hidden="true">
         {#if inspectLicenseAt !== null}
-          {@const license = licenses[inspectLicenseAt]}
+          {@const at = inspectLicenseAt}
+          {@const license = licenses[at]}
+          {@const inputAmountId = inputId(license)}
           <a href={license.longTermsURL} class="license-terms__long-terms">Full terms</a>
           <h4 class="license-terms__title">TL;DR of Terms</h4>
           <ul class="license-terms__list">
@@ -82,11 +116,27 @@
               <li class="license-terms__term">{shortTerm}</li>
             {/each}
           </ul>
+          <button
+            class="license-terms__getter"
+            onclick={() => toggleSelectLicense(at, inputAmountId)}
+          >
+            {#if licenseAmounts[at] === 0}
+              configure & buy
+            {:else}
+              unselect
+            {/if}
+          </button>
         {:else}
           <span class="license-terms__indeterminate">Hover a license for a summary of its terms</span>
         {/if}
       </div>
     </div>
+  </section>
+  <section class="section--personal-info">
+
+  </section>
+  <section class="section--summary">
+
   </section>
 </main>
 
@@ -99,7 +149,7 @@
     max-width: 1920px;
     padding-inline: var(--gap-128);
     padding-block: var(--gap-96);
-    background-color: var(--dark-turquose);
+    background-color: var(--dark-green);
   }
   .title {
     margin-bottom: var(--gap-32);
@@ -218,6 +268,37 @@
     font-weight: 300;
     color: var(--light);
     opacity: 0.7;
+  }
+  .license-terms__getter {
+    margin-top: var(--gap-16);
+    outline: 0px solid var(--yellow);
+    /* prevent weird corner artifacts chrome leaves on 0px */
+    outline-offset: -1px;
+    border-radius: var(--gap-8);
+    padding: var(--gap-8) var(--gap-16);
+    box-shadow: 0 0 0px 0px var(--yellow);
+    background-color: var(--yellow);
+    font-family: var(--font-family-fancy);
+    font-size: var(--font-size-18);
+    font-weight: 600;
+    text-transform: capitalize;
+    color: var(--dark-green);
+    text-shadow: 0px 0px 0px rgb(from var(--brown) r g b / 0);
+    transition:
+      outline 100ms ease-in-out,
+      box-shadow 100ms ease-in-out,
+      transform 100ms ease-in-out,
+      border-radius 100ms ease-in-out,
+      text-shadow 100ms ease-in-out,
+      color 200ms ease-in-out;
+  }
+  .license-terms__getter:hover {
+    /*outline: 4px solid var(--yellow);*/
+    /*transform: scale(1.05);*/
+    box-shadow: 0 0 4px 3px var(--yellow);
+    text-shadow: 0px 0px 0px rgb(from var(--brown) r g b / 0.3);
+    border-radius: var(--gap-12);
+    color: var(--brown);
   }
 
   .license__amount {

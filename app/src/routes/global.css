@@ -31,6 +31,8 @@ html {
   --gap-64: clamp(1.375rem, 0.592rem + 3.913vw, 3.625rem); /* 22 - 58 */
   --gap-96: clamp(1.813rem, 0.573rem + 6.196vw, 5.375rem); /* 29 - 86 */
   --gap-128: clamp(2.25rem, 0.533rem + 8.587vw, 7.188rem); /* 36 - 115 */
+
+  --font-family-fancy: "Bricolage Grotesque";
 }
 
 body {
