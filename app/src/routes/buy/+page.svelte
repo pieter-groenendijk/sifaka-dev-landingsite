@@ -16,6 +16,7 @@
 - TODO: Convert to simple check
 -->
 <script lang="ts">
+    import SwitchControl from "$lib/components/general/inputv2/SwitchControl.svelte";
     import TextControl from "$lib/components/general/inputv2/TextControl.svelte";
   import { pageBgClr } from "../+layout.svelte";
   import { licenses, type License } from "./licenses";
@@ -137,16 +138,6 @@
     </section>
     <section class="section--license-config">
       <h2 class="section__title">Configure</h2>
-      <label class="toggle__label" for="toggle">Steering</label>
-      <select
-        aria-label="Buying as an organization or individual"
-        id="toggle"
-        class="toggle"
-        size="2"
-      >
-        <option class="toggle__option" value="individual">Individual</option>
-        <option class="toggle__option" value="organization" selected>Organization</option>
-      </select>
     </section>
     <section class="section--buyer-info">
       <h2 class="section__title">Your info</h2>
@@ -154,6 +145,28 @@
         <option value="individual">Individual</option>
         <option value="organization">Organization</option>
       </select> -->
+      <SwitchControl
+        name="buyer-type"
+        label={{
+          label: "Buyer Type",
+          supplement: "Please choose carefully",
+        }}
+        options={{
+          list: [
+            {
+              key: "Individual",
+              value: "individual",
+            },
+            {
+              key: "Organization",
+              value: "organization",
+            }
+          ],
+        }}
+        judgement={{
+          isProcessing: false,
+        }}
+      />
       <div>
         <TextControl
           type="text"
@@ -164,7 +177,7 @@
             supplement: "Method of transmitting and receiving digital messages using electronic devices over a computer network.",
           }}
           judgement={{
-            isProcessing: true,
+            isProcessing: false,
           }}
         />
       </div>
@@ -208,7 +221,6 @@
 
 
 <style>
-
   .header {
     box-sizing: border-box;
     margin-inline: auto;
@@ -246,70 +258,6 @@
     max-width: calc(1920px - var(--gap-128));
     padding-inline: var(--gap-128);
     padding-bottom: var(--gap-128);
-  }
-  .toggle__label {
-    display: block;
-    font-size: var(--font-size-16);
-    font-weight: 400;
-    color: rgb(from var(--light) r g b / 0.8);
-    padding-bottom: var(--gap-4);
-    padding-left: var(--gap-4);
-  }
-  .toggle {
-    appearance: base-select;
-    border-radius: var(--gap-16);
-    padding: var(--gap-4);
-    width: fit-content;
-    height: unset;
-    display: flex;
-    /*flex-direction: column;*/
-    gap: var(--gap-4);
-    isolation: isolate;
-    background-color: rgb(from var(--brown) r g b / .3);
-    anchor-scope: --toggled-option;
-
-    &::before {
-      content: "";
-      position-anchor: --toggled-option;
-      position: absolute;
-      left: anchor(left);
-      right: anchor(right);
-      top: anchor(top);
-      bottom: anchor(bottom);
-      border-radius: var(--gap-8);
-      background-color: var(--yellow);
-      z-index: -1;
-    }
-
-    &:focus-within::before {
-      transition: inset 150ms ease-in-out;
-    }
-  }
-  .toggle__option {
-    display: block;
-    min-height: unset;
-    border-radius: var(--gap-8);
-    padding: var(--gap-8) var(--gap-16);
-    box-shadow: 0 0 0px 0px var(--yellow);
-    font-family: var(--font-family-fancy);
-    font-size: var(--font-size-18);
-    font-weight: 600;
-    text-transform: capitalize;
-    line-height: 100%;
-    color: var(--yellow);
-    transition:
-      box-shadow 100ms ease-in-out,
-      border-radius 100ms ease-in-out,
-      color 200ms ease-in-out;
-
-    &::checkmark {
-      display: none;
-    }
-
-    &:checked {
-      anchor-name: --toggled-option;
-      color: var(--brown);
-    }
   }
 
 

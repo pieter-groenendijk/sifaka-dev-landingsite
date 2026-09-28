@@ -1,4 +1,6 @@
 <script lang="ts">
+  import "./input.css";
+
   let {
     type,
     name,
@@ -36,10 +38,10 @@
   class:control--bad={judgement.isGood === false}
   class:control--label-hidden={label.hidden}
 >
-  <div class="control__label">{label.label}</div>
-  <div class="control__info">{label.supplement}</div>
+  <div class="control-label">{label.label}</div>
+  <div class="control-supplement">{label.supplement}</div>
   <input
-    class="control__input"
+    class="control__input control-value"
     type={type}
     name={name}
     placeholder={placeholder}
@@ -61,30 +63,19 @@
     flex-direction: column;
     gap: var(--gap-4);
   }
-  .control__label {
+  .control-label {
     padding-inline: var(--text-padding-inline);
-    font-size: var(--font-size-16);
-    font-weight: 450;
-    color: var(--yellow);
-    transition: font-weight 150ms ease-in-out;
   }
-  .control__info {
+  .control-supplement {
     padding-inline: var(--text-padding-inline);
-    padding-bottom: var(--gap-4);
-    font-size: var(--font-size-14);
-    font-weight: 400;
-    color: rgb(from var(--yellow) r g b / 0.8);
-    text-align: justify;
   }
   .control__input {
+    box-sizing: border-box;
     outline: 0px solid rgb(from var(--yellow) r g b / 0);
     border-radius: var(--gap-8);
     padding: var(--gap-8) var(--text-padding-inline);
     width: 100%;
     field-sizing: content;
-    font-size: var(--font-size-18);
-    font-weight: 450;
-    color: var(--yellow);
     background-color: rgb(from var(--yellow) r g b / 0.1);
     transition:
       border-radius 150ms ease-in-out,
@@ -107,9 +98,6 @@
     border-radius: var(--gap-12);
   }
 
-  .control:focus-within .control__label {
-    font-weight: 500;
-  }
   .control:focus-within .control__input:not(:disabled) {
     outline: 4px solid var(--yellow);
     border-radius: var(--gap-12);
@@ -118,24 +106,5 @@
 
   .control__input:active:not(:disabled) {
     transform: scale(.96);
-  }
-
-  .control--label-hidden :is(.control__label, .control__info) {
-    display: none;
-  }
-
-  @keyframes blurWave {
-    0% {
-      opacity: 0.3;
-    }
-
-    100% {
-      opacity: 1;
-    }
-  }
-  .control--processing {
-    filter: blur(2px);
-    will-change: opacity 1;
-    animation: blurWave infinite both alternate 1500ms;
   }
 </style>

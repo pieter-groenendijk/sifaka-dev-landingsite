@@ -1,0 +1,42 @@
+.control-label {
+  font-size: var(--font-size-16);
+  font-weight: 450;
+  color: var(--yellow);
+  transition: font-weight 150ms ease-in-out;
+}
+.control:focus-within .control-label {
+  font-weight: 500;
+}
+
+.control-value {
+  font-size: var(--font-size-18);
+  font-weight: 450;
+  color: var(--yellow);
+}
+
+.control-supplement {
+  margin-bottom: var(--gap-4);
+  font-size: var(--font-size-14);
+  font-weight: 400;
+  color: rgb(from var(--yellow) r g b / 0.8);
+  text-align: justify;
+}
+
+.control--label-hidden :is(.control-label, .control-supplement) {
+  display: none;
+}
+
+@keyframes blurWave {
+  0% {
+    opacity: 0.3;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+.control--processing {
+  filter: blur(2px);
+  will-change: opacity 1;
+  animation: blurWave infinite both alternate 1500ms;
+}
