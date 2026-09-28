@@ -105,6 +105,6 @@
   }
 
   .control__input:active:not(:disabled) {
-    transform: scale(.96);
+    transform: scale(.97);
   }
 </style>

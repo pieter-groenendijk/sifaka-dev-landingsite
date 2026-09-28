@@ -167,30 +167,112 @@
           isProcessing: false,
         }}
       />
-      <div>
+      <fieldset>
+        <!-- <legend>Information needed from any buyer individual</legend> -->
         <TextControl
           type="text"
           name="indi-email"
           placeholder="mail@domain.com"
           label={{
             label: "E-mail",
-            supplement: "Method of transmitting and receiving digital messages using electronic devices over a computer network.",
           }}
           judgement={{
             isProcessing: false,
           }}
         />
-      </div>
-      <div>
-        <input type="text" name="org-email"/>
-        <input type="text" name="org-name"/>
-        <input type="text" name="org-vat"/>
-        <input type="text" name="org-country"/>
-        <input type="text" name="org-state"/>
-        <input type="text" name="org-town"/>
-        <input type="text" name="org-postcode"/>
-        <input type="text" name="org-street"/>
-      </div>
+      </fieldset>
+      <fieldset>
+        <!-- <legend>Information needed from any buyer organization</legend> -->
+        <TextControl
+          type="text"
+          name="indi-email"
+          placeholder="mail@domain.com"
+          label={{
+            label: "E-mail",
+          }}
+          judgement={{
+            isProcessing: false,
+          }}
+        />
+        <TextControl
+          type="text"
+          name="org-name"
+          placeholder="Company Inc."
+          label={{
+            label: "Organization name"
+          }}
+          judgement={{
+            isProcessing: false,
+          }}
+        />
+        <TextControl
+          type="text"
+          name="org-vat"
+          placeholder=""
+          label={{
+            label: "VAT number"
+          }}
+          judgement={{
+            isProcessing: false,
+          }}
+        />
+        <!-- Make a traditional select -->
+        <TextControl
+          type="text"
+          name="org-country"
+          placeholder="United Kingdom"
+          label={{
+            label: "Country"
+          }}
+          judgement={{
+            isProcessing: false,
+          }}
+        />
+        <TextControl
+          type="text"
+          name="org-state"
+          placeholder="County of London"
+          label={{
+            label: "State/County"
+          }}
+          judgement={{
+            isProcessing: false,
+          }}
+        />
+        <TextControl
+          type="text"
+          name="org-town"
+          placeholder="London"
+          label={{
+            label: "City/Town"
+          }}
+          judgement={{
+            isProcessing: false,
+          }}
+        />
+        <TextControl
+          type="text"
+          name="org-postcode"
+          placeholder="CR92AW"
+          label={{
+            label: "Postcode"
+          }}
+          judgement={{
+            isProcessing: false,
+          }}
+        />
+        <TextControl
+          type="text"
+          name="org-street"
+          placeholder="Brownlow Street"
+          label={{
+            label: "Street"
+          }}
+          judgement={{
+            isProcessing: false,
+          }}
+        />
+      </fieldset>
     </section>
     <section class="section--summary">
       <h2 class="section__title">Configure licenses</h2>

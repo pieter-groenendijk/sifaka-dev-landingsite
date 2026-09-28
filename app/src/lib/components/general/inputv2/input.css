@@ -22,7 +22,9 @@
   text-align: justify;
 }
 
-.control--label-hidden :is(.control-label, .control-supplement) {
+.control--label-hidden :is(.control-label, .control-supplement),
+.control-label:empty,
+.control-supplement:empty {
   display: none;
 }
 
