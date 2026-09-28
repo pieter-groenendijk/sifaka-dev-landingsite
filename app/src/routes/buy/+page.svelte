@@ -16,6 +16,7 @@
 - TODO: Convert to simple check
 -->
 <script lang="ts">
+    import TextControl from "$lib/components/general/inputv2/TextControl.svelte";
   import { pageBgClr } from "../+layout.svelte";
   import { licenses, type License } from "./licenses";
 
@@ -149,9 +150,51 @@
     </section>
     <section class="section--buyer-info">
       <h2 class="section__title">Your info</h2>
+      <!-- <select>
+        <option value="individual">Individual</option>
+        <option value="organization">Organization</option>
+      </select> -->
+      <div>
+        <TextControl
+          type="text"
+          name="indi-email"
+          placeholder="mail@domain.com"
+          label={{
+            label: "E-mail",
+            supplement: "Method of transmitting and receiving digital messages using electronic devices over a computer network.",
+          }}
+          judgement={{
+            isProcessing: true,
+          }}
+        />
+      </div>
+      <div>
+        <input type="text" name="org-email"/>
+        <input type="text" name="org-name"/>
+        <input type="text" name="org-vat"/>
+        <input type="text" name="org-country"/>
+        <input type="text" name="org-state"/>
+        <input type="text" name="org-town"/>
+        <input type="text" name="org-postcode"/>
+        <input type="text" name="org-street"/>
+      </div>
     </section>
     <section class="section--summary">
-      <h2 class="section__title">Summary</h2>
+      <h2 class="section__title">Configure licenses</h2>
+      <!-- Rent -->
+      <div>
+
+      </div>
+      <!-- Buy -->
+      <div>
+        <select>
+          <option>v1.4.0</option>
+          <option>v1.3.0</option>
+          <option>v1.2.0</option>
+          <option>v1.1.0</option>
+          <option>v1.0.0</option>
+        </select>
+      </div>
     </section>
     <section class="section--pay">
       <h2 class="section__title">Summary</h2>
@@ -165,6 +208,7 @@
 
 
 <style>
+
   .header {
     box-sizing: border-box;
     margin-inline: auto;
@@ -186,6 +230,14 @@
     color: var(--light);
     font-size: var(--font-size-18);
     font-weight: 500;
+  }
+
+  .section--buyer-info {
+    box-sizing: border-box;
+    margin-inline: auto;
+    max-width: calc(1920px - var(--gap-128));
+    padding-inline: var(--gap-128);
+    padding-bottom: var(--gap-128);
   }
 
   .section--license-config {
@@ -210,7 +262,7 @@
     width: fit-content;
     height: unset;
     display: flex;
-    flex-wrap: wrap;
+    /*flex-direction: column;*/
     gap: var(--gap-4);
     isolation: isolate;
     background-color: rgb(from var(--brown) r g b / .3);
