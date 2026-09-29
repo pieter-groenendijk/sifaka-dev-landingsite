@@ -2,6 +2,7 @@
   import "./input.css";
 
   let {
+    className,
     type,
     name,
     value = $bindable(""),
@@ -11,6 +12,7 @@
       hidden: false,
     },
   }: {
+    className?: string,
     type: string,
     name: string,
     value?: string,
@@ -32,7 +34,7 @@
 
 
 <label
-  class="control"
+  class="control {className}"
   class:control--processing={judgement.isProcessing}
   class:control--good={judgement.isGood === true}
   class:control--bad={judgement.isGood === false}
@@ -58,10 +60,6 @@
     --color: var(--yellow);
     --color-bad: var(--red);
     --color-green: var(--green);
-    width: 300px;
-    display: flex;
-    flex-direction: column;
-    gap: var(--gap-4);
   }
   .control-label {
     padding-inline: var(--text-padding-inline);
@@ -75,7 +73,6 @@
     border-radius: var(--gap-8);
     padding: var(--gap-8) var(--text-padding-inline);
     width: 100%;
-    field-sizing: content;
     background-color: rgb(from var(--yellow) r g b / 0.1);
     transition:
       border-radius 150ms ease-in-out,
@@ -85,7 +82,7 @@
   }
   .control__input::placeholder {
     font-weight: 400;
-    color: rgb(from var(--yellow) r g b / 0.4);
+    color: rgb(from var(--yellow) r g b / 0.5);
   }
 
   .control:has(.control__input:disabled) {
@@ -105,6 +102,6 @@
   }
 
   .control__input:active:not(:disabled) {
-    transform: scale(.97);
+    transform: scale(.98);
   }
 </style>
