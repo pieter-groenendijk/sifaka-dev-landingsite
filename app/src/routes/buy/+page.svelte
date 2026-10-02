@@ -22,6 +22,7 @@
   import SwitchControl from "$lib/components/general/inputv2/SwitchControl.svelte";
   import TextControl from "$lib/components/general/inputv2/TextControl.svelte";
   import SupNote from "$lib/components/general/SupNote.svelte";
+    import { genId } from "$lib/logic/id/id";
   import { pageBgClr } from "../+layout.svelte";
   import { licenses, type License } from "./licenses";
 
@@ -62,6 +63,12 @@
   let orgCity: string = $state("");
   let orgStreet: string = $state("");
   let orgPostCode: string = $state("");
+
+  const selectFieldsetId = genId();
+  const configFielsetId = genId();
+  const buyerFieldsetId = genId();
+  const payFieldsetId = genId();
+
 </script>
 
 
@@ -70,97 +77,113 @@
     <h1 class="title">Licenses & Pricing</h1>
     <p class="introduction">To hopefully best fit your use-case and circumstance, multiple types of licenses are offered. Each license — except for the free trial — gets you the same product, although under different terms.</p>
   </header>
-  <form>
-    <section class="section--licenses">
-      <h2 class="section__title">Terms</h2>
-      <div
-        role="menu"
-        tabindex="0"
-        class="license-explorer"
-
-        onmouseleave={() => inspectLicenseAt = null}
-      >
-        <ul class="license-list">
-          {#each licenses as license, at}
-            {@const amountInputId = `license-${license.id}`}
-            <li
-              class="license"
-              class:license--inspected={inspectLicenseAt === at}
-              class:license--selected={licenseAmounts[at] !== 0}
-
-              onmouseenter={() => inspectLicenseAt = at}
-            >
-              <div
-                class="license__amount"
-              >
-                <label for={amountInputId} class="license__amount__label">seats</label>
-                <input
-                  id={amountInputId}
-                  class="license__amount__input"
-                  name={`${license.id}-license-amount`}
-                  type="number"
-                  min="0"
-                  max="999"
-                  bind:value={licenseAmounts[at]}
-                  onchange={onLicenseAmountChange}
-                />
-              </div>
-              <button
-                aria-label="Press once to set the amount of seats to get of this license to one. Press again to set it back to zero."
-                aria-controls={amountInputId}
-                onclick={() => toggleSelectLicense(at, amountInputId)}
-              >
-                <h3 class="license__title">
-                  <span class="license__price">{license.price}<span class="license__price-postfix">{license.pricePostFix}</span></span><span class="license__name">{license.name}</span>
-                </h3>
-                <p class="license__summary">{license.summary}</p>
-                <div class="license__aria-terms">
-                  <a href={license.longTermsURL}>Full terms</a>
-                  <ul>
-                    {#each license.shortTerms as shortTerm}
-                      <li>{shortTerm}</li>
-                    {/each}
-                  </ul>
-                </div>
-              </button>
-            </li>
-          {/each}
-        </ul>
-        <div class="license-terms" aria-hidden="true">
-          {#if inspectLicenseAt !== null}
-            {@const at = inspectLicenseAt}
-            {@const license = licenses[at]}
-            {@const inputAmountId = inputId(license)}
-            <a href={license.longTermsURL} class="license-terms__long-terms">Full terms</a>
-            <h4 class="license-terms__title">TL;DR of Terms</h4>
-            <ul class="license-terms__list">
-              {#each license.shortTerms as shortTerm}
-                <li class="license-terms__term">{shortTerm}</li>
-              {/each}
-            </ul>
-            <button
-              class="license-terms__getter"
-              onclick={() => toggleSelectLicense(at, inputAmountId)}
-            >
-              {#if licenseAmounts[at] === 0}
-                configure & buy
-              {:else}
-                unselect
-              {/if}
-            </button>
-          {:else}
-            <SupNote>Hover a license for a summary of its terms</SupNote>
-          {/if}
-        </div>
+  <section class="section--process">
+    <aside class="progress">
+      <div aria-hidden="true" class="progress__marker-list">
+        <div class="progress__marker"></div>
+        <div class="progress__marker"></div>
+        <div class="progress__marker"></div>
+        <div class="progress__marker"></div>
+        <div class="progress__marker"></div>
       </div>
-    </section>
-    <fieldset class="fieldset--license-config">
-      <legend class="section__title">Configure</legend>
+      <nav class="progress__nav">
+        <a class="progress__link" href={`#${selectFieldsetId}`}>Browse & Select Terms</a>
+        <a class="progress__link" href={`#${configFielsetId}`}>Configure Terms</a>
+        <a class="progress__link" href={`#${buyerFieldsetId}`}>Your info</a>
+        <a class="progress__link" href={`#`}>Summary</a>
+        <a class="progress__link" href={`#`}>Pay</a>
+      </nav>
+    </aside>
 
-    </fieldset>
-    <section class="section--buyer-info">
-      <h2 class="section__title">Your info</h2>
-      <fieldset class="buyer-info" name="buyer-info">
+    <form class="form">
+      <fieldset id={selectFieldsetId} class="fieldset section--licenses">
+        <legend class="fieldset__legend">Browse & Select Terms</legend>
+        <div
+          role="menu"
+          tabindex="0"
+          class="license-explorer"
+
+          onmouseleave={() => inspectLicenseAt = null}
+        >
+          <ul class="license-list">
+            {#each licenses as license, at}
+              {@const amountInputId = `license-${license.id}`}
+              <li
+                class="license"
+                class:license--inspected={inspectLicenseAt === at}
+                class:license--selected={licenseAmounts[at] !== 0}
+
+                onmouseenter={() => inspectLicenseAt = at}
+              >
+                <div
+                  class="license__amount"
+                >
+                  <label for={amountInputId} class="license__amount__label">seats</label>
+                  <input
+                    id={amountInputId}
+                    class="license__amount__input"
+                    name={`${license.id}-license-amount`}
+                    type="number"
+                    min="0"
+                    max="999"
+                    bind:value={licenseAmounts[at]}
+                    onchange={onLicenseAmountChange}
+                  />
+                </div>
+                <button
+                  aria-label="Press once to set the amount of seats to get of this license to one. Press again to set it back to zero."
+                  aria-controls={amountInputId}
+                  onclick={() => toggleSelectLicense(at, amountInputId)}
+                >
+                  <h3 class="license__title">
+                    <span class="license__price">{license.price}<span class="license__price-postfix">{license.pricePostFix}</span></span><span class="license__name">{license.name}</span>
+                  </h3>
+                  <p class="license__summary">{license.summary}</p>
+                  <div class="license__aria-terms">
+                    <a href={license.longTermsURL}>Full terms</a>
+                    <ul>
+                      {#each license.shortTerms as shortTerm}
+                        <li>{shortTerm}</li>
+                      {/each}
+                    </ul>
+                  </div>
+                </button>
+              </li>
+            {/each}
+          </ul>
+          <div class="license-terms" aria-hidden="true">
+            {#if inspectLicenseAt !== null}
+              {@const at = inspectLicenseAt}
+              {@const license = licenses[at]}
+              {@const inputAmountId = inputId(license)}
+              <a href={license.longTermsURL} class="license-terms__long-terms">Full terms</a>
+              <h4 class="license-terms__title">TL;DR of Terms</h4>
+              <ul class="license-terms__list">
+                {#each license.shortTerms as shortTerm}
+                  <li class="license-terms__term">{shortTerm}</li>
+                {/each}
+              </ul>
+              <button
+                class="license-terms__getter"
+                onclick={() => toggleSelectLicense(at, inputAmountId)}
+              >
+                {#if licenseAmounts[at] === 0}
+                  configure & buy
+                {:else}
+                  unselect
+                {/if}
+              </button>
+            {:else}
+              <SupNote>Hover a license for a summary of its terms</SupNote>
+            {/if}
+          </div>
+        </div>
+      </fieldset>
+      <fieldset id={configFielsetId} class="fieldset fieldset--license-config">
+        <legend class="section__title">Configure</legend>
+
+      </fieldset>
+      <fieldset id={buyerFieldsetId} class="fieldset fieldset--buyer-info" name="buyer-info">
         <PickerControl
           name="acc-username"
           label={{
@@ -304,46 +327,113 @@
           <SupNote id="fieldset--buyer-placeholder">Please select whether you're buying for yourself or an organization to continue...</SupNote>
         {/if}
       </fieldset>
-    </section>
-    <section class="section--summary">
-      <h2 class="section__title">Configure licenses</h2>
-      <!-- Rent -->
-      <div>
+    </form>
 
-      </div>
-      <!-- Buy -->
-      <div>
-        <select>
-          <option>v1.4.0</option>
-          <option>v1.3.0</option>
-          <option>v1.2.0</option>
-          <option>v1.1.0</option>
-          <option>v1.0.0</option>
-        </select>
-      </div>
-    </section>
-    <section class="section--pay">
-      <h2 class="section__title">Summary</h2>
-    </section>
-    <section class="section--thanks">
+  </section>
+  <!-- <section class="section--pay">
+    <h2 class="section__title">Summary</h2>
+  </section >
+  <section class="section--thanks">
 
-    </section>
-  </form>
+  </section> -->
 </main>
 
 
 
 <style>
-  .fieldset--account {
+  .section--process {
     box-sizing: border-box;
     margin-inline: auto;
-    max-width: calc(1920px - var(--gap-128));
+    max-width: 1920px;
+    padding-inline: var(--gap-128);
+    padding-bottom: var(--gap-128);
+
+    display: grid;
+    grid-template-columns: auto 3px fit-content(100%);
+    grid-template-rows: repeat(5, auto);
+  }
+
+  .progress {
+    grid-column: 2 / -1;
+    grid-row: 1 / -1;
+    display: grid;
+    grid-template-columns: subgrid;
+    grid-template-rows: subgrid;
+  }
+  .progress__marker-list {
+    grid-column: 1;
+    grid-row: 1 / -1;
+    display: grid;
+    grid-template-rows: subgrid;
+  }
+  .progress__marker {
+    background-color: rgb(from var(--light) r g b / 0.6);
+  }
+  .progress__nav {
+    grid-column: -1;
+    grid-row: 1 / -1;
+    display: grid;
+    grid-template-rows: subgrid;
+  }
+  .progress__link {
+    --min-top: 10vh;
+    --max-bottom: 10vh;
+    --n-children: 4;
+    --height: 1lh;
+    border-radius: var(--gap-4);
+    width: fit-content;
+    padding-inline: var(--gap-12);
+    --padding-block: var(--gap-8);
+    height: fit-content;
+    align-self: center;
+    position: sticky;
+    line-height: calc(100% + 2 * var(--padding-block));
+    top: calc(var(--min-top) + var(--nth-child) * var(--height));
+    bottom: calc(var(--max-bottom) + (var(--n-children) - var(--nth-child)) * var(--height));
+    font-size: var(--font-size-14);
+    color: var(--light);
+    transition: 150ms border-radius ease-in-out, 150ms background-color ease-in-out;
+
+    &:nth-child(1) { --nth-child: 0; }
+    &:nth-child(2) { --nth-child: 1; }
+    &:nth-child(3) { --nth-child: 2; }
+    &:nth-child(4) { --nth-child: 3; }
+    &:nth-child(5) { --nth-child: 4; }
+
+    &:hover {
+      border-radius: var(--gap-8);
+      background-color: rgb(from var(--light) r g b / 0.1);
+    }
+
+    &:active, &:focus-within {
+
+    }
+  }
+
+  .form {
+    display: contents;
+  }
+
+  .fieldset {
+    grid-column: 1;
+  }
+  .fieldset--license-config {
+    box-sizing: border-box;
+    margin-inline: auto;
+    max-width: 1920px;
+    padding-inline: var(--gap-128);
+    padding-bottom: var(--gap-128);
+  }
+  .fieldset--buyer-info {
+    box-sizing: border-box;
+    margin-inline: auto;
+    max-width: 800px;
     padding-inline: var(--gap-128);
     padding-bottom: var(--gap-128);
   }
 
-  .buyer-info {
-    max-width: 500px;
+  .fieldset__legend {
+    display: none;
   }
 
   :global(.control) {
@@ -398,34 +488,6 @@
     color: var(--light);
     font-size: var(--font-size-18);
     font-weight: 500;
-  }
-
-  .section--buyer-info {
-    box-sizing: border-box;
-    margin-inline: auto;
-    max-width: calc(1920px - var(--gap-128));
-    padding-inline: var(--gap-128);
-    padding-bottom: var(--gap-128);
-  }
-
-  .section--license-config {
-    box-sizing: border-box;
-    margin-inline: auto;
-    max-width: calc(1920px - var(--gap-128));
-    padding-inline: var(--gap-128);
-    padding-bottom: var(--gap-128);
-  }
-
-
-  .section--licenses {
-    box-sizing: border-box;
-    margin-inline: auto;
-    max-width: calc(1920px - var(--gap-128));
-    padding-inline: var(--gap-128);
-    padding-bottom: var(--gap-128);
-  }
-  .section__title {
-    display: none;
   }
 
   .license-explorer {
