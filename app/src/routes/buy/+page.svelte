@@ -22,7 +22,8 @@
   import SwitchControl from "$lib/components/general/inputv2/SwitchControl.svelte";
   import TextControl from "$lib/components/general/inputv2/TextControl.svelte";
   import SupNote from "$lib/components/general/SupNote.svelte";
-    import { genId } from "$lib/logic/id/id";
+  import { genId } from "$lib/logic/id/id";
+  import { onMount } from "svelte";
   import { pageBgClr } from "../+layout.svelte";
   import { licenses, type License } from "./licenses";
 
@@ -64,12 +65,48 @@
   let orgStreet: string = $state("");
   let orgPostCode: string = $state("");
 
-  const selectFieldsetId = genId();
-  const configFielsetId = genId();
-  const buyerFieldsetId = genId();
-  const payFieldsetId = genId();
+  let stepElemList: Element[] = new Array(5);
+  let stepElemIdList: string[] = [genId(), genId(), genId(), genId(), genId()];
+  let stepElemActiveList: boolean[] = $state(new Array(5).fill(false));
 
+  $effect(() => {
+    console.log($state.snapshot(stepElemActiveList));
+  })
+
+  onMount(() => {
+    // Initialize tracking visiblity (intersection really..)
+    const visibilityObserver = new IntersectionObserver((entries) => {
+      const len = entries.length;
+      for (let at = 0; at < len; ++at) {
+        const entry = entries[at];
+
+        const step = stepElemList.indexOf(entry.target);
+        if (step === -1) {
+          console.warn("oh oh, something went wrong; please check here");
+          return;
+        }
+
+        stepElemActiveList[step] = entry.isIntersecting;
+      }
+      // console.log(entries);
+    });
+    const len = stepElemList.length;
+    for (let at = 0; at < len; ++at) {
+      visibilityObserver.observe(stepElemList[at]);
+    }
+  });
 </script>
+
+
+
+{#snippet progressLink(text: string, at: number)}
+  <a
+    class="progress__link"
+    class:progress__link--active={stepElemActiveList[at]}
+    href={`#${stepElemIdList[at]}`}
+  >{text}</a>
+{/snippet}
+
 
 
 <main>
@@ -80,23 +117,28 @@
   <section class="section--process">
     <aside class="progress">
       <div aria-hidden="true" class="progress__marker-list">
-        <div class="progress__marker"></div>
-        <div class="progress__marker"></div>
-        <div class="progress__marker"></div>
-        <div class="progress__marker"></div>
-        <div class="progress__marker"></div>
+        {#each stepElemActiveList as isVisible}
+          <div
+            class="progress__marker"
+            class:progress__marker--active={isVisible}
+          ></div>
+        {/each}
       </div>
       <nav class="progress__nav">
-        <a class="progress__link" href={`#${selectFieldsetId}`}>Browse & Select Terms</a>
-        <a class="progress__link" href={`#${configFielsetId}`}>Configure Terms</a>
-        <a class="progress__link" href={`#${buyerFieldsetId}`}>Your info</a>
-        <a class="progress__link" href={`#`}>Summary</a>
-        <a class="progress__link" href={`#`}>Pay</a>
+        {@render progressLink("Browser & Select Terms", 0)}
+        {@render progressLink("Configure Terms", 1)}
+        {@render progressLink("Your info", 2)}
+        {@render progressLink("Summary", 3)}
+        {@render progressLink("Pay", 4)}
       </nav>
     </aside>
 
     <form class="form">
-      <fieldset id={selectFieldsetId} class="fieldset section--licenses">
+      <fieldset
+        bind:this={stepElemList[0]}
+        id={stepElemIdList[0]}
+        class="fieldset section--licenses"
+      >
         <legend class="fieldset__legend">Browse & Select Terms</legend>
         <div
           role="menu"
@@ -179,11 +221,20 @@
           </div>
         </div>
       </fieldset>
-      <fieldset id={configFielsetId} class="fieldset fieldset--license-config">
+      <fieldset
+        bind:this={stepElemList[1]}
+        id={stepElemIdList[1]}
+        class="fieldset fieldset--license-config"
+      >
         <legend class="section__title">Configure</legend>
 
       </fieldset>
-      <fieldset id={buyerFieldsetId} class="fieldset fieldset--buyer-info" name="buyer-info">
+      <fieldset
+        bind:this={stepElemList[2]}
+        id={stepElemIdList[2]}
+        class="fieldset fieldset--buyer-info"
+        name="buyer-info"
+      >
         <PickerControl
           name="acc-username"
           label={{
@@ -329,13 +380,21 @@
       </fieldset>
     </form>
 
-  </section>
-  <!-- <section class="section--pay">
-    <h2 class="section__title">Summary</h2>
-  </section >
-  <section class="section--thanks">
+    <section
+      bind:this={stepElemList[3]}
+      id={stepElemIdList[3]}
+      class="section--pay"
+    >
+      <h2 class="section__title">Summary</h2>
+    </section>
+    <section
+      bind:this={stepElemList[4]}
+      id={stepElemIdList[4]}
+      class="section--thanks"
+    >
+    </section>
 
-  </section> -->
+  </section>
 </main>
 
 
@@ -379,20 +438,28 @@
     --min-top: 10vh;
     --max-bottom: 10vh;
     --n-children: 4;
+
+    --margin-left: var(--gap-8);
+    --padding-block: var(--gap-8);
     --height: 1lh;
+
     border-radius: var(--gap-4);
     width: fit-content;
-    padding-inline: var(--gap-12);
-    --padding-block: var(--gap-8);
-    height: fit-content;
+    margin-left: var(--margin-left);
+    padding-inline: var(--gap-4);
+
     align-self: center;
     position: sticky;
-    line-height: calc(100% + 2 * var(--padding-block));
     top: calc(var(--min-top) + var(--nth-child) * var(--height));
     bottom: calc(var(--max-bottom) + (var(--n-children) - var(--nth-child)) * var(--height));
+
+    line-height: calc(100% + 2 * var(--padding-block));
     font-size: var(--font-size-14);
-    color: var(--light);
-    transition: 150ms border-radius ease-in-out, 150ms background-color ease-in-out;
+    font-weight: 500;
+    text-decoration: none;
+    color: rgb(from var(--light) r g b / 0.7);
+
+    transition: 150ms border-radius ease-in-out, 150ms background-color ease-in-out, 150ms color ease-in-out;
 
     &:nth-child(1) { --nth-child: 0; }
     &:nth-child(2) { --nth-child: 1; }
@@ -405,9 +472,26 @@
       background-color: rgb(from var(--light) r g b / 0.1);
     }
 
-    &:active, &:focus-within {
+    &::before {
+      --size: var(--gap-8);
+      display: block;
+      border: var(--gap-4) solid var(--dark-green);
+      width: var(--size);
+      height: var(--size);
 
+      position: absolute;
+      right: calc(100% + var(--margin-left) + 1.5px);
+      top: 50%;
+
+      content: "";
+
+      background-color: var(--light);
+
+      transform: translate(50%, -50%);
     }
+  }
+  .progress__link--active {
+    color: var(--light);
   }
 
   .form {
