@@ -1,5 +1,6 @@
 <script lang="ts">
-  import "./input.css";
+  import { genId } from "$lib/logic/id/id";
+import "./input.css";
   import type { Snippet } from "svelte";
 
   let {
@@ -27,6 +28,8 @@
       message?: string,
     },
   } = $props();
+
+  const buttonId = genId();
 </script>
 
 
@@ -34,6 +37,11 @@
 <label
   class="picker control"
   class:picker--picked={value !== ""}
+  class:control--processing={judgement.isProcessing}
+  class:control--good={judgement.isGood === true}
+  class:control--bad={judgement.isGood === false}
+  class:control--label-hidden={label.hidden}
+  for={buttonId}
 >
   <div class="picker__label control-label">{label.label}</div>
   <div class="picker__supplement control-supplement">{label.supplement}</div>
@@ -51,6 +59,7 @@
       />
     </div>
     <button
+      id={buttonId}
       type="button"
       class="picker__picker"
       aria-controls="account-username-input"
@@ -102,6 +111,7 @@
   }
   .picker__value-symbol {
     display: none;
+    line-height: 0;
   }
   .picker--picked .picker__value-symbol {
     display: inline;

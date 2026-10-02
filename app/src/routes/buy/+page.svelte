@@ -6,7 +6,6 @@
   - TODO: Extract p1
   - TODO: Extract p2
   - TODO: Extract supplementary link (e.g. "Full terms")
-  - TODO: Extract supplementary note (e.g. "Hover a license for a summary of its terms")
   - TODO: Extract strong (e.g. "FREE")
   - TODO: Extract button component
 - TODO: Animate whether possible
@@ -14,10 +13,15 @@
 - TODO: Disallow configuring 'seats' and combining with other licenses with free trial
 - TODO: Disallow configuring 'seats' with non-commercial
 - TODO: Convert to simple check
+- TODO: Only select & orient in first step
+- TODO: Use radio inputs for selecting licenses
+- TODO: Show terms one select as well (for touch)
 -->
 <script lang="ts">
-    import SwitchControl from "$lib/components/general/inputv2/SwitchControl.svelte";
-    import TextControl from "$lib/components/general/inputv2/TextControl.svelte";
+  import PickerControl from "$lib/components/general/inputv2/PickerControl.svelte";
+  import SwitchControl from "$lib/components/general/inputv2/SwitchControl.svelte";
+  import TextControl from "$lib/components/general/inputv2/TextControl.svelte";
+  import SupNote from "$lib/components/general/SupNote.svelte";
   import { pageBgClr } from "../+layout.svelte";
   import { licenses, type License } from "./licenses";
 
@@ -44,6 +48,20 @@
       document.getElementById(amountInputId)?.focus();
     }
   }
+
+  let accUsername: string = $state("");
+
+  const individualBuyer = "individual";
+  const organizationBuyer = "organization";
+  let buyer: string|undefined = $state(organizationBuyer);
+
+  let orgName: string = $state("");
+  let orgVAT: string = $state("");
+  let orgCountry: string = $state("");
+  let orgState: string = $state("");
+  let orgCity: string = $state("");
+  let orgStreet: string = $state("");
+  let orgPostCode: string = $state("");
 </script>
 
 
@@ -131,147 +149,160 @@
               {/if}
             </button>
           {:else}
-            <span class="license-terms__indeterminate">Hover a license for a summary of its terms</span>
+            <SupNote>Hover a license for a summary of its terms</SupNote>
           {/if}
         </div>
       </div>
     </section>
-    <section class="section--license-config">
-      <h2 class="section__title">Configure</h2>
-    </section>
+    <fieldset class="fieldset--license-config">
+      <legend class="section__title">Configure</legend>
+
+    </fieldset>
     <section class="section--buyer-info">
       <h2 class="section__title">Your info</h2>
-      <!-- <select>
-        <option value="individual">Individual</option>
-        <option value="organization">Organization</option>
-      </select> -->
-      <SwitchControl
-        name="buyer-type"
-        label={{
-          label: "Buyer Type",
-          supplement: "Please choose carefully",
-        }}
-        options={{
-          list: [
-            {
-              key: "Individual",
-              value: "individual",
-            },
-            {
-              key: "Organization",
-              value: "organization",
-            }
-          ],
-        }}
-        judgement={{
-          isProcessing: false,
-        }}
-      />
-      <fieldset>
-        <!-- <legend>Information needed from any buyer individual</legend> -->
-        <TextControl
-          type="text"
-          name="indi-email"
-          placeholder="mail@domain.com"
+      <fieldset class="buyer-info" name="buyer-info">
+        <PickerControl
+          name="acc-username"
           label={{
-            label: "E-mail",
+            label: "Account",
+            supplement: "Licenses being purchased will be coupled to the currently logged in account. ",
+            picker: accUsername === "" ? "Log in / Sign up" : "Change Account",
           }}
+          bind:value={accUsername}
+          placeholder="No account chosen"
           judgement={{
             isProcessing: false,
           }}
         />
-      </fieldset>
-      <fieldset>
-        <!-- <legend>Information needed from any buyer organization</legend> -->
-        <TextControl
-          type="text"
-          name="indi-email"
-          placeholder="mail@domain.com"
+        <SwitchControl
+          className="control"
+          bind:value={buyer}
+          name="buyer-type"
           label={{
-            label: "E-mail",
+            label: "Owner",
+            supplement: "Purchasing for yourself or on the behalf of an organization."
+          }}
+          options={{
+            list: [
+              {
+                key: "Individual",
+                value: individualBuyer,
+              },
+              {
+                key: "Organization",
+                value: organizationBuyer,
+              }
+            ],
           }}
           judgement={{
             isProcessing: false,
           }}
-        />
-        <TextControl
-          type="text"
-          name="org-name"
-          placeholder="Company Inc."
-          label={{
-            label: "Organization name"
-          }}
-          judgement={{
-            isProcessing: false,
+          selectAttr={{
+            "aria-owns": "fieldset--organization-buyer fieldset--buyer-placeholder"
           }}
         />
-        <TextControl
-          type="text"
-          name="org-vat"
-          placeholder=""
-          label={{
-            label: "VAT number"
-          }}
-          judgement={{
-            isProcessing: false,
-          }}
-        />
-        <!-- Make a traditional select -->
-        <TextControl
-          type="text"
-          name="org-country"
-          placeholder="United Kingdom"
-          label={{
-            label: "Country"
-          }}
-          judgement={{
-            isProcessing: false,
-          }}
-        />
-        <TextControl
-          type="text"
-          name="org-state"
-          placeholder="County of London"
-          label={{
-            label: "State/County"
-          }}
-          judgement={{
-            isProcessing: false,
-          }}
-        />
-        <TextControl
-          type="text"
-          name="org-town"
-          placeholder="London"
-          label={{
-            label: "City/Town"
-          }}
-          judgement={{
-            isProcessing: false,
-          }}
-        />
-        <TextControl
-          type="text"
-          name="org-postcode"
-          placeholder="CR92AW"
-          label={{
-            label: "Postcode"
-          }}
-          judgement={{
-            isProcessing: false,
-          }}
-        />
-        <TextControl
-          type="text"
-          name="org-street"
-          placeholder="Brownlow Street"
-          label={{
-            label: "Street"
-          }}
-          judgement={{
-            isProcessing: false,
-          }}
-        />
+        {#if buyer === organizationBuyer}
+          <fieldset id="fieldset--organization-buyer" name="organization">
+            <TextControl
+              className="control control--org-name"
+              type="text"
+              name="org-name"
+              placeholder="Company Inc."
+              label={{
+                label: "Organization name"
+              }}
+              bind:value={orgName}
+              judgement={{
+                isProcessing: false,
+              }}
+              />
+            <TextControl
+              className="control control--org-vat"
+              type="text"
+              name="org-vat"
+              placeholder="GB999999973"
+              label={{
+                label: "VAT number"
+              }}
+              bind:value={orgVAT}
+              judgement={{
+                isProcessing: false,
+              }}
+              />
+            <!-- Make a traditional select -->
+            <div class="address-generic">
+              <TextControl
+                className="control control--org-country"
+                type="text"
+                name="org-country"
+                placeholder="United Kingdom"
+                label={{
+                  label: "Country"
+                }}
+                bind:value={orgCountry}
+                judgement={{
+                  isProcessing: false,
+                }}
+                />
+              <TextControl
+                className="control control--org-state"
+                type="text"
+                name="org-state"
+                placeholder="County of London"
+                label={{
+                  label: "State/County"
+                }}
+                bind:value={orgState}
+                judgement={{
+                  isProcessing: false,
+                }}
+                />
+            </div>
+            <div class="address-specific">
+              <TextControl
+                className="control control--org-city"
+                type="text"
+                name="org-city"
+                placeholder="London"
+                label={{
+                  label: "City/Town"
+                }}
+                bind:value={orgCity}
+                judgement={{
+                  isProcessing: false,
+                }}
+                />
+              <TextControl
+                className="control control--org-street"
+                type="text"
+                name="org-street"
+                placeholder="Brownlow Street"
+                label={{
+                  label: "Street"
+                }}
+                bind:value={orgStreet}
+                judgement={{
+                  isProcessing: false,
+                }}
+                />
+              <TextControl
+                className="control control--org-postcode"
+                type="text"
+                name="org-postcode"
+                placeholder="CR92AW"
+                label={{
+                  label: "Postcode"
+                }}
+                bind:value={orgPostCode}
+                judgement={{
+                  isProcessing: false,
+                }}
+                />
+            </div>
+          </fieldset>
+        {:else if buyer !== individualBuyer}
+          <SupNote id="fieldset--buyer-placeholder">Please select whether you're buying for yourself or an organization to continue...</SupNote>
+        {/if}
       </fieldset>
     </section>
     <section class="section--summary">
@@ -303,6 +334,49 @@
 
 
 <style>
+  .fieldset--account {
+    box-sizing: border-box;
+    margin-inline: auto;
+    max-width: calc(1920px - var(--gap-128));
+    padding-inline: var(--gap-128);
+    padding-bottom: var(--gap-128);
+  }
+
+  .buyer-info {
+    max-width: 500px;
+  }
+
+  :global(.control) {
+    margin-bottom: var(--gap-16);
+  }
+
+  .address-generic {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--gap-12);
+  }
+  :global(.control--org-country) {
+    flex: 1 0 16ch;
+  }
+  :global(.control--org-state) {
+    flex: 1 0 16ch;
+  }
+
+  .address-specific {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--gap-12);
+  }
+  :global(.control--org-city) {
+    flex: 2 0 16ch;
+  }
+  :global(.control--org-street) {
+    flex: 2 0 16ch;
+  }
+  :global(.control--org-postcode) {
+    flex: 1 0 8ch;
+  }
+
   .header {
     box-sizing: border-box;
     margin-inline: auto;
