@@ -86,7 +86,7 @@
     position: relative;
     display: flex;
     flex-wrap: wrap;
-    gap: var(--gap-12);
+    column-gap: var(--gap-12);
     background-color: rgb(from var(--yellow) r g b / 0.1);
     transition:
       border-radius 150ms ease-in-out,

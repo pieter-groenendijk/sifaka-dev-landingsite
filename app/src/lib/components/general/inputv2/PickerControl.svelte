@@ -73,7 +73,6 @@ import "./input.css";
 <style>
   .picker {
     --text-padding-inline: var(--gap-12);
-    max-width: 500px;
     display: block;
   }
   .picker__label {
@@ -89,7 +88,7 @@ import "./input.css";
     width: 100%;
     display: flex;
     flex-wrap: wrap;
-    gap: var(--gap-12);
+    column-gap: var(--gap-12);
     background-color: rgb(from var(--yellow) r g b / 0.1);
     transition:
       border-radius 150ms ease-in-out,
