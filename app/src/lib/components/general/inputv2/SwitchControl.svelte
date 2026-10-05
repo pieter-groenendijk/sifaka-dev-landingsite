@@ -18,7 +18,6 @@
         key: string,
         value: string,
       }[],
-      default?: string,
     },
     judgement: {
       judge?: (() => {}),

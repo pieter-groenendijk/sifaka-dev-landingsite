@@ -16,6 +16,11 @@
 - TODO: Only select & orient in first step
 - TODO: Use radio inputs for selecting licenses
 - TODO: Show terms one select as well (for touch)
+- TODO: Swap yellow and light colors maybe?
+- TODO: Validation
+- TODO: Backend integration? Or just paddle stuff
+- TODO: End date: one month duration, i.e. 31 days, or next month by name, i.e. month after january 4 is februari 4.
+- TODO: Standardize for browsers
 -->
 <script lang="ts">
   import PickerControl from "$lib/components/general/inputv2/PickerControl.svelte";
@@ -23,9 +28,9 @@
   import TextControl from "$lib/components/general/inputv2/TextControl.svelte";
   import SupNote from "$lib/components/general/SupNote.svelte";
   import { genId } from "$lib/logic/id/id";
-  import { onMount } from "svelte";
   import { pageBgClr } from "../+layout.svelte";
   import { licenses, type License } from "./licenses";
+  import LinkedControls from "$lib/components/general/inputv2/LinkedControls.svelte";
 
   let inspectLicenseAt: number|null = $state(null);
   let licenseAmounts: number[] = $state(new Array(licenses.length).fill(0));
@@ -51,11 +56,47 @@
     }
   }
 
+  let stepElemIdList: string[] = [genId(), genId(), genId(), genId(), genId()];
+
   let accUsername: string = $state("");
 
   const individualBuyer = "individual";
   const organizationBuyer = "organization";
   let buyer: string|undefined = $state(organizationBuyer);
+
+  let period: "fixed"|"auto-renew"|undefined = $state("fixed");
+  let fixedPeriodDuration: string|undefined|null = $state("0");
+  let fixedPeriodEndDate: string|undefined = $derived.by(() => {
+    if (fixedPeriodDuration === undefined || fixedPeriodDuration === null || fixedPeriodDuration.length === 0) {
+      return undefined;
+    }
+
+    const now = new Date();
+    const duration = Number.parseFloat(fixedPeriodDuration);
+
+    const year = now.getFullYear() + Math.floor((now.getMonth() + duration) / 12);
+                      // (between 0 and 11) % 12
+                      //
+                  // (0-11 + 0-12) % 12 = 0-11
+    const month = (now.getMonth() + duration) % 12 + 1;
+    const day = now.getDate();
+
+
+
+    console.log(year, month, day);
+
+    return `${year}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+
+    // now.setFullYear(
+    //   now.getFullYear() + Math.floor(duration / 12),
+    //   now.getMonth() + (duration % 12),
+    // );
+
+    // return `${now.getFullYear()}-${now.getMonth().toString().padStart(2, "0")}-${now.getDate().toString().padStart(2, "0")}`;
+  });
+  function setPeriodEndDate(newValue: string): void {
+
+  }
 
   let orgName: string = $state("");
   let orgVAT: string = $state("");
@@ -65,36 +106,6 @@
   let orgStreet: string = $state("");
   let orgPostCode: string = $state("");
 
-  let stepElemList: Element[] = new Array(5);
-  let stepElemIdList: string[] = [genId(), genId(), genId(), genId(), genId()];
-  let stepElemActiveList: boolean[] = $state(new Array(5).fill(false));
-
-  $effect(() => {
-    console.log($state.snapshot(stepElemActiveList));
-  })
-
-  onMount(() => {
-    // Initialize tracking visiblity (intersection really..)
-    const visibilityObserver = new IntersectionObserver((entries) => {
-      const len = entries.length;
-      for (let at = 0; at < len; ++at) {
-        const entry = entries[at];
-
-        const step = stepElemList.indexOf(entry.target);
-        if (step === -1) {
-          console.warn("oh oh, something went wrong; please check here");
-          return;
-        }
-
-        stepElemActiveList[step] = entry.isIntersecting;
-      }
-      // console.log(entries);
-    });
-    const len = stepElemList.length;
-    for (let at = 0; at < len; ++at) {
-      visibilityObserver.observe(stepElemList[at]);
-    }
-  });
 </script>
 
 
@@ -102,7 +113,6 @@
 {#snippet progressLink(text: string, at: number)}
   <a
     class="progress__link"
-    class:progress__link--active={stepElemActiveList[at]}
     href={`#${stepElemIdList[at]}`}
   >{text}</a>
 {/snippet}
@@ -117,15 +127,14 @@
   <section class="section--process">
     <aside class="progress">
       <div aria-hidden="true" class="progress__marker-list">
-        {#each stepElemActiveList as isVisible}
+        {#each stepElemIdList}
           <div
             class="progress__marker"
-            class:progress__marker--active={isVisible}
           ></div>
         {/each}
       </div>
       <nav class="progress__nav">
-        {@render progressLink("Browser & Select Terms", 0)}
+        {@render progressLink("Browse & Select Terms", 0)}
         {@render progressLink("Configure Terms", 1)}
         {@render progressLink("Your info", 2)}
         {@render progressLink("Summary", 3)}
@@ -135,7 +144,6 @@
 
     <form class="form">
       <fieldset
-        bind:this={stepElemList[0]}
         id={stepElemIdList[0]}
         class="fieldset section--licenses"
       >
@@ -222,15 +230,72 @@
         </div>
       </fieldset>
       <fieldset
-        bind:this={stepElemList[1]}
         id={stepElemIdList[1]}
         class="fieldset fieldset--license-config"
       >
-        <legend class="section__title">Configure</legend>
+        <legend class="fieldset__legend">Configure</legend>
+        <SwitchControl
+          className="field"
+          name="period-type"
+          options={{
+            list: [
+              {key: "Fixed", value: "fixed"},
+              {key: "Auto-renewed", value: "auto-renew"},
+            ],
+          }}
+          bind:value={period}
+          label={{
+            label: "Period",
+            supplement: "A fixed period specifies the number of active months. An auto-renewed period remains active until cancelled."
+          }}
+          judgement={{
+            isProcessing: false,
+          }}
+        />
 
+        {#if period === "fixed"}
+          <LinkedControls
+            className="field"
+            label={{
+              label: "Duration / End Date",
+            }}
+          >
+            {#snippet leftControl()}
+              <TextControl
+                className="control--duration"
+                name="duration"
+                type="number"
+                placeholder=""
+                label={{
+                  label: "Fixed period given as end date.",
+                  hidden: true,
+                }}
+                bind:value={fixedPeriodDuration}
+                judgement={{
+                  isProcessing: false,
+                }}
+              />
+            {/snippet}
+            {#snippet rightControl()}
+              <TextControl
+                className="control--end-date"
+                name="end-date"
+                type="date"
+                placeholder=""
+                label={{
+                  label: "Fixed period given as duration",
+                  hidden: true,
+                }}
+                bind:value={() => fixedPeriodEndDate, (v) => console.log(v)}
+                judgement={{
+                  isProcessing: false,
+                }}
+              />
+            {/snippet}
+          </LinkedControls>
+        {/if}
       </fieldset>
       <fieldset
-        bind:this={stepElemList[2]}
         id={stepElemIdList[2]}
         class="fieldset fieldset--buyer-info"
         name="buyer-info"
@@ -249,7 +314,7 @@
           }}
         />
         <SwitchControl
-          className="control"
+          className="field"
           bind:value={buyer}
           name="buyer-type"
           label={{
@@ -278,7 +343,7 @@
         {#if buyer === organizationBuyer}
           <fieldset id="fieldset--organization-buyer" name="organization">
             <TextControl
-              className="control control--org-name"
+              className="field field--org-name"
               type="text"
               name="org-name"
               placeholder="Company Inc."
@@ -291,7 +356,7 @@
               }}
               />
             <TextControl
-              className="control control--org-vat"
+              className="field field--org-vat"
               type="text"
               name="org-vat"
               placeholder="GB999999973"
@@ -306,7 +371,7 @@
             <!-- Make a traditional select -->
             <div class="address-generic">
               <TextControl
-                className="control control--org-country"
+                className="field field--org-country"
                 type="text"
                 name="org-country"
                 placeholder="United Kingdom"
@@ -319,7 +384,7 @@
                 }}
                 />
               <TextControl
-                className="control control--org-state"
+                className="field field--org-state"
                 type="text"
                 name="org-state"
                 placeholder="County of London"
@@ -334,7 +399,7 @@
             </div>
             <div class="address-specific">
               <TextControl
-                className="control control--org-city"
+                className="field field--org-city"
                 type="text"
                 name="org-city"
                 placeholder="London"
@@ -347,7 +412,7 @@
                 }}
                 />
               <TextControl
-                className="control control--org-street"
+                className="field field--org-street"
                 type="text"
                 name="org-street"
                 placeholder="Brownlow Street"
@@ -360,7 +425,7 @@
                 }}
                 />
               <TextControl
-                className="control control--org-postcode"
+                className="field field--org-postcode"
                 type="text"
                 name="org-postcode"
                 placeholder="CR92AW"
@@ -381,14 +446,12 @@
     </form>
 
     <section
-      bind:this={stepElemList[3]}
       id={stepElemIdList[3]}
       class="section--pay"
     >
       <h2 class="section__title">Summary</h2>
     </section>
     <section
-      bind:this={stepElemList[4]}
       id={stepElemIdList[4]}
       class="section--thanks"
     >
@@ -408,7 +471,7 @@
     padding-bottom: var(--gap-128);
 
     display: grid;
-    grid-template-columns: auto 3px fit-content(100%);
+    grid-template-columns: fit-content(100%) minmax(var(--gap-64), 1fr) fit-content(100%);
     grid-template-rows: repeat(5, auto);
   }
 
@@ -426,6 +489,8 @@
     grid-template-rows: subgrid;
   }
   .progress__marker {
+    justify-self: end;
+    width: 3px;
     background-color: rgb(from var(--light) r g b / 0.6);
   }
   .progress__nav {
@@ -433,6 +498,7 @@
     grid-row: 1 / -1;
     display: grid;
     grid-template-rows: subgrid;
+    counter-reset: progress;
   }
   .progress__link {
     --min-top: 10vh;
@@ -457,7 +523,7 @@
     font-size: var(--font-size-14);
     font-weight: 500;
     text-decoration: none;
-    color: rgb(from var(--light) r g b / 0.7);
+    color: rgb(from var(--light) r g b / 1);
 
     transition: 150ms border-radius ease-in-out, 150ms background-color ease-in-out, 150ms color ease-in-out;
 
@@ -473,6 +539,11 @@
     }
 
     &::before {
+      counter-increment: progress;
+      content: counter(progress) ". ";
+    }
+
+    &::after {
       --size: var(--gap-8);
       display: block;
       border: var(--gap-4) solid var(--dark-green);
@@ -490,9 +561,6 @@
       transform: translate(50%, -50%);
     }
   }
-  .progress__link--active {
-    color: var(--light);
-  }
 
   .form {
     display: contents;
@@ -500,27 +568,18 @@
 
   .fieldset {
     grid-column: 1;
+    margin-bottom: var(--gap-64);
   }
-  .fieldset--license-config {
-    box-sizing: border-box;
-    margin-inline: auto;
-    max-width: 1920px;
-    padding-inline: var(--gap-128);
-    padding-bottom: var(--gap-128);
-  }
+  .fieldset--license-config,
   .fieldset--buyer-info {
-    box-sizing: border-box;
-    margin-inline: auto;
-    max-width: 800px;
-    padding-inline: var(--gap-128);
-    padding-bottom: var(--gap-128);
+    max-width: 600px;
   }
 
   .fieldset__legend {
     display: none;
   }
 
-  :global(.control) {
+  :global(.field) {
     margin-bottom: var(--gap-16);
   }
 
@@ -529,10 +588,10 @@
     flex-wrap: wrap;
     column-gap: var(--gap-12);
   }
-  :global(.control--org-country) {
+  :global(.field--org-country) {
     flex: 1 0 16ch;
   }
-  :global(.control--org-state) {
+  :global(.field--org-state) {
     flex: 1 0 16ch;
   }
 
@@ -541,13 +600,13 @@
     flex-wrap: wrap;
     column-gap: var(--gap-12);
   }
-  :global(.control--org-city) {
+  :global(.field--org-city) {
     flex: 2 0 16ch;
   }
-  :global(.control--org-street) {
+  :global(.field--org-street) {
     flex: 2 0 16ch;
   }
-  :global(.control--org-postcode) {
+  :global(.field--org-postcode) {
     flex: 1 0 8ch;
   }
 

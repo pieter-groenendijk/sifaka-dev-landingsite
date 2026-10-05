@@ -5,7 +5,7 @@
     className,
     type,
     name,
-    value = $bindable(""),
+    value = $bindable(),
     placeholder,
     judgement,
     label = {
@@ -79,6 +79,10 @@
       outline 100ms ease-in-out,
       font-weight 150ms ease-in-out,
       transform 70ms ease-in-out;
+
+    &::-webkit-calendar-picker-indicator {
+      filter: invert(.8);
+    }
   }
   .control__input::placeholder {
     font-weight: 400;
