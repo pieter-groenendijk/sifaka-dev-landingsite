@@ -65,37 +65,55 @@
   let buyer: string|undefined = $state(organizationBuyer);
 
   let period: "fixed"|"auto-renew"|undefined = $state("fixed");
-  let fixedPeriodDuration: string|undefined|null = $state("0");
-  let fixedPeriodEndDate: string|undefined = $derived.by(() => {
-    if (fixedPeriodDuration === undefined || fixedPeriodDuration === null || fixedPeriodDuration.length === 0) {
+  let duration: string|undefined = $state("0");
+  function toDateString(year: number, month: number, day: number): string {
+    return `${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+  }
+
+
+  let endDate: string|undefined = $derived.by(() => {
+    if (duration === undefined || duration === null || duration.length === 0) {
+      return undefined;
+    }
+    const _duration = Number.parseFloat(duration);
+    if (_duration < 0) {
       return undefined;
     }
 
     const now = new Date();
-    const duration = Number.parseFloat(fixedPeriodDuration);
+    console.log("duration", duration);
 
-    const year = now.getFullYear() + Math.floor((now.getMonth() + duration) / 12);
-                      // (between 0 and 11) % 12
-                      //
-                  // (0-11 + 0-12) % 12 = 0-11
-    const month = (now.getMonth() + duration) % 12 + 1;
+    const year = now.getFullYear() + Math.floor((now.getMonth() + _duration) / 12);
+    console.log("year", year);
+    const month = (now.getMonth() + _duration) % 12 + 1;
+    console.log("month", month);
     const day = now.getDate();
 
-
-
-    console.log(year, month, day);
-
-    return `${year}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
-
-    // now.setFullYear(
-    //   now.getFullYear() + Math.floor(duration / 12),
-    //   now.getMonth() + (duration % 12),
-    // );
-
-    // return `${now.getFullYear()}-${now.getMonth().toString().padStart(2, "0")}-${now.getDate().toString().padStart(2, "0")}`;
+    return `${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
   });
-  function setPeriodEndDate(newValue: string): void {
+  let endDateIsGood: boolean|undefined = $state(undefined);
+  let endDateMessage: string|undefined = $state(undefined);
+  function onChangeEndDate(event: Event): void {
+    const newValue = (event.target as HTMLInputElement).value;
+    if (newValue === undefined || newValue === null) {
+      return;
+    }
 
+    const now = new Date();
+    const date = new Date(newValue);
+    console.log(date);
+    if (date.toString() == "Invalid Date") {
+      return;
+    }
+    date.setDate(now.getDate());
+
+    let months = (date.getFullYear() - now.getFullYear()) * 12;
+    months += date.getMonth() - now.getMonth();
+    if (months < 0) {
+      return;
+    }
+
+    duration = months.toString();
   }
 
   let orgName: string = $state("");
@@ -270,7 +288,7 @@
                   label: "Fixed period given as end date.",
                   hidden: true,
                 }}
-                bind:value={fixedPeriodDuration}
+                bind:value={duration}
                 judgement={{
                   isProcessing: false,
                 }}
@@ -286,10 +304,12 @@
                   label: "Fixed period given as duration",
                   hidden: true,
                 }}
-                bind:value={() => fixedPeriodEndDate, (v) => console.log(v)}
+                bind:value={() => endDate, (v) => endDate = v}
                 judgement={{
                   isProcessing: false,
+                  isGood: false,
                 }}
+                onblur={onChangeEndDate}
               />
             {/snippet}
           </LinkedControls>
@@ -301,6 +321,7 @@
         name="buyer-info"
       >
         <PickerControl
+          className="field"
           name="acc-username"
           label={{
             label: "Account",

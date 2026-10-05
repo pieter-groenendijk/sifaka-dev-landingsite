@@ -24,14 +24,14 @@
 
 
 
-<fieldset class="linked-control {className}">
+<fieldset class="linked-control control {className}">
   <legend class="linked-control__legend">
     <span class="linked-control__label control-label">{label.label}</span>
     <span class="linked-control__supplement control-supplement">{label.supplement}</span>
   </legend>
   <div class="linked-control__list">
     {@render leftControl()}
-    <span class="control__input-delimiter">or</span>
+    <span class="control__input-delimiter">=</span>
     {@render rightControl()}
   </div>
 </fieldset>

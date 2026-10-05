@@ -11,6 +11,7 @@
     label = {
       hidden: false,
     },
+    ...rest
   }: {
     className?: string,
     type: string,
@@ -28,6 +29,7 @@
       supplement?: string,
       hidden?: boolean,
     },
+    [key: string]: any,
   } = $props();
 </script>
 
@@ -49,7 +51,11 @@
     placeholder={placeholder}
     disabled={judgement.isProcessing}
     bind:value={value}
+    {...rest}
   />
+  {#if judgement.isGood !== undefined && judgement.message !== undefined}
+    <div class="control-notification" aria-live="polite">{judgement.message}</div>
+  {/if}
 </label>
 
 
@@ -57,9 +63,10 @@
 <style>
   .control {
     --text-padding-inline: var(--gap-12);
-    --color: var(--yellow);
-    --color-bad: var(--red);
-    --color-green: var(--green);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--gap-4);
   }
   .control-label {
     padding-inline: var(--text-padding-inline);

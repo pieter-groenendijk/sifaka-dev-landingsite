@@ -4,6 +4,7 @@ import "./input.css";
   import type { Snippet } from "svelte";
 
   let {
+    className,
     children,
     label,
     name,
@@ -11,6 +12,7 @@ import "./input.css";
     placeholder = "",
     judgement,
   }: {
+    className?: string,
     children?: Snippet<[]>,
     label: {
       label?: string,
@@ -35,7 +37,7 @@ import "./input.css";
 
 
 <label
-  class="picker control"
+  class="picker control {className}"
   class:picker--picked={value !== ""}
   class:control--processing={judgement.isProcessing}
   class:control--good={judgement.isGood === true}
