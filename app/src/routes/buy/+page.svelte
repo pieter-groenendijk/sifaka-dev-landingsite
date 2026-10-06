@@ -33,6 +33,7 @@
   import { licenses, type License } from "./licenses";
   import LinkedControls from "$lib/components/general/inputv2/LinkedControls.svelte";
   import { judge_HandlerCommit, judge_HandlerCreate, judge_HandlerUpdate, judge_JudgementCreate, judge_State, type judge_Handler, type judge_Judgement } from "$lib/logic/validation/validation";
+    import { onMount } from "svelte";
 
   let inspectLicenseAt: number|null = $state(null);
   let licenseAmounts: number[] = $state(new Array(licenses.length).fill(0));
@@ -60,27 +61,42 @@
 
   let stepElemIdList: string[] = [genId(), genId(), genId(), genId(), genId()];
 
-  let accUsername: string = $state("");
-  let accUsernameIsGood: boolean|undefined = $state(undefined);
-  let accUsernameMessage: string|undefined = $state(undefined);
-  function judgeUsername(): void {
-    if (accUsername.length === 0) {
-      accUsernameIsGood = false;
-      accUsernameMessage = "Required";
+
+  let usernameHandler = $state(judge_HandlerCreate<string>((judgement, value) => {
+    if (value.length === 0) {
+      console.log("bad");
+      judgement.State = judge_State.Bad;
+      judgement.Message = "Required";
       return;
     }
 
-    accUsernameIsGood = true;
-    accUsernameMessage = undefined;
-  }
+    judgement.State = judge_State.Good;
+    judgement.Message = "";
+  }, ""));
 
-  const individualBuyer = "individual";
-  const organizationBuyer = "organization";
-  let buyer: string|undefined = $state(organizationBuyer);
+  let ownerHandler = $state(judge_HandlerCreate<"individual" | "organization">((judgement, value) => {
+    if (value.length === 0) {
+      judgement.State = judge_State.Bad;
+      judgement.Message = "Required";
+      return;
+    }
 
-  let period: "fixed"|"auto-renew"|undefined = $state("fixed");
-  let periodJudgement: judge_Judgement = $state(judge_JudgementCreate());
+    judgement.State = judge_State.Good;
+    judgement.Message = "";
+  }, "organization"))
 
+  let periodHandler = $state(judge_HandlerCreate<"fixed"|"auto-renew">((judgement, value) => {
+    if (value.length === 0) {
+      judgement.State = judge_State.Bad;
+      judgement.Message = "Required";
+      return;
+    }
+
+    judgement.State = judge_State.Good;
+    judgement.Message = "";
+  }, "fixed"));
+
+  let fixedPeriodJudgement = $state(judge_JudgementCreate());
 
   let durationHandler = $state(judge_HandlerCreate<string|null>((judgement, value) => {
     console.log("judge duration");
@@ -88,38 +104,38 @@
     judgement.Message = "";
 
     if (value === null || value.length === 0) {
-      periodJudgement.State = judge_State.Bad;
-      periodJudgement.Message = "Required";
+      fixedPeriodJudgement.State = judge_State.Bad;
+      fixedPeriodJudgement.Message = "Required";
       return;
     }
 
     const valueAsNumber = Number.parseFloat(value);
     if (Number.isNaN(valueAsNumber)) {
-      periodJudgement.State = judge_State.Bad;
-      periodJudgement.Message = "Duration must be a number";
+      fixedPeriodJudgement.State = judge_State.Bad;
+      fixedPeriodJudgement.Message = "Duration must be a number";
       return;
     }
 
     if (valueAsNumber <= 0) {
-      periodJudgement.State = judge_State.Bad;
-      periodJudgement.Message = "Duration must be a positive number";
+      fixedPeriodJudgement.State = judge_State.Bad;
+      fixedPeriodJudgement.Message = "Duration must be a positive number";
       return;
     }
 
     if (Math.floor(valueAsNumber) !== valueAsNumber) {
-      periodJudgement.State = judge_State.Bad;
-      periodJudgement.Message = "Duration must be a whole number";
+      fixedPeriodJudgement.State = judge_State.Bad;
+      fixedPeriodJudgement.Message = "Duration must be a whole number";
       return;
     }
 
     if (valueAsNumber > 12) {
-      periodJudgement.State = judge_State.Bad;
-      periodJudgement.Message = "Fixed periods of more than a year aren't offered. Consider an automatically renewed period instead!";
+      fixedPeriodJudgement.State = judge_State.Bad;
+      fixedPeriodJudgement.Message = "Fixed periods of more than a year aren't offered. Consider an automatically renewed period instead!";
       return;
     }
 
-    periodJudgement.State = judge_State.Good;
-    periodJudgement.Message = "";
+    fixedPeriodJudgement.State = judge_State.Good;
+    fixedPeriodJudgement.Message = "";
   }, "1"));
 
   function judgeEndDate(judgement: judge_Judgement, value: string) {
@@ -263,7 +279,6 @@
     judgement.State = judge_State.Good;
     judgement.Message = "";
   }, ""));
-
 </script>
 
 
@@ -395,29 +410,29 @@
         <SwitchControl
           className="field"
           name="period-type"
+          label={{
+            label: "Period",
+            supplement: "A fixed period specifies the number of active months. An auto-renewed period remains active until cancelled."
+          }}
           options={{
             list: [
               {key: "Fixed", value: "fixed"},
               {key: "Auto-renewed", value: "auto-renew"},
             ],
           }}
-          bind:value={period}
-          label={{
-            label: "Period",
-            supplement: "A fixed period specifies the number of active months. An auto-renewed period remains active until cancelled."
-          }}
-          judgement={{
-            isProcessing: false,
-          }}
+          bind:value={periodHandler.Value}
+          judgement={periodHandler.Judgement}
+          oninput={() => judge_HandlerUpdate(periodHandler)}
+          onchange={() => judge_HandlerCommit(periodHandler)}
         />
 
-        {#if period === "fixed"}
+        {#if periodHandler.Value === "fixed"}
           <LinkedControls
             className="field"
             label={{
               label: "Duration / End Date",
             }}
-            judgement={periodJudgement}
+            judgement={fixedPeriodJudgement}
           >
             {#snippet leftControl()}
               <TextControl
@@ -433,6 +448,7 @@
                 judgement={durationHandler.Judgement}
                 oninput={() => judge_HandlerUpdate(durationHandler)}
                 onchange={() => judge_HandlerCommit(durationHandler)}
+                onblur={() => judge_HandlerCommit(durationHandler)}
               />
             {/snippet}
             {#snippet rightControl()}
@@ -464,18 +480,21 @@
           label={{
             label: "Account",
             supplement: "Licenses being purchased will be coupled to the currently logged in account. ",
-            picker: accUsername === "" ? "Log in / Sign up" : "Change Account",
+            picker: usernameHandler.Value === "" ? "Log in / Sign up" : "Change Account",
           }}
-          bind:value={accUsername}
+          bind:value={usernameHandler.Value}
           placeholder="No account chosen"
-          judgement={{
-            isProcessing: false,
+          judgement={usernameHandler.Judgement}
+          inputAttr={{
+            "onblur": () => judge_HandlerCommit(usernameHandler),
+          }}
+          buttonAttr={{
+            "onblur": () => judge_HandlerCommit(usernameHandler),
           }}
         />
         <SwitchControl
           className="field"
-          bind:value={buyer}
-          name="buyer-type"
+          name="owner"
           label={{
             label: "Owner",
             supplement: "Purchasing for yourself or on the behalf of an organization."
@@ -484,22 +503,21 @@
             list: [
               {
                 key: "Individual",
-                value: individualBuyer,
+                value: "individual",
               },
               {
                 key: "Organization",
-                value: organizationBuyer,
+                value: "organization",
               }
             ],
           }}
-          judgement={{
-            isProcessing: false,
-          }}
-          selectAttr={{
-            "aria-owns": "fieldset--organization-buyer fieldset--buyer-placeholder"
-          }}
+          bind:value={ownerHandler.Value}
+          judgement={ownerHandler.Judgement}
+          oninput={() => judge_HandlerUpdate(ownerHandler)}
+          onchange={() => judge_HandlerCommit(ownerHandler)}
+          aria-owns="fieldset--organization-buyer fieldset--buyer-placeholder"
         />
-        {#if buyer === organizationBuyer}
+        {#if ownerHandler.Value === "organization"}
           <fieldset id="fieldset--organization-buyer" name="organization">
             <TextControl
               className="field field--org-name"
@@ -598,7 +616,7 @@
               />
             </div>
           </fieldset>
-        {:else if buyer !== individualBuyer}
+        {:else if ownerHandler.Value !== "individual"}
           <SupNote id="fieldset--buyer-placeholder">Please select whether you're buying for yourself or an organization to continue...</SupNote>
         {/if}
       </fieldset>

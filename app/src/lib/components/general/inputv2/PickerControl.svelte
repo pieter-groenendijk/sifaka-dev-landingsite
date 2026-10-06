@@ -1,5 +1,6 @@
 <script lang="ts">
   import { genId } from "$lib/logic/id/id";
+    import { judge_IsDetermined, judge_State, type judge_Judgement } from "$lib/logic/validation/validation";
 import "./input.css";
   import type { Snippet } from "svelte";
 
@@ -11,6 +12,8 @@ import "./input.css";
     value = $bindable(),
     placeholder = "",
     judgement,
+    inputAttr,
+    buttonAttr,
   }: {
     className?: string,
     children?: Snippet<[]>,
@@ -23,12 +26,13 @@ import "./input.css";
     name: string,
     value: string,
     placeholder?: string,
-    judgement: {
-      judge?: (() => {}),
-      isProcessing: boolean,
-      isGood?: boolean,
-      message?: string,
-    },
+    judgement: judge_Judgement,
+    inputAttr?: {
+      [name: string]: unknown,
+    }
+    buttonAttr?: {
+      [name: string]: unknown,
+    }
   } = $props();
 
   const buttonId = genId();
@@ -38,29 +42,34 @@ import "./input.css";
 
 <label
   class="picker control {className}"
+
+  class:control--pending={judgement.State === judge_State.Pending}
+  class:control--good={judgement.State === judge_State.Good}
+  class:control--bad={judgement.State === judge_State.Bad}
+
   class:picker--picked={value !== ""}
-  class:control--processing={judgement.isProcessing}
-  class:control--good={judgement.isGood === true}
-  class:control--bad={judgement.isGood === false}
   class:control--label-hidden={label.hidden}
   for={buttonId}
 >
+
   <div class="picker__label control-label">{label.label}</div>
   <div class="picker__supplement control-supplement">{label.supplement}</div>
+
   <div class="picker__interactive">
     <div class="picker__value-wrapper control-value">
       <span class="picker__value-symbol" aria-hidden="true">⚯ </span>
       <input
+        {...inputAttr}
         id="account-username-input"
         class="picker__value control-value"
         type="text"
         name={name}
-        readonly
         bind:value={value}
         placeholder={placeholder}
       />
     </div>
     <button
+      {...buttonAttr}
       id={buttonId}
       type="button"
       class="picker__picker"
@@ -68,6 +77,15 @@ import "./input.css";
       onclick={() => value = "Compjeuter"}
     >{label.picker ?? "Change"}</button>
   </div>
+
+  {#if judge_IsDetermined(judgement) && judgement.Message.length !== 0}
+    <div
+      class="control-feedback"
+
+      aria-live="polite"
+    >{judgement.Message}</div>
+  {/if}
+
 </label>
 
 
@@ -147,5 +165,9 @@ import "./input.css";
     text-shadow: 0px 0px 0px rgb(from var(--brown) r g b / 0.3);
     border-radius: var(--gap-12);
     color: var(--brown);
+  }
+  .control-feedback {
+    margin-top: var(--gap-4);
+    padding-inline: var(--text-padding-inline);
   }
 </style>

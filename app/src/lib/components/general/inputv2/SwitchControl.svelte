@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { judge_IsDetermined, judge_State, type judge_Judgement } from "$lib/logic/validation/validation";
   import "./input.css";
 
   let {
@@ -8,7 +9,7 @@
     options,
     judgement,
     label,
-    selectAttr: selectAttr,
+    ...rest
   }: {
     className?: string,
     name: string,
@@ -19,20 +20,13 @@
         value: string,
       }[],
     },
-    judgement: {
-      judge?: (() => {}),
-      isProcessing: boolean,
-      isGood?: boolean,
-      message?: string,
-    },
+    judgement: judge_Judgement,
     label: {
       label?: string,
       supplement?: string,
       hidden?: boolean,
     },
-    selectAttr?: {
-      [name: string]: string,
-    }
+    [name: string]: unknown,
   } = $props();
 </script>
 
@@ -41,18 +35,22 @@
 
 <label
   class="control toggle {className}"
-  class:control--processing={judgement.isProcessing}
-  class:control--good={judgement.isGood === true}
-  class:control--bad={judgement.isGood === false}
+
+  class:control--pending={judgement.State === judge_State.Pending}
+  class:control--good={judgement.State === judge_State.Good}
+  class:control--bad={judgement.State === judge_State.Bad}
+
   class:control--label-hidden={label.hidden}
 >
+
   <div class="control-label">{label.label}</div>
   <div class="control-supplement">{label.supplement}</div>
+
   <select
     class="toggle__select"
     size="2"
     bind:value={value}
-    {...selectAttr}
+    {...rest}
   >
     {#each options.list as option}
       <option
@@ -61,6 +59,15 @@
       >{option.key}</option>
     {/each}
   </select>
+
+  {#if judge_IsDetermined(judgement) && judgement.Message.length !== 0}
+    <div
+      class="control-feedback"
+
+      aria-live="polite"
+    >{judgement.Message}</div>
+  {/if}
+
 </label>
 
 
