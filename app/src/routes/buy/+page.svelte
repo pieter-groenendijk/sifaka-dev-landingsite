@@ -19,9 +19,9 @@
 - TODO: Swap yellow and light colors maybe?
 - TODO: Validation
 - TODO: Backend integration? Or just paddle stuff
-- TODO: End date: one month duration, i.e. 31 days, or next month by name, i.e. month after january 4 is februari 4.
 - TODO: Standardize for browsers
 - TODO: Select for countries
+- TODO: Add required markings
 -->
 <script lang="ts">
   import PickerControl from "$lib/components/general/inputv2/PickerControl.svelte";
@@ -174,108 +174,94 @@
     console.log(durationHandler.Value);
   }
 
-  let orgNameHandler = $state(judge_HandlerCreate<string>((handler) => {
-    const value = handler.Value;
-
+  let orgNameHandler = $state(judge_HandlerCreate<string>((judgement, value) => {
     if (value.length === 0) {
-      handler.State = judge_State.Bad;
-      handler.Message = "Required";
+      judgement.State = judge_State.Bad;
+      judgement.Message = "Required";
       return;
     }
 
     if (value.length > 200) {
-      handler.State = judge_State.Bad;
-      handler.Message = "Maximum of 200 characters";
+      judgement.State = judge_State.Bad;
+      judgement.Message = "Maximum of 200 characters";
       return;
     }
 
-    handler.State = judge_State.Good;
-    handler.Message = "";
+    judgement.State = judge_State.Good;
+    judgement.Message = "";
   }, ""));
 
-  let orgVATHandler = $state(judge_HandlerCreate<string>((handler) => {
-    const value = handler.Value;
-
+  let orgVATHandler = $state(judge_HandlerCreate<string>((judgement, value) => {
     if (value.length === 0) {
-      handler.State = judge_State.Bad;
-      handler.Message = "Required";
+      judgement.State = judge_State.Bad;
+      judgement.Message = "Required";
       return;
     }
 
     // Very permissive check, normally 15 + 2 characters at the most according to Wikipedia, checked by 3rd party later anyways.
     if (value.length >= 30) {
-      handler.State = judge_State.Bad;
-      handler.Message = "Enter a valid VAT number";
+      judgement.State = judge_State.Bad;
+      judgement.Message = "Enter a valid VAT number";
       return;
     }
 
-    handler.State = judge_State.Good;
-    handler.Message = "";
+    judgement.State = judge_State.Good;
+    judgement.Message = "";
   }, ""));
 
-  let orgCountryHandler = $state(judge_HandlerCreate<string>((handler) => {
-    const value = handler.Value;
-
+  let orgCountryHandler = $state(judge_HandlerCreate<string>((judgement, value) => {
     if (value.length === 0) {
-      handler.State = judge_State.Bad;
-      handler.Message = "Required";
+      judgement.State = judge_State.Bad;
+      judgement.Message = "Required";
       return;
     }
 
-    handler.State = judge_State.Good;
-    handler.Message = "";
+    judgement.State = judge_State.Good;
+    judgement.Message = "";
   }, ""));
 
-  let orgStateHandler = $state(judge_HandlerCreate<string>((handler) => {
-    const value = handler.Value;
-
+  let orgStateHandler = $state(judge_HandlerCreate<string>((judgement, value) => {
     if (value.length === 0) {
-      handler.State = judge_State.Bad;
-      handler.Message = "Required";
+      judgement.State = judge_State.Bad;
+      judgement.Message = "Required";
       return;
     }
 
-    handler.State = judge_State.Good;
-    handler.Message = "";
+    judgement.State = judge_State.Good;
+    judgement.Message = "";
   }, ""));
 
-  let orgCityHandler = $state(judge_HandlerCreate<string>((handler) => {
-    const value = handler.Value;
-
+  let orgCityHandler = $state(judge_HandlerCreate<string>((judgement, value) => {
     if (value.length === 0) {
-      handler.State = judge_State.Bad;
-      handler.Message = "Required";
+      judgement.State = judge_State.Bad;
+      judgement.Message = "Required";
       return;
     }
 
-    handler.State = judge_State.Good;
-    handler.Message = "";
+    judgement.State = judge_State.Good;
+    judgement.Message = "";
   }, ""));
 
-  let orgStreetHandler = $state(judge_HandlerCreate<string>((handler) => {
-    const value = handler.Value;
-
+  let orgStreetHandler = $state(judge_HandlerCreate<string>((judgement, value) => {
     if (value.length === 0) {
-      handler.State = judge_State.Bad;
-      handler.Message = "Required";
+      judgement.State = judge_State.Bad;
+      judgement.Message = "Required";
       return;
     }
 
-    handler.State = judge_State.Good;
-    handler.Message = "";
+    judgement.State = judge_State.Good;
+    judgement.Message = "";
   }, ""));
 
-  let orgPostcodeHandler = $state(judge_HandlerCreate<string>((handler) => {
-    const value = handler.Value;
-
+  let orgPostcodeHandler = $state(judge_HandlerCreate<string>((judgement, value) => {
     if (value.length === 0) {
-      handler.State = judge_State.Bad;
-      handler.Message = "Required";
+      judgement.State = judge_State.Bad;
+      judgement.Message = "Required";
       return;
     }
 
-    handler.State = judge_State.Good;
-    handler.Message = "";
+    judgement.State = judge_State.Good;
+    judgement.Message = "";
   }, ""));
 
 </script>
@@ -515,7 +501,7 @@
         />
         {#if buyer === organizationBuyer}
           <fieldset id="fieldset--organization-buyer" name="organization">
-            <!-- <TextControl
+            <TextControl
               className="field field--org-name"
               type="text"
               name="org-name"
@@ -523,7 +509,8 @@
               label={{
                 label: "Organization name"
               }}
-              bind:judgeHandler={orgNameHandler}
+              bind:value={orgNameHandler.Value}
+              judgement={orgNameHandler.Judgement}
               oninput={() => judge_HandlerUpdate(orgNameHandler)}
               onchange={() => judge_HandlerCommit(orgNameHandler)}
             />
@@ -535,13 +522,14 @@
               label={{
                 label: "VAT number"
               }}
-              bind:judgeHandler={orgVATHandler}
+              bind:value={orgVATHandler.Value}
+              judgement={orgVATHandler.Judgement}
               oninput={() => judge_HandlerUpdate(orgVATHandler)}
               onchange={() => judge_HandlerCommit(orgVATHandler)}
-            /> -->
+            />
             <!-- Make a traditional select -->
             <div class="address-generic">
-              <!-- <TextControl
+              <TextControl
                 className="field field--org-country"
                 type="text"
                 name="org-country"
@@ -549,7 +537,8 @@
                 label={{
                   label: "Country"
                 }}
-                bind:judgeHandler={orgCountryHandler}
+                bind:value={orgCountryHandler.Value}
+                judgement={orgCountryHandler.Judgement}
                 oninput={() => judge_HandlerUpdate(orgCountryHandler)}
                 onchange={() => judge_HandlerCommit(orgCountryHandler)}
               />
@@ -561,13 +550,14 @@
                 label={{
                   label: "State/County"
                 }}
-                bind:judgeHandler={orgStateHandler}
+                bind:value={orgStateHandler.Value}
+                judgement={orgStateHandler.Judgement}
                 oninput={() => judge_HandlerUpdate(orgStateHandler)}
                 onchange={() => judge_HandlerCommit(orgStateHandler)}
-              /> -->
+              />
             </div>
             <div class="address-specific">
-              <!-- <TextControl
+              <TextControl
                 className="field field--org-city"
                 type="text"
                 name="org-city"
@@ -575,7 +565,8 @@
                 label={{
                   label: "City/Town"
                 }}
-                bind:judgeHandler={orgCityHandler}
+                bind:value={orgCityHandler.Value}
+                judgement={orgCityHandler.Judgement}
                 oninput={() => judge_HandlerUpdate(orgCityHandler)}
                 onchange={() => judge_HandlerCommit(orgCityHandler)}
               />
@@ -587,7 +578,8 @@
                 label={{
                   label: "Street"
                 }}
-                bind:judgeHandler={orgStreetHandler}
+                bind:value={orgStreetHandler.Value}
+                judgement={orgStreetHandler.Judgement}
                 oninput={() => judge_HandlerUpdate(orgStreetHandler)}
                 onchange={() => judge_HandlerCommit(orgStreetHandler)}
               />
@@ -599,10 +591,11 @@
                 label={{
                   label: "Postcode"
                 }}
-                bind:judgeHandler={orgPostcodeHandler}
+                bind:value={orgPostcodeHandler.Value}
+                judgement={orgPostcodeHandler.Judgement}
                 oninput={() => judge_HandlerUpdate(orgPostcodeHandler)}
                 onchange={() => judge_HandlerCommit(orgPostcodeHandler)}
-              /> -->
+              />
             </div>
           </fieldset>
         {:else if buyer !== individualBuyer}
