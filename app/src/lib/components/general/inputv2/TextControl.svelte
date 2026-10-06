@@ -1,13 +1,14 @@
 <script lang="ts" generics="value extends judge_Value">
-  import { judge_State, judge_HandlerIsDetermined, type judge_Handler, type judge_Value } from "$lib/logic/validation/validation";
+  import { judge_State, judge_IsDetermined, type judge_Handler, type judge_Value, type judge_Judgement } from "$lib/logic/validation/validation";
   import "./input.css";
 
   let {
     className,
     type,
     name,
+    value = $bindable(),
     placeholder,
-    judgeHandler = $bindable(),
+    judgement,
     label = {
       hidden: false,
     },
@@ -18,7 +19,7 @@
     name: string,
     value?: value,
     placeholder: string,
-    judgeHandler: judge_Handler<value>,
+    judgement: judge_Judgement,
     label: {
       label?: string,
       supplement?: string,
@@ -33,9 +34,9 @@
 <label
   class="control text-input {className}"
 
-  class:control--pending={judgeHandler.State === judge_State.Pending}
-  class:control--good={judgeHandler.State === judge_State.Good}
-  class:control--bad={judgeHandler.State === judge_State.Bad}
+  class:control--pending={judgement.State === judge_State.Pending}
+  class:control--good={judgement.State === judge_State.Good}
+  class:control--bad={judgement.State === judge_State.Bad}
 
   class:control--label-hidden={label.hidden}
 >
@@ -47,16 +48,16 @@
     type={type}
     name={name}
     placeholder={placeholder}
-    bind:value={judgeHandler.Value}
+    bind:value={value}
     {...rest}
   />
 
-  {#if judge_HandlerIsDetermined(judgeHandler) && judgeHandler.Message.length !== 0}
+  {#if judge_IsDetermined(judgement) && judgement.Message.length !== 0}
     <div
       class="control-feedback"
 
       aria-live="polite"
-    >{judgeHandler.Message}</div>
+    >{judgement.Message}</div>
   {/if}
 
 </label>
@@ -82,7 +83,6 @@
       filter: invert(.8);
     }
   }
-
   .control-feedback {
     padding-inline: var(--text-padding-inline);
   }

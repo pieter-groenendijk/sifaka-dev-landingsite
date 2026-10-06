@@ -21,6 +21,7 @@
 - TODO: Backend integration? Or just paddle stuff
 - TODO: End date: one month duration, i.e. 31 days, or next month by name, i.e. month after january 4 is februari 4.
 - TODO: Standardize for browsers
+- TODO: Select for countries
 -->
 <script lang="ts">
   import PickerControl from "$lib/components/general/inputv2/PickerControl.svelte";
@@ -31,7 +32,7 @@
   import { pageBgClr } from "../+layout.svelte";
   import { licenses, type License } from "./licenses";
   import LinkedControls from "$lib/components/general/inputv2/LinkedControls.svelte";
-  import { judge_HandlerCommit, judge_HandlerCreate, judge_HandlerUpdate, judge_State } from "$lib/logic/validation/validation";
+  import { judge_HandlerCommit, judge_HandlerCreate, judge_HandlerUpdate, judge_JudgementCreate, judge_State, type judge_Handler, type judge_Judgement } from "$lib/logic/validation/validation";
 
   let inspectLicenseAt: number|null = $state(null);
   let licenseAmounts: number[] = $state(new Array(licenses.length).fill(0));
@@ -78,19 +79,63 @@
   let buyer: string|undefined = $state(organizationBuyer);
 
   let period: "fixed"|"auto-renew"|undefined = $state("fixed");
-  let duration: string|undefined = $state("0");
-  function toDateString(year: number, month: number, day: number): string {
-    return `${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+  let periodJudgement: judge_Judgement = $state(judge_JudgementCreate());
+
+
+  let durationHandler = $state(judge_HandlerCreate<string|null>((judgement, value) => {
+    console.log("judge duration");
+    judgement.State = judge_State.Undetermined;
+    judgement.Message = "";
+
+    if (value === null || value.length === 0) {
+      periodJudgement.State = judge_State.Bad;
+      periodJudgement.Message = "Required";
+      return;
+    }
+
+    const valueAsNumber = Number.parseFloat(value);
+    if (Number.isNaN(valueAsNumber)) {
+      periodJudgement.State = judge_State.Bad;
+      periodJudgement.Message = "Duration must be a number";
+      return;
+    }
+
+    if (valueAsNumber <= 0) {
+      periodJudgement.State = judge_State.Bad;
+      periodJudgement.Message = "Duration must be a positive number";
+      return;
+    }
+
+    if (Math.floor(valueAsNumber) !== valueAsNumber) {
+      periodJudgement.State = judge_State.Bad;
+      periodJudgement.Message = "Duration must be a whole number";
+      return;
+    }
+
+    if (valueAsNumber > 12) {
+      periodJudgement.State = judge_State.Bad;
+      periodJudgement.Message = "Fixed periods of more than a year aren't offered. Consider an automatically renewed period instead!";
+      return;
+    }
+
+    periodJudgement.State = judge_State.Good;
+    periodJudgement.Message = "";
+  }, "1"));
+
+  function judgeEndDate(judgement: judge_Judgement, value: string) {
+    judgement.State = judge_State.Undetermined;
+    judgement.Message = "";
   }
+  let endDateHandler = $derived.by(() => {
+    const duration = durationHandler.Value;
+    console.log("update end date");
 
-
-  let endDate: string|undefined = $derived.by(() => {
-    if (duration === undefined || duration === null || duration.length === 0) {
-      return undefined;
+    if (duration === null || duration.length === 0) {
+      return judge_HandlerCreate<string>(judgeEndDate, "");
     }
     const _duration = Number.parseFloat(duration);
     if (_duration < 0) {
-      return undefined;
+      return judge_HandlerCreate<string>(judgeEndDate, "");
     }
 
     const now = new Date();
@@ -99,30 +144,34 @@
     const month = (now.getMonth() + _duration) % 12 + 1;
     const day = now.getDate();
 
-    return `${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+    return judge_HandlerCreate<string>(
+      judgeEndDate,
+      `${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`,
+    );
   });
-  let endDateIsGood: boolean|undefined = $state(undefined);
-  let endDateMessage: string|undefined = $state(undefined);
-  function onChangeEndDate(event: Event): void {
+  function setEndDate(event: Event): void {
     const newValue = (event.target as HTMLInputElement).value;
     if (newValue === undefined || newValue === null) {
+      durationHandler.Value = "";
+      judge_HandlerCommit(durationHandler);
       return;
     }
 
     const now = new Date();
     const date = new Date(newValue);
     if (date.toString() == "Invalid Date") {
+      durationHandler.Value = "";
+      judge_HandlerCommit(durationHandler);
       return;
     }
     date.setDate(now.getDate());
 
     let months = (date.getFullYear() - now.getFullYear()) * 12;
     months += date.getMonth() - now.getMonth();
-    if (months < 0) {
-      return;
-    }
 
-    duration = months.toString();
+    durationHandler.Value = months.toString();
+    judge_HandlerCommit(durationHandler);
+    console.log(durationHandler.Value);
   }
 
   let orgNameHandler = $state(judge_HandlerCreate<string>((handler) => {
@@ -144,97 +193,90 @@
     handler.Message = "";
   }, ""));
 
-  let orgVAT: string = $state("");
-  let orgVATIsGood: boolean|undefined = $state(undefined);
-  let orgVATMessage: string|undefined = $state(undefined);
-  function judgeOrgVAT(): void {
-    if (orgVAT.length === 0) {
-      orgVATIsGood = false;
-      orgVATMessage = "Required";
+  let orgVATHandler = $state(judge_HandlerCreate<string>((handler) => {
+    const value = handler.Value;
+
+    if (value.length === 0) {
+      handler.State = judge_State.Bad;
+      handler.Message = "Required";
       return;
     }
 
     // Very permissive check, normally 15 + 2 characters at the most according to Wikipedia, checked by 3rd party later anyways.
-    if (orgVAT.length >= 30) {
-      orgVATIsGood = false;
-      orgVATMessage = "Enter a valid VAT number";
+    if (value.length >= 30) {
+      handler.State = judge_State.Bad;
+      handler.Message = "Enter a valid VAT number";
       return;
     }
 
-    orgVATIsGood = true;
-    orgVATMessage = undefined;
-  }
+    handler.State = judge_State.Good;
+    handler.Message = "";
+  }, ""));
 
-  let orgCountry: string = $state("");
-  let orgCountryIsGood: boolean|undefined = $state(undefined);
-  let orgCountryMessage: string|undefined = $state(undefined);
-  function judgeOrgCountry(): void {
-    if (orgCountry.length === 0) {
-      orgCountryIsGood = false;
-      orgCountryMessage = "Required";
+  let orgCountryHandler = $state(judge_HandlerCreate<string>((handler) => {
+    const value = handler.Value;
+
+    if (value.length === 0) {
+      handler.State = judge_State.Bad;
+      handler.Message = "Required";
       return;
     }
 
-    // TODO: Check in list
-    orgCountryIsGood = true;
-    orgCountryMessage = undefined;
-  }
+    handler.State = judge_State.Good;
+    handler.Message = "";
+  }, ""));
 
-  let orgState: string = $state("");
-  let orgStateIsGood: boolean|undefined = $state(undefined);
-  let orgStateMessage: string|undefined = $state(undefined);
-  function judgeOrgState(): void {
-    if (orgState.length === 0) {
-      orgStateIsGood = false;
-      orgStateMessage = "Required";
+  let orgStateHandler = $state(judge_HandlerCreate<string>((handler) => {
+    const value = handler.Value;
+
+    if (value.length === 0) {
+      handler.State = judge_State.Bad;
+      handler.Message = "Required";
       return;
     }
 
-    orgStateIsGood = true;
-    orgStateMessage = undefined;
-  }
+    handler.State = judge_State.Good;
+    handler.Message = "";
+  }, ""));
 
-  let orgCity: string = $state("");
-  let orgCityIsGood: boolean|undefined = $state(undefined);
-  let orgCityMessage: string|undefined = $state(undefined);
-  function judgeOrgCity(): void {
-    if (orgCity.length === 0) {
-      orgCityIsGood = false;
-      orgCityMessage = "Required";
+  let orgCityHandler = $state(judge_HandlerCreate<string>((handler) => {
+    const value = handler.Value;
+
+    if (value.length === 0) {
+      handler.State = judge_State.Bad;
+      handler.Message = "Required";
       return;
     }
 
-    orgCityIsGood = true;
-    orgCityMessage = undefined;
-  }
+    handler.State = judge_State.Good;
+    handler.Message = "";
+  }, ""));
 
-  let orgStreet: string = $state("");
-  let orgStreetIsGood: boolean|undefined = $state(undefined);
-  let orgStreetMessage: string|undefined = $state(undefined);
-  function judgeOrgStreet(): void {
-    if (orgStreet.length === 0) {
-      orgStreetIsGood = false;
-      orgStreetMessage = "Required";
+  let orgStreetHandler = $state(judge_HandlerCreate<string>((handler) => {
+    const value = handler.Value;
+
+    if (value.length === 0) {
+      handler.State = judge_State.Bad;
+      handler.Message = "Required";
       return;
     }
 
-    orgStreetIsGood = true;
-    orgStreetMessage = undefined;
-  }
+    handler.State = judge_State.Good;
+    handler.Message = "";
+  }, ""));
 
-  let orgPostcode: string = $state("");
-  let orgPostcodeIsGood: boolean|undefined = $state(undefined);
-  let orgPostcodeMessage: string|undefined = $state(undefined);
-  function judgeOrgPostcode(): void {
-    if (orgPostcode.length === 0) {
-      orgPostcodeIsGood = false;
-      orgPostcodeMessage = "Required";
+  let orgPostcodeHandler = $state(judge_HandlerCreate<string>((handler) => {
+    const value = handler.Value;
+
+    if (value.length === 0) {
+      handler.State = judge_State.Bad;
+      handler.Message = "Required";
       return;
     }
 
-    orgPostcodeIsGood = true;
-    orgPostcodeMessage = undefined;
-  }
+    handler.State = judge_State.Good;
+    handler.Message = "";
+  }, ""));
 
 </script>
 
@@ -389,10 +431,11 @@
             label={{
               label: "Duration / End Date",
             }}
+            judgement={periodJudgement}
           >
             {#snippet leftControl()}
-              <!-- <TextControl
-                className="control--duration"
+              <TextControl
+                className="field--duration"
                 name="duration"
                 type="number"
                 placeholder=""
@@ -400,15 +443,15 @@
                   label: "Fixed period given as end date.",
                   hidden: true,
                 }}
-                bind:value={duration}
-                judgement={{
-                  isProcessing: false,
-                }}
-              /> -->
+                bind:value={durationHandler.Value}
+                judgement={durationHandler.Judgement}
+                oninput={() => judge_HandlerUpdate(durationHandler)}
+                onchange={() => judge_HandlerCommit(durationHandler)}
+              />
             {/snippet}
             {#snippet rightControl()}
-              <!-- <TextControl
-                className="control--end-date"
+              <TextControl
+                className="field--end-date"
                 name="end-date"
                 type="date"
                 placeholder=""
@@ -416,13 +459,10 @@
                   label: "Fixed period given as duration",
                   hidden: true,
                 }}
-                bind:value={() => endDate, (v) => endDate = v}
-                judgement={{
-                  isProcessing: false,
-                  isGood: false,
-                }}
-                onblur={onChangeEndDate}
-              /> -->
+                value={endDateHandler.Value}
+                judgement={endDateHandler.Judgement}
+                onchange={setEndDate}
+              />
             {/snippet}
           </LinkedControls>
         {/if}
@@ -475,7 +515,7 @@
         />
         {#if buyer === organizationBuyer}
           <fieldset id="fieldset--organization-buyer" name="organization">
-            <TextControl
+            <!-- <TextControl
               className="field field--org-name"
               type="text"
               name="org-name"
@@ -487,7 +527,7 @@
               oninput={() => judge_HandlerUpdate(orgNameHandler)}
               onchange={() => judge_HandlerCommit(orgNameHandler)}
             />
-            <!-- <TextControl
+            <TextControl
               className="field field--org-vat"
               type="text"
               name="org-vat"
@@ -495,11 +535,10 @@
               label={{
                 label: "VAT number"
               }}
-              bind:value={orgVAT}
-              judgement={{
-                isProcessing: false,
-              }}
-              /> -->
+              bind:judgeHandler={orgVATHandler}
+              oninput={() => judge_HandlerUpdate(orgVATHandler)}
+              onchange={() => judge_HandlerCommit(orgVATHandler)}
+            /> -->
             <!-- Make a traditional select -->
             <div class="address-generic">
               <!-- <TextControl
@@ -510,11 +549,10 @@
                 label={{
                   label: "Country"
                 }}
-                bind:value={orgCountry}
-                judgement={{
-                  isProcessing: false,
-                }}
-                />
+                bind:judgeHandler={orgCountryHandler}
+                oninput={() => judge_HandlerUpdate(orgCountryHandler)}
+                onchange={() => judge_HandlerCommit(orgCountryHandler)}
+              />
               <TextControl
                 className="field field--org-state"
                 type="text"
@@ -523,11 +561,10 @@
                 label={{
                   label: "State/County"
                 }}
-                bind:value={orgState}
-                judgement={{
-                  isProcessing: false,
-                }}
-                /> -->
+                bind:judgeHandler={orgStateHandler}
+                oninput={() => judge_HandlerUpdate(orgStateHandler)}
+                onchange={() => judge_HandlerCommit(orgStateHandler)}
+              /> -->
             </div>
             <div class="address-specific">
               <!-- <TextControl
@@ -538,11 +575,10 @@
                 label={{
                   label: "City/Town"
                 }}
-                bind:value={orgCity}
-                judgement={{
-                  isProcessing: false,
-                }}
-                />
+                bind:judgeHandler={orgCityHandler}
+                oninput={() => judge_HandlerUpdate(orgCityHandler)}
+                onchange={() => judge_HandlerCommit(orgCityHandler)}
+              />
               <TextControl
                 className="field field--org-street"
                 type="text"
@@ -551,11 +587,10 @@
                 label={{
                   label: "Street"
                 }}
-                bind:value={orgStreet}
-                judgement={{
-                  isProcessing: false,
-                }}
-                />
+                bind:judgeHandler={orgStreetHandler}
+                oninput={() => judge_HandlerUpdate(orgStreetHandler)}
+                onchange={() => judge_HandlerCommit(orgStreetHandler)}
+              />
               <TextControl
                 className="field field--org-postcode"
                 type="text"
@@ -564,11 +599,10 @@
                 label={{
                   label: "Postcode"
                 }}
-                bind:value={orgPostcode}
-                judgement={{
-                  isProcessing: false,
-                }}
-                /> -->
+                bind:judgeHandler={orgPostcodeHandler}
+                oninput={() => judge_HandlerUpdate(orgPostcodeHandler)}
+                onchange={() => judge_HandlerCommit(orgPostcodeHandler)}
+              /> -->
             </div>
           </fieldset>
         {:else if buyer !== individualBuyer}
@@ -714,23 +748,17 @@
   :global(.field) {
     margin-bottom: var(--gap-16);
   }
-
-  .address-generic {
-    display: flex;
-    flex-wrap: wrap;
-    column-gap: var(--gap-12);
+  :global(.field--duration) {
+    flex: 1 0 16ch;
+  }
+  :global(.field--end-date) {
+    flex: 1 0 16ch;
   }
   :global(.field--org-country) {
     flex: 1 0 16ch;
   }
   :global(.field--org-state) {
     flex: 1 0 16ch;
-  }
-
-  .address-specific {
-    display: flex;
-    flex-wrap: wrap;
-    column-gap: var(--gap-12);
   }
   :global(.field--org-city) {
     flex: 2 0 16ch;
@@ -740,6 +768,18 @@
   }
   :global(.field--org-postcode) {
     flex: 1 0 8ch;
+  }
+
+  .address-generic {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--gap-12);
+  }
+
+  .address-specific {
+    display: flex;
+    flex-wrap: wrap;
+    column-gap: var(--gap-12);
   }
 
   .header {

@@ -7,13 +7,15 @@
 .control-value {
   font-weight: 450;
   color: var(--color);
-  transition: color 300ms ease-in-out, font-weight 150ms ease-in-out;
+  transition: color 150ms ease-in-out, font-weight 150ms ease-in-out;
 }
 .control-label {
   font-size: var(--font-size-16);
 }
 .control-feedback {
   font-size: var(--font-size-14);
+  line-height: 120%;
+  text-align: justify;
 }
 .control-value {
   font-size: var(--font-size-18);
@@ -35,10 +37,9 @@
   transition:
     border-radius 150ms ease-in-out,
     outline 100ms ease-in-out,
-    outline-color 300ms ease-in-out,
     font-weight 150ms ease-in-out,
-    background-color 300ms ease-in-out,
-    color 300ms ease-in-out,
+    background-color 150ms ease-in-out,
+    color 150ms ease-in-out,
     transform 70ms ease-in-out;
 }
 .control-input {
@@ -50,38 +51,10 @@
 
 
 
-.control:hover {
-  & .control-box {
-    outline: 2px solid rgb(from var(--color) r g b / 0.8);
-    border-radius: var(--gap-12);
-  }
-}
-
-
-
-.control:focus-within {
-  &:is(.control-label, .control-feedback) {
-    font-weight: 500;
-  }
-
-  & .control-box {
-    outline: 4px solid var(--color);
-    border-radius: var(--gap-12);
-    font-weight: 500;
-  }
-}
-
-
-.control-box:active {
-  transform: scale(.98);
-}
-
 .control--label-hidden :is(.control-label, .control-supplement),
 .control :is(.control-label, .control-supplement):empty {
   display: none;
 }
-
-
 
 .control--pending {
   @keyframes blurWave {
@@ -97,9 +70,8 @@
   animation: blurWave infinite both alternate 1500ms;
 }
 
-
-
-.control--good {
+.control--good,
+.control--good .control {
   --color: #84eb8e;
 
   & .control-feedback::before {
@@ -108,13 +80,40 @@
   }
 }
 
-
-
-.control--bad {
+.control--bad,
+.control--bad .control {
   --color: #edc153;
 
   & .control-feedback::before {
     margin-right: .5ch;
     content: "❗";
   }
+
+  & .control-box {
+    background-color: rgb(from var(--color) r g b / 0.2);
+  }
+}
+
+
+.control:hover {
+  & .control-box {
+    outline: 2px solid rgb(from var(--color) r g b / 0.8);
+    border-radius: var(--gap-12);
+  }
+}
+
+.control:focus-within {
+  & :is(.control-label, .control-feedback, .control-value) {
+    font-weight: 500;
+  }
+
+  & .control-box {
+    outline: 4px solid var(--color);
+    border-radius: var(--gap-12);
+    font-weight: 500;
+  }
+}
+
+.control-box:active {
+  transform: scale(.98);
 }

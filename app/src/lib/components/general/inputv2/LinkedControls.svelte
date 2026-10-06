@@ -1,13 +1,15 @@
 <script lang="ts">
-    import type { Snippet } from "svelte";
-  import TextControl from "./TextControl.svelte";
+  import type { Snippet } from "svelte";
   import "./input.css";
+  import { judge_IsDetermined, judge_State, type judge_Judgement } from "$lib/logic/validation/validation";
 
   let {
     className,
     label = {
       hidden: false,
     },
+    judgement,
+
     leftControl,
     rightControl,
   }: {
@@ -17,6 +19,8 @@
       supplement?: string,
       hidden?: boolean,
     },
+    judgement: judge_Judgement,
+
     leftControl: Snippet,
     rightControl: Snippet,
   } = $props();
@@ -24,16 +28,32 @@
 
 
 
-<fieldset class="linked-control control {className}">
+<fieldset
+  class="linked-control control {className}"
+  class:control--pending={judgement.State === judge_State.Pending}
+  class:control--good={judgement.State === judge_State.Good}
+  class:control--bad={judgement.State === judge_State.Bad}
+>
+
   <legend class="linked-control__legend">
     <span class="linked-control__label control-label">{label.label}</span>
     <span class="linked-control__supplement control-supplement">{label.supplement}</span>
   </legend>
+
   <div class="linked-control__list">
     {@render leftControl()}
     <span class="control__input-delimiter">=</span>
     {@render rightControl()}
   </div>
+
+  {#if judge_IsDetermined(judgement) && judgement.Message.length !== 0}
+    <div
+      class="control-feedback"
+
+      aria-live="polite"
+    >{judgement.Message}</div>
+  {/if}
+
 </fieldset>
 
 
@@ -53,15 +73,14 @@
     align-items: center;
     column-gap: var(--gap-4);
   }
-  :global(.control--end-date) {
-    flex: 2 0 0;
-  }
   .control__input-delimiter {
     font-size: var(--font-size-14);
     font-weight: 450;
-    color: var(--yellow);
+    color: var(--color);
+    transition: color 150ms ease-in-out;
   }
-  :global(.control--duration) {
-    flex: 1 0 0;
+  .control-feedback {
+    margin-top: var(--gap-4);
+    padding-inline: var(--text-inline-padding);
   }
 </style>
