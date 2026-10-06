@@ -1,13 +1,13 @@
-<script lang="ts">
+<script lang="ts" generics="value extends judge_Value">
+  import { judge_State, judge_HandlerIsDetermined, type judge_Handler, type judge_Value } from "$lib/logic/validation/validation";
   import "./input.css";
 
   let {
     className,
     type,
     name,
-    value = $bindable(),
     placeholder,
-    judgement,
+    judgeHandler = $bindable(),
     label = {
       hidden: false,
     },
@@ -16,46 +16,49 @@
     className?: string,
     type: string,
     name: string,
-    value?: string,
+    value?: value,
     placeholder: string,
-    judgement: {
-      judge?: (() => {}),
-      isProcessing: boolean,
-      isGood?: boolean,
-      message?: string,
-    },
+    judgeHandler: judge_Handler<value>,
     label: {
       label?: string,
       supplement?: string,
       hidden?: boolean,
     },
-    [key: string]: any,
+    [key: string]: unknown,
   } = $props();
 </script>
 
 
 
 <label
-  class="control {className}"
-  class:control--processing={judgement.isProcessing}
-  class:control--good={judgement.isGood === true}
-  class:control--bad={judgement.isGood === false}
+  class="control text-input {className}"
+
+  class:control--pending={judgeHandler.State === judge_State.Pending}
+  class:control--good={judgeHandler.State === judge_State.Good}
+  class:control--bad={judgeHandler.State === judge_State.Bad}
+
   class:control--label-hidden={label.hidden}
 >
   <div class="control-label">{label.label}</div>
   <div class="control-supplement">{label.supplement}</div>
+
   <input
-    class="control__input control-value"
+    class="control__input control-input control-value control-box"
     type={type}
     name={name}
     placeholder={placeholder}
-    disabled={judgement.isProcessing}
-    bind:value={value}
+    bind:value={judgeHandler.Value}
     {...rest}
   />
-  {#if judgement.isGood !== undefined && judgement.message !== undefined}
-    <div class="control-notification" aria-live="polite">{judgement.message}</div>
+
+  {#if judge_HandlerIsDetermined(judgeHandler) && judgeHandler.Message.length !== 0}
+    <div
+      class="control-feedback"
+
+      aria-live="polite"
+    >{judgeHandler.Message}</div>
   {/if}
+
 </label>
 
 
@@ -74,45 +77,13 @@
   .control-supplement {
     padding-inline: var(--text-padding-inline);
   }
-  .control__input {
-    box-sizing: border-box;
-    outline: 0px solid rgb(from var(--yellow) r g b / 0);
-    border-radius: var(--gap-8);
-    padding: var(--gap-8) var(--text-padding-inline);
-    width: 100%;
-    background-color: rgb(from var(--yellow) r g b / 0.1);
-    transition:
-      border-radius 150ms ease-in-out,
-      outline 100ms ease-in-out,
-      font-weight 150ms ease-in-out,
-      transform 70ms ease-in-out;
-
+  .control-input {
     &::-webkit-calendar-picker-indicator {
       filter: invert(.8);
     }
   }
-  .control__input::placeholder {
-    font-weight: 400;
-    color: rgb(from var(--yellow) r g b / 0.5);
-  }
 
-  .control:has(.control__input:disabled) {
-    filter: blur(2px);
-    cursor: not-allowed;
-  }
-
-  .control:hover .control__input:not(:disabled) {
-    outline: 2px solid rgb(from var(--yellow) r g b / 0.8);
-    border-radius: var(--gap-12);
-  }
-
-  .control:focus-within .control__input:not(:disabled) {
-    outline: 4px solid var(--yellow);
-    border-radius: var(--gap-12);
-    font-weight: 500;
-  }
-
-  .control__input:active:not(:disabled) {
-    transform: scale(.98);
+  .control-feedback {
+    padding-inline: var(--text-padding-inline);
   }
 </style>

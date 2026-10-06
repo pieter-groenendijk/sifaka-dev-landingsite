@@ -5,28 +5,17 @@ export const enum judge_State {
   /** Determined to be good */
   Good = judge_StateDetermined,
   /** Determined to be bad. */
-  Bad,
+  Bad = judge_StateDetermined + 1,
   /** In the process of determining. */
   Pending = judge_StatePending,
   /** Scheduled to be determined. */
-  Planned,
+  Planned = judge_StatePending + 1,
   /** Not determined and not in the process of. */
   Undetermined = judge_StateUndetermined,
 }
 
-
-
-
-export interface judge_Judgement {
-  State: judge_State,
-  Message: string,
-}
-
-
-
 export type judge_Value = string | number | undefined;
-export type judge_Judger<value extends judge_Value>
-  = (judgement: judge_Judgement, value: value) => void;
+export type judge_Judger<value extends judge_Value> = (handler: judge_Handler<value>) => void;
 
 export interface judge_Handler<value extends judge_Value> {
   Value: value;
@@ -34,8 +23,8 @@ export interface judge_Handler<value extends judge_Value> {
   State: judge_State,
   Message: string,
 
-  judgeTimeoutId: number;
-  Judge: judge_Judger<value>
+  judgeTimeoutId: number,
+  Judge: judge_Judger<value>,
 }
 
 export function judge_HandlerCreate<value extends judge_Value>(judge: judge_Judger<value>, initValue: value): judge_Handler<value> {
@@ -64,20 +53,20 @@ export function judge_HandlerIsUndetermined(handler: judge_Handler<any>): boolea
 }
 
 
-function onUpdate<value extends judge_Value>(handler: judge_Handler<value>, value: value): void {
+export function judge_HandlerUpdate(handler: judge_Handler<any>): void {
   clearTimeout(handler.judgeTimeoutId);
   handler.judgeTimeoutId = setTimeout(() => {
     handler.State = judge_State.Pending;
-    handler.Judge(handler, value);
+    handler.Judge(handler);
   }, 500);
 
   handler.State = judge_State.Planned;
 }
 
-function onCommit<value extends judge_Value>(handler: judge_Handler<value>, value: value): void {
+export function judge_HandlerCommit(handler: judge_Handler<any>): void {
   clearTimeout(handler.judgeTimeoutId);
   if (!judge_HandlerIsDetermined(handler)) {
     handler.State = judge_State.Pending;
-    handler.Judge(handler, value);
+    handler.Judge(handler);
   }
 }

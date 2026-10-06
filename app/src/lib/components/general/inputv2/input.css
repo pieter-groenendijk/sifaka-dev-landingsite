@@ -1,25 +1,23 @@
 .control {
   --color: var(--yellow);
-  --color-bad: var(--red);
-  --color-green: var(--green);
   display: block;
+}
+.control-label,
+.control-feedback,
+.control-value {
+  font-weight: 450;
+  color: var(--color);
+  transition: color 300ms ease-in-out, font-weight 150ms ease-in-out;
 }
 .control-label {
   font-size: var(--font-size-16);
-  font-weight: 450;
-  color: var(--color);
-  transition: font-weight 150ms ease-in-out;
 }
-.control:focus-within .control-label {
-  font-weight: 500;
+.control-feedback {
+  font-size: var(--font-size-14);
 }
-
 .control-value {
   font-size: var(--font-size-18);
-  font-weight: 450;
-  color: var(--color);
 }
-
 .control-supplement {
   margin-bottom: var(--gap-4);
   font-size: var(--font-size-14);
@@ -27,24 +25,96 @@
   color: rgb(from var(--color) r g b / 0.8);
   text-align: justify;
 }
+.control-box {
+  box-sizing: border-box;
+  outline: 0px solid rgb(from var(--color) r g b / 0);
+  border-radius: var(--gap-8);
+  padding: var(--gap-8) var(--text-padding-inline);
+  width: 100%;
+  background-color: rgb(from var(--color) r g b / 0.1);
+  transition:
+    border-radius 150ms ease-in-out,
+    outline 100ms ease-in-out,
+    outline-color 300ms ease-in-out,
+    font-weight 150ms ease-in-out,
+    background-color 300ms ease-in-out,
+    color 300ms ease-in-out,
+    transform 70ms ease-in-out;
+}
+.control-input {
+  &::placeholder {
+    font-weight: 400;
+    color: rgb(from var(--color) r g b / 0.5);
+  }
+}
+
+
+
+.control:hover {
+  & .control-box {
+    outline: 2px solid rgb(from var(--color) r g b / 0.8);
+    border-radius: var(--gap-12);
+  }
+}
+
+
+
+.control:focus-within {
+  &:is(.control-label, .control-feedback) {
+    font-weight: 500;
+  }
+
+  & .control-box {
+    outline: 4px solid var(--color);
+    border-radius: var(--gap-12);
+    font-weight: 500;
+  }
+}
+
+
+.control-box:active {
+  transform: scale(.98);
+}
 
 .control--label-hidden :is(.control-label, .control-supplement),
-.control-label:empty,
-.control-supplement:empty {
+.control :is(.control-label, .control-supplement):empty {
   display: none;
 }
 
-@keyframes blurWave {
-  0% {
-    opacity: 0.3;
+
+
+.control--pending {
+  @keyframes blurWave {
+    from {
+      opacity: 0.3;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
-  100% {
-    opacity: 1;
+  filter: blur(2px);
+  animation: blurWave infinite both alternate 1500ms;
+}
+
+
+
+.control--good {
+  --color: #84eb8e;
+
+  & .control-feedback::before {
+    margin-right: .5ch;
+    content: "✔";
   }
 }
-.control--processing {
-  filter: blur(2px);
-  will-change: opacity 1;
-  animation: blurWave infinite both alternate 1500ms;
+
+
+
+.control--bad {
+  --color: #edc153;
+
+  & .control-feedback::before {
+    margin-right: .5ch;
+    content: "❗";
+  }
 }

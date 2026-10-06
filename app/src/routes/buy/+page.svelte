@@ -31,6 +31,7 @@
   import { pageBgClr } from "../+layout.svelte";
   import { licenses, type License } from "./licenses";
   import LinkedControls from "$lib/components/general/inputv2/LinkedControls.svelte";
+  import { judge_HandlerCommit, judge_HandlerCreate, judge_HandlerUpdate, judge_State } from "$lib/logic/validation/validation";
 
   let inspectLicenseAt: number|null = $state(null);
   let licenseAmounts: number[] = $state(new Array(licenses.length).fill(0));
@@ -59,6 +60,18 @@
   let stepElemIdList: string[] = [genId(), genId(), genId(), genId(), genId()];
 
   let accUsername: string = $state("");
+  let accUsernameIsGood: boolean|undefined = $state(undefined);
+  let accUsernameMessage: string|undefined = $state(undefined);
+  function judgeUsername(): void {
+    if (accUsername.length === 0) {
+      accUsernameIsGood = false;
+      accUsernameMessage = "Required";
+      return;
+    }
+
+    accUsernameIsGood = true;
+    accUsernameMessage = undefined;
+  }
 
   const individualBuyer = "individual";
   const organizationBuyer = "organization";
@@ -81,12 +94,9 @@
     }
 
     const now = new Date();
-    console.log("duration", duration);
 
     const year = now.getFullYear() + Math.floor((now.getMonth() + _duration) / 12);
-    console.log("year", year);
     const month = (now.getMonth() + _duration) % 12 + 1;
-    console.log("month", month);
     const day = now.getDate();
 
     return `${year.toString().padStart(4, "0")}-${month.toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
@@ -101,7 +111,6 @@
 
     const now = new Date();
     const date = new Date(newValue);
-    console.log(date);
     if (date.toString() == "Invalid Date") {
       return;
     }
@@ -116,13 +125,116 @@
     duration = months.toString();
   }
 
-  let orgName: string = $state("");
+  let orgNameHandler = $state(judge_HandlerCreate<string>((handler) => {
+    const value = handler.Value;
+
+    if (value.length === 0) {
+      handler.State = judge_State.Bad;
+      handler.Message = "Required";
+      return;
+    }
+
+    if (value.length > 200) {
+      handler.State = judge_State.Bad;
+      handler.Message = "Maximum of 200 characters";
+      return;
+    }
+
+    handler.State = judge_State.Good;
+    handler.Message = "";
+  }, ""));
+
   let orgVAT: string = $state("");
+  let orgVATIsGood: boolean|undefined = $state(undefined);
+  let orgVATMessage: string|undefined = $state(undefined);
+  function judgeOrgVAT(): void {
+    if (orgVAT.length === 0) {
+      orgVATIsGood = false;
+      orgVATMessage = "Required";
+      return;
+    }
+
+    // Very permissive check, normally 15 + 2 characters at the most according to Wikipedia, checked by 3rd party later anyways.
+    if (orgVAT.length >= 30) {
+      orgVATIsGood = false;
+      orgVATMessage = "Enter a valid VAT number";
+      return;
+    }
+
+    orgVATIsGood = true;
+    orgVATMessage = undefined;
+  }
+
   let orgCountry: string = $state("");
+  let orgCountryIsGood: boolean|undefined = $state(undefined);
+  let orgCountryMessage: string|undefined = $state(undefined);
+  function judgeOrgCountry(): void {
+    if (orgCountry.length === 0) {
+      orgCountryIsGood = false;
+      orgCountryMessage = "Required";
+      return;
+    }
+
+    // TODO: Check in list
+    orgCountryIsGood = true;
+    orgCountryMessage = undefined;
+  }
+
   let orgState: string = $state("");
+  let orgStateIsGood: boolean|undefined = $state(undefined);
+  let orgStateMessage: string|undefined = $state(undefined);
+  function judgeOrgState(): void {
+    if (orgState.length === 0) {
+      orgStateIsGood = false;
+      orgStateMessage = "Required";
+      return;
+    }
+
+    orgStateIsGood = true;
+    orgStateMessage = undefined;
+  }
+
   let orgCity: string = $state("");
+  let orgCityIsGood: boolean|undefined = $state(undefined);
+  let orgCityMessage: string|undefined = $state(undefined);
+  function judgeOrgCity(): void {
+    if (orgCity.length === 0) {
+      orgCityIsGood = false;
+      orgCityMessage = "Required";
+      return;
+    }
+
+    orgCityIsGood = true;
+    orgCityMessage = undefined;
+  }
+
   let orgStreet: string = $state("");
-  let orgPostCode: string = $state("");
+  let orgStreetIsGood: boolean|undefined = $state(undefined);
+  let orgStreetMessage: string|undefined = $state(undefined);
+  function judgeOrgStreet(): void {
+    if (orgStreet.length === 0) {
+      orgStreetIsGood = false;
+      orgStreetMessage = "Required";
+      return;
+    }
+
+    orgStreetIsGood = true;
+    orgStreetMessage = undefined;
+  }
+
+  let orgPostcode: string = $state("");
+  let orgPostcodeIsGood: boolean|undefined = $state(undefined);
+  let orgPostcodeMessage: string|undefined = $state(undefined);
+  function judgeOrgPostcode(): void {
+    if (orgPostcode.length === 0) {
+      orgPostcodeIsGood = false;
+      orgPostcodeMessage = "Required";
+      return;
+    }
+
+    orgPostcodeIsGood = true;
+    orgPostcodeMessage = undefined;
+  }
 
 </script>
 
@@ -279,7 +391,7 @@
             }}
           >
             {#snippet leftControl()}
-              <TextControl
+              <!-- <TextControl
                 className="control--duration"
                 name="duration"
                 type="number"
@@ -292,10 +404,10 @@
                 judgement={{
                   isProcessing: false,
                 }}
-              />
+              /> -->
             {/snippet}
             {#snippet rightControl()}
-              <TextControl
+              <!-- <TextControl
                 className="control--end-date"
                 name="end-date"
                 type="date"
@@ -310,7 +422,7 @@
                   isGood: false,
                 }}
                 onblur={onChangeEndDate}
-              />
+              /> -->
             {/snippet}
           </LinkedControls>
         {/if}
@@ -371,12 +483,11 @@
               label={{
                 label: "Organization name"
               }}
-              bind:value={orgName}
-              judgement={{
-                isProcessing: false,
-              }}
-              />
-            <TextControl
+              bind:judgeHandler={orgNameHandler}
+              oninput={() => judge_HandlerUpdate(orgNameHandler)}
+              onchange={() => judge_HandlerCommit(orgNameHandler)}
+            />
+            <!-- <TextControl
               className="field field--org-vat"
               type="text"
               name="org-vat"
@@ -388,10 +499,10 @@
               judgement={{
                 isProcessing: false,
               }}
-              />
+              /> -->
             <!-- Make a traditional select -->
             <div class="address-generic">
-              <TextControl
+              <!-- <TextControl
                 className="field field--org-country"
                 type="text"
                 name="org-country"
@@ -416,10 +527,10 @@
                 judgement={{
                   isProcessing: false,
                 }}
-                />
+                /> -->
             </div>
             <div class="address-specific">
-              <TextControl
+              <!-- <TextControl
                 className="field field--org-city"
                 type="text"
                 name="org-city"
@@ -453,11 +564,11 @@
                 label={{
                   label: "Postcode"
                 }}
-                bind:value={orgPostCode}
+                bind:value={orgPostcode}
                 judgement={{
                   isProcessing: false,
                 }}
-                />
+                /> -->
             </div>
           </fieldset>
         {:else if buyer !== individualBuyer}
