@@ -86,14 +86,14 @@
     --border-radius: var(--gap-8);
     overflow: visible;
     appearance: base-select;
-    outline: 0px solid rgb(from var(--yellow) r g b / 0);
+    outline: 0px solid rgb(from var(--color) r g b / 0);
     border-radius: var(--border-radius);
     height: unset;
     position: relative;
     display: flex;
     flex-wrap: wrap;
     column-gap: var(--gap-12);
-    background-color: rgb(from var(--yellow) r g b / 0.1);
+    background-color: rgb(from var(--color) r g b / 0.1);
     transition:
       border-radius 150ms ease-in-out,
       outline 100ms ease-in-out,
@@ -102,12 +102,12 @@
 
     &:hover:not(:has(.toggle__option:is(:hover, :focus-within))) {
       --border-radius: var(--gap-12);
-      outline: 2px solid rgb(from var(--yellow) r g b / 0.8);
+      outline: 2px solid rgb(from var(--color) r g b / 0.8);
     }
 
     &:focus {
       --border-radius: var(--gap-12);
-      outline: 4px solid var(--yellow);
+      outline: 4px solid var(--color);
     }
 
     &:active {
@@ -116,14 +116,14 @@
   }
   .toggle__option {
     flex: 1 0 0;
-    outline: 0px solid rgb(from var(--yellow) r g b / 0);
+    outline: 0px solid rgb(from var(--color) r g b / 0);
     border-radius: var(--border-radius);
     padding: var(--gap-8) var(--gap-12);
     min-width: fit-content;
     min-height: unset;
     display: block;
     text-align: center;
-    color: rgb(from var(--yellow) r g b / 0.5);
+    color: rgb(from var(--color) r g b / 0.5);
     font-weight: 400;
     transition:
       border-radius 150ms ease-in-out,
@@ -137,16 +137,16 @@
     }
 
     &:hover {
-      outline: 2px solid rgb(from var(--yellow) r g b / 0.8);
+      outline: 2px solid rgb(from var(--color) r g b / 0.8);
     }
 
     &:focus-within {
-      outline: 4px solid var(--yellow);
+      outline: 4px solid var(--color);
     }
 
     &:checked {
       font-weight: 500;
-      color: var(--yellow);
+      color: var(--color);
     }
   }
 </style>

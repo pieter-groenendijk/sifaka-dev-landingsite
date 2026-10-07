@@ -16,7 +16,6 @@
 - TODO: Swap yellow and light colors maybe?
 - TODO: Backend integration? Or just paddle stuff
 - TODO: Standardize for browsers
-- TODO: Select for countries
 - TODO: input type='radio' for SwitchControl
 - TODO: Add required markings
 - TODO: Fix: that special controls like SwitchControl or PickerControl also respond with their colors to judgement
