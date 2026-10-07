@@ -16,9 +16,7 @@
 - TODO: Swap yellow and light colors maybe?
 - TODO: Backend integration? Or just paddle stuff
 - TODO: Standardize for browsers
-- TODO: input type='radio' for SwitchControl
 - TODO: Add required markings
-- TODO: Fix: that special controls like SwitchControl or PickerControl also respond with their colors to judgement
 - TODO: Have special controls like SwitchControl and PickerControl use input.css classes where ever possible
 - TODO: "Advanced" Table layout to specify the license in detail
 - TODO: Convert licenses listing to name -> license, instead of license[].
@@ -35,8 +33,8 @@
   import { licenses, type License } from "./licenses";
   import LinkedControls from "$lib/components/general/inputv2/LinkedControls.svelte";
   import { judge_HandlerCommit, judge_HandlerCreate, judge_HandlerUpdate, judge_JudgementCreate, judge_State, type judge_Handler, type judge_Judgement } from "$lib/logic/validation/validation";
-    import SelectControl from "$lib/components/general/inputv2/SelectControl.svelte";
-    import { countries } from "$lib/components/general/countries";
+  import SelectControl from "$lib/components/general/inputv2/SelectControl.svelte";
+  import { countries } from "$lib/components/general/countries";
 
   pageBgClr.css = "var(--dark-green)";
 

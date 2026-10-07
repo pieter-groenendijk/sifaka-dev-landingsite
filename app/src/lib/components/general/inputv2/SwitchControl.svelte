@@ -46,19 +46,19 @@
   <div class="control-label">{label.label}</div>
   <div class="control-supplement">{label.supplement}</div>
 
-  <select
-    class="toggle__select"
-    size="2"
-    bind:value={value}
-    {...rest}
-  >
+  <div class="toggle__select">
     {#each options.list as option}
-      <option
-        class="toggle__option control-value"
-        value={option.value}
-      >{option.key}</option>
+      <label class="toggle__option">
+        <div class="">{option.key}</div>
+        <input
+          class="toggle__input"
+          type="radio"
+          value={option.value}
+          bind:group={value}
+        />
+      </label>
     {/each}
-  </select>
+  </div>
 
   {#if judge_IsDetermined(judgement) && judgement.Message.length !== 0}
     <div
@@ -144,9 +144,12 @@
       outline: 4px solid var(--color);
     }
 
-    &:checked {
+    &:has( :checked) {
       font-weight: 500;
       color: var(--color);
     }
+  }
+  .toggle__input {
+    display: none;
   }
 </style>
