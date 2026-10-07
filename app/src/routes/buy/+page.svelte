@@ -15,13 +15,17 @@
 - TODO: Convert to simple check
 - TODO: Only select & orient in first step
 - TODO: Use radio inputs for selecting licenses
-- TODO: Show terms one select as well (for touch)
+- TODO: Show terms on one select as well (for touch)
 - TODO: Swap yellow and light colors maybe?
-- TODO: Validation
 - TODO: Backend integration? Or just paddle stuff
 - TODO: Standardize for browsers
 - TODO: Select for countries
+- TODO: input type='radio' for SwitchControl
 - TODO: Add required markings
+- TODO: Fix: that special controls like SwitchControl or PickerControl also respond with their colors to judgement
+- TODO: Have special controls like SwitchControl and PickerControl use input.css classes where ever possible
+- TODO: "Advanced" Table layout to specify the license in detail
+- TODO: Convert licenses listing to name -> license, instead of license[].
 -->
 <script lang="ts">
   import PickerControl from "$lib/components/general/inputv2/PickerControl.svelte";
@@ -33,68 +37,42 @@
   import { licenses, type License } from "./licenses";
   import LinkedControls from "$lib/components/general/inputv2/LinkedControls.svelte";
   import { judge_HandlerCommit, judge_HandlerCreate, judge_HandlerUpdate, judge_JudgementCreate, judge_State, type judge_Handler, type judge_Judgement } from "$lib/logic/validation/validation";
-    import { onMount } from "svelte";
-
-  let inspectLicenseAt: number|null = $state(null);
-  let licenseAmounts: number[] = $state(new Array(licenses.length).fill(0));
 
   pageBgClr.css = "var(--dark-green)";
+
+
+  let stepElemIdList: string[] = [genId(), genId(), genId(), genId(), genId()];
+
 
   function inputId(license: License): string {
     return `license-${license.id}`;
   }
 
-  function onLicenseAmountChange(event: Event) {
-    const elem = event.currentTarget as HTMLInputElement;
-    if (elem.value === "") {
-      elem.value = "0";
-    }
-  }
-  function toggleSelectLicense(at: number, amountInputId: string) {
-    if (licenseAmounts[at] !== 0) {
-      licenseAmounts[at] = 0;
-    } else {
-      licenseAmounts[at] = 1;
-      document.getElementById(amountInputId)?.focus();
-    }
-  }
+  let inspectLicenseAt: number|null = $state(null);
+  let licensesHandler = $state(judge_HandlerCreate<[boolean, boolean, boolean, boolean]>((judgement, value) => {
+    const [
+      trialChecked,
+      nonCommercialChecked,
+      rentChecked,
+      buyChecked,
+    ] = value;
 
-  let stepElemIdList: string[] = [genId(), genId(), genId(), genId(), genId()];
-
-
-  let usernameHandler = $state(judge_HandlerCreate<string>((judgement, value) => {
-    if (value.length === 0) {
-      console.log("bad");
+    if (!trialChecked && !nonCommercialChecked && !rentChecked && !buyChecked) {
       judgement.State = judge_State.Bad;
-      judgement.Message = "Required";
+      judgement.Message = "Must at least select one license type to get"
+      return;
+    }
+
+    if (trialChecked && (nonCommercialChecked || rentChecked || buyChecked)) {
+      judgement.State = judge_State.Bad;
+      judgement.Message = "Can't combine the free trial with other licenses";
       return;
     }
 
     judgement.State = judge_State.Good;
     judgement.Message = "";
-  }, ""));
+  }, [false, false, false, false]));
 
-  let ownerHandler = $state(judge_HandlerCreate<"individual" | "organization">((judgement, value) => {
-    if (value.length === 0) {
-      judgement.State = judge_State.Bad;
-      judgement.Message = "Required";
-      return;
-    }
-
-    judgement.State = judge_State.Good;
-    judgement.Message = "";
-  }, "organization"))
-
-  let periodHandler = $state(judge_HandlerCreate<"fixed"|"auto-renew">((judgement, value) => {
-    if (value.length === 0) {
-      judgement.State = judge_State.Bad;
-      judgement.Message = "Required";
-      return;
-    }
-
-    judgement.State = judge_State.Good;
-    judgement.Message = "";
-  }, "fixed"));
 
   let fixedPeriodJudgement = $state(judge_JudgementCreate());
 
@@ -189,6 +167,44 @@
     judge_HandlerCommit(durationHandler);
     console.log(durationHandler.Value);
   }
+
+
+
+
+  let usernameHandler = $state(judge_HandlerCreate<string>((judgement, value) => {
+    if (value.length === 0) {
+      console.log("bad");
+      judgement.State = judge_State.Bad;
+      judgement.Message = "Required";
+      return;
+    }
+
+    judgement.State = judge_State.Good;
+    judgement.Message = "";
+  }, ""));
+
+  let ownerHandler = $state(judge_HandlerCreate<"individual" | "organization">((judgement, value) => {
+    if (value.length === 0) {
+      judgement.State = judge_State.Bad;
+      judgement.Message = "Required";
+      return;
+    }
+
+    judgement.State = judge_State.Good;
+    judgement.Message = "";
+  }, "organization"))
+
+  let periodHandler = $state(judge_HandlerCreate<"fixed"|"auto-renew">((judgement, value) => {
+    if (value.length === 0) {
+      judgement.State = judge_State.Bad;
+      judgement.Message = "Required";
+      return;
+    }
+
+    judgement.State = judge_State.Good;
+    judgement.Message = "";
+  }, "fixed"));
+
 
   let orgNameHandler = $state(judge_HandlerCreate<string>((judgement, value) => {
     if (value.length === 0) {
@@ -316,6 +332,7 @@
     </aside>
 
     <form class="form">
+
       <fieldset
         id={stepElemIdList[0]}
         class="fieldset section--licenses"
@@ -328,40 +345,29 @@
 
           onmouseleave={() => inspectLicenseAt = null}
         >
+
           <ul class="license-list">
             {#each licenses as license, at}
               {@const amountInputId = `license-${license.id}`}
-              <li
-                class="license"
-                class:license--inspected={inspectLicenseAt === at}
-                class:license--selected={licenseAmounts[at] !== 0}
+              <li>
+                <label
+                  class="license"
+                  class:license--inspected={inspectLicenseAt === at}
+                  class:license--selected={licensesHandler.Value[at] === true}
 
-                onmouseenter={() => inspectLicenseAt = at}
-              >
-                <div
-                  class="license__amount"
+                  onmouseenter={() => inspectLicenseAt = at}
                 >
-                  <label for={amountInputId} class="license__amount__label">seats</label>
-                  <input
-                    id={amountInputId}
-                    class="license__amount__input"
-                    name={`${license.id}-license-amount`}
-                    type="number"
-                    min="0"
-                    max="999"
-                    bind:value={licenseAmounts[at]}
-                    onchange={onLicenseAmountChange}
-                  />
-                </div>
-                <button
-                  aria-label="Press once to set the amount of seats to get of this license to one. Press again to set it back to zero."
-                  aria-controls={amountInputId}
-                  onclick={() => toggleSelectLicense(at, amountInputId)}
-                >
-                  <h3 class="license__title">
-                    <span class="license__price">{license.price}<span class="license__price-postfix">{license.pricePostFix}</span></span><span class="license__name">{license.name}</span>
-                  </h3>
+                  <div class="license__title">
+                    <span class="license__price">{license.price}<span class="license__price-postfix">{license.pricePostFix}</span></span>
+                    <span class="license__name">{license.name}</span>
+                  </div>
                   <p class="license__summary">{license.summary}</p>
+                  <input
+                    class="license__input"
+                    type="checkbox"
+                    bind:checked={licensesHandler.Value[at]}
+                    name={`license-${license.name}`}
+                  />
                   <div class="license__aria-terms">
                     <a href={license.longTermsURL}>Full terms</a>
                     <ul>
@@ -370,10 +376,54 @@
                       {/each}
                     </ul>
                   </div>
-                </button>
+                </label>
               </li>
             {/each}
           </ul>
+
+          <!-- <li
+            class="license"
+
+            class:license--inspected={inspectLicenseAt === at}
+            class:license--selected={licenseAmounts[at] !== 0}
+
+            onmouseenter={() => inspectLicenseAt = at}
+          >
+            <div
+              class="license__amount"
+            >
+              <label for={amountInputId} class="license__amount__label">seats</label>
+              <input
+                id={amountInputId}
+                class="license__amount__input"
+                name={`${license.id}-license-amount`}
+                type="number"
+                min="0"
+                max="999"
+                bind:value={licenseAmounts[at]}
+                onchange={onLicenseAmountChange}
+              />
+            </div>
+            <button
+              aria-label="Press once to set the amount of seats to get of this license to one. Press again to set it back to zero."
+              aria-controls={amountInputId}
+              onclick={() => toggleSelectLicense(at, amountInputId)}
+            >
+              <h3 class="license__title">
+                <span class="license__price">{license.price}<span class="license__price-postfix">{license.pricePostFix}</span></span><span class="license__name">{license.name}</span>
+              </h3>
+              <p class="license__summary">{license.summary}</p>
+              <div class="license__aria-terms">
+                <a href={license.longTermsURL}>Full terms</a>
+                <ul>
+                  {#each license.shortTerms as shortTerm}
+                    <li>{shortTerm}</li>
+                  {/each}
+                </ul>
+              </div>
+            </button>
+          </li> -->
+
           <div class="license-terms" aria-hidden="true">
             {#if inspectLicenseAt !== null}
               {@const at = inspectLicenseAt}
@@ -388,7 +438,7 @@
               </ul>
               <button
                 class="license-terms__getter"
-                onclick={() => toggleSelectLicense(at, inputAmountId)}
+                onclick={() => licensesHandler.Value[at] = !licensesHandler.Value[at]}
               >
                 {#if licenseAmounts[at] === 0}
                   configure & buy
@@ -400,8 +450,10 @@
               <SupNote>Hover a license for a summary of its terms</SupNote>
             {/if}
           </div>
+
         </div>
       </fieldset>
+
       <fieldset
         id={stepElemIdList[1]}
         class="fieldset fieldset--license-config"
@@ -469,6 +521,7 @@
           </LinkedControls>
         {/if}
       </fieldset>
+
       <fieldset
         id={stepElemIdList[2]}
         class="fieldset fieldset--buyer-info"
@@ -620,6 +673,7 @@
           <SupNote id="fieldset--buyer-placeholder">Please select whether you're buying for yourself or an organization to continue...</SupNote>
         {/if}
       </fieldset>
+
     </form>
 
     <section
@@ -822,21 +876,16 @@
     align-items: center;
     gap: var(--gap-128);
   }
-  .license-list {
-    flex-grow: 0;
-    flex-shrink: 1;
-  }
   .license-terms {
     flex-grow: 0;
     flex-basis: 40ch;
   }
 
   .license {
+    display: block;
     padding-bottom: var(--gap-32);
-    display: flex;
-    gap: 0;
-    align-items: center;
-    transition: opacity 200ms ease-in-out, gap 150ms 300ms cubic-bezier(0.75, 0, 0.20, 1);
+    cursor: pointer;
+    transition: opacity 200ms ease-in-out, transform 300ms cubic-bezier(0.75, 0, 0.20, 1);
   }
   .license-list:has(:where(.license--inspected, .license--selected)) {
     & .license {
@@ -849,8 +898,7 @@
     }
   }
   .license--selected {
-    gap: var(--gap-16);
-    transition: opacity 200ms ease-in-out, gap 300ms cubic-bezier(0.75, 0, 0.20, 1);
+    transform: translateX(var(--gap-32));
   }
   .license__title {
     margin-bottom: var(--gap-16);
@@ -904,12 +952,6 @@
     margin-bottom: var(--gap-4);
     list-style: inside "> ";
   }
-  .license-terms__indeterminate {
-    font-size: var(--font-size-14);
-    font-weight: 300;
-    color: var(--light);
-    opacity: 0.7;
-  }
   .license-terms__getter {
     border-radius: var(--gap-8);
     margin-top: var(--gap-16);
@@ -934,34 +976,7 @@
     color: var(--brown);
   }
 
-  .license__amount {
-    max-width: 0;
-    text-align: center;
-    opacity: 0;
-    transition: opacity 300ms ease-in-out, max-width 150ms 300ms cubic-bezier(0.75, 0, 0.20, 1);
-  }
-  .license--selected .license__amount {
-    max-width: 50px;
-    opacity: 1;
-    transition: opacity 150ms 300ms ease-in-out, max-width 300ms cubic-bezier(0.75, 0, 0.20, 1);
-  }
-  .license__amount__label {
-    display: block;
-    font-size: var(--font-size-14);
-    font-weight: 300;
-    color: rgb(from var(--light) r g b / 0.7);
-  }
-  .license__amount__input {
-    margin-inline: calc(-1 * var(--gap-12));
-    padding: var(--gap-4) var(--gap-12);
-    font-size: var(--font-size-20);
-    font-weight: 600;
-    color: var(--light);
-    field-sizing: content;
-    appearance: none;
-  }
-  .license__amount__input::-webkit-inner-spin-button,
-  .license__amount__input::-webkit-outer-spin-button {
-    appearance: none;
+  .license__input {
+    display: none;
   }
 </style>

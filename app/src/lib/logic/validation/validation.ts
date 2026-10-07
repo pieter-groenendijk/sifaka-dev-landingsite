@@ -14,8 +14,7 @@ export const enum judge_State {
   Undetermined = judge_StateUndetermined,
 }
 
-export type judge_Value = string | number | undefined | null;
-export type judge_Judger<value extends judge_Value> = (judgement: judge_Judgement, value: value) => void;
+export type judge_Judger<value> = (judgement: judge_Judgement, value: value) => void;
 
 export interface judge_Judgement {
   State: judge_State,
@@ -29,7 +28,7 @@ export function judge_JudgementCreate(): judge_Judgement {
   }
 }
 
-export interface judge_Handler<value extends judge_Value> {
+export interface judge_Handler<value> {
   Value: value,
 
   Judgement: judge_Judgement,
@@ -38,7 +37,7 @@ export interface judge_Handler<value extends judge_Value> {
   Judge: judge_Judger<value>,
 }
 
-export function judge_HandlerCreate<value extends judge_Value>(judge: judge_Judger<value>, initValue: value): judge_Handler<value> {
+export function judge_HandlerCreate<value>(judge: judge_Judger<value>, initValue: value): judge_Handler<value> {
   return {
     Value: initValue,
 
