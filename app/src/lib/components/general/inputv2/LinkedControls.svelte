@@ -8,6 +8,7 @@
     label = {
       hidden: false,
     },
+    required,
     judgement,
 
     leftControl,
@@ -19,6 +20,7 @@
       supplement?: string,
       hidden?: boolean,
     },
+    required?: boolean,
     judgement: judge_Judgement,
 
     leftControl: Snippet,
@@ -36,7 +38,7 @@
 >
 
   <legend class="linked-control__legend">
-    <span class="linked-control__label control-label">{label.label}</span>
+    <span class="linked-control__label control-label">{label.label + (required ? " *" : "")}</span>
     <span class="linked-control__supplement control-supplement">{label.supplement}</span>
   </legend>
 

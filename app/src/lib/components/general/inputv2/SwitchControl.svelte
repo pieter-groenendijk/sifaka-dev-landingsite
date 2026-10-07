@@ -5,6 +5,7 @@
   let {
     className,
     name,
+    required,
     value = $bindable(),
     options,
     judgement,
@@ -13,6 +14,7 @@
   }: {
     className?: string,
     name: string,
+    required?: boolean,
     value?: string,
     options: {
       list: {
@@ -43,7 +45,7 @@
   class:control--label-hidden={label.hidden}
 >
   <legend>
-    <div class="control-label">{label.label}</div>
+    <div class="control-label">{label.label + (required ? " *" : "")}</div>
     <div class="control-supplement">{label.supplement}</div>
   </legend>
 
@@ -52,8 +54,10 @@
       <label class="toggle__option">
         <div class="">{option.key}</div>
         <input
+          {...rest}
           class="toggle__input"
           type="radio"
+          required={required}
           value={option.value}
           bind:group={value}
         />

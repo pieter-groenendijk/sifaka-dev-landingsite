@@ -6,6 +6,7 @@
     className,
     type,
     name,
+    required,
     value = $bindable(),
     placeholder,
     judgement,
@@ -17,6 +18,7 @@
     className?: string,
     type: string,
     name: string,
+    required?: boolean,
     value?: value,
     placeholder: string,
     judgement: judge_Judgement,
@@ -40,13 +42,14 @@
 
   class:control--label-hidden={label.hidden}
 >
-  <div class="control-label">{label.label}</div>
+  <div class="control-label">{label.label + (required ? " *" : "")}</div>
   <div class="control-supplement">{label.supplement}</div>
 
   <input
     class="control__input control-input control-value control-box"
     type={type}
     name={name}
+    required={required}
     placeholder={placeholder}
     bind:value={value}
     {...rest}

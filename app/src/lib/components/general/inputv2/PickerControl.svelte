@@ -6,9 +6,9 @@ import "./input.css";
 
   let {
     className,
-    children,
     label,
     name,
+    required,
     value = $bindable(),
     placeholder = "",
     judgement,
@@ -16,7 +16,6 @@ import "./input.css";
     buttonAttr,
   }: {
     className?: string,
-    children?: Snippet<[]>,
     label: {
       label?: string,
       supplement?: string,
@@ -24,6 +23,7 @@ import "./input.css";
       hidden?: boolean,
     },
     name: string,
+    required?: boolean,
     value: string,
     placeholder?: string,
     judgement: judge_Judgement,
@@ -52,7 +52,7 @@ import "./input.css";
   for={buttonId}
 >
 
-  <div class="picker__label control-label">{label.label}</div>
+  <div class="picker__label control-label">{label.label + (required ? " *" : "")}</div>
   <div class="picker__supplement control-supplement">{label.supplement}</div>
 
   <div class="picker__interactive">
@@ -64,6 +64,7 @@ import "./input.css";
         class="picker__value control-value"
         type="text"
         name={name}
+        required={required}
         bind:value={value}
         placeholder={placeholder}
       />
