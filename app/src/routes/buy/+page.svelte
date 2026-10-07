@@ -17,7 +17,6 @@
 - TODO: Backend integration? Or just paddle stuff
 - TODO: Standardize for browsers
   - TODO: Firefox: duration increments don't function?
-- TODO: Add required markings
 - TODO: Have special controls like SwitchControl and PickerControl use input.css classes where ever possible
 - TODO: "Advanced" Table layout to specify the license in detail
 - TODO: Convert licenses listing to name -> license, instead of license[].
@@ -96,7 +95,6 @@
   let fixedPeriodJudgement = $state(judge_JudgementCreate());
 
   let durationHandler = $state(judge_HandlerCreate<string|null>((judgement, value) => {
-    console.log("judge duration");
     judgement.State = judge_State.Undetermined;
     judgement.Message = "";
 
@@ -141,7 +139,6 @@
   }
   let endDateHandler = $derived.by(() => {
     const duration = durationHandler.Value;
-    console.log("update end date");
 
     if (duration === null || duration.length === 0) {
       return judge_HandlerCreate<string>(judgeEndDate, "");
@@ -439,6 +436,7 @@
         <SwitchControl
           className="field"
           name="period-type"
+          required={true}
           label={{
             label: "Period",
             supplement: "A fixed period specifies the number of active months. An auto-renewed period remains active until cancelled."
@@ -461,12 +459,14 @@
             label={{
               label: "Duration / End Date",
             }}
+            required={true}
             judgement={fixedPeriodJudgement}
           >
             {#snippet leftControl()}
               <TextControl
                 className="field--duration"
                 name="duration"
+                required={true}
                 type="number"
                 placeholder=""
                 label={{
@@ -484,6 +484,7 @@
               <TextControl
                 className="field--end-date"
                 name="end-date"
+                required={true}
                 type="date"
                 placeholder=""
                 label={{
@@ -507,6 +508,7 @@
         <PickerControl
           className="field"
           name="acc-username"
+          required={true}
           label={{
             label: "Account",
             supplement: "Licenses being purchased will be coupled to the currently logged in account. ",
@@ -525,6 +527,7 @@
         <SwitchControl
           className="field"
           name="owner"
+          required={true}
           label={{
             label: "Owner",
             supplement: "Purchasing for yourself or on the behalf of an organization."
@@ -553,6 +556,7 @@
               className="field field--org-name"
               type="text"
               name="org-name"
+              required={true}
               placeholder="Company Inc."
               label={{
                 label: "Organization name"
@@ -566,6 +570,7 @@
               className="field field--org-vat"
               type="text"
               name="org-vat"
+              required={true}
               placeholder="GB999999973"
               label={{
                 label: "VAT number"
@@ -580,6 +585,7 @@
               <SelectControl
                 className="field field--org-country"
                 name="org-country"
+                required={true}
                 options={countries}
                 label={{
                   label: "Country"
@@ -589,23 +595,11 @@
                 oninput={() => judge_HandlerUpdate(orgCountryHandler)}
                 onchange={() => judge_HandlerCommit(orgCountryHandler)}
               />
-              <!-- <TextControl
-                className="field field--org-country"
-                type="text"
-                name="org-country"
-                placeholder="United Kingdom"
-                label={{
-                  label: "Country"
-                }}
-                bind:value={orgCountryHandler.Value}
-                judgement={orgCountryHandler.Judgement}
-                oninput={() => judge_HandlerUpdate(orgCountryHandler)}
-                onchange={() => judge_HandlerCommit(orgCountryHandler)}
-              /> -->
               <TextControl
                 className="field field--org-state"
                 type="text"
                 name="org-state"
+                required={true}
                 placeholder="County of London"
                 label={{
                   label: "State/County"
@@ -621,6 +615,7 @@
                 className="field field--org-city"
                 type="text"
                 name="org-city"
+                required={true}
                 placeholder="London"
                 label={{
                   label: "City/Town"
@@ -634,6 +629,7 @@
                 className="field field--org-street"
                 type="text"
                 name="org-street"
+                required={true}
                 placeholder="Brownlow Street"
                 label={{
                   label: "Street"
@@ -647,6 +643,7 @@
                 className="field field--org-postcode"
                 type="text"
                 name="org-postcode"
+                required={true}
                 placeholder="CR92AW"
                 label={{
                   label: "Postcode"
