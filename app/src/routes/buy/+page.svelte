@@ -23,6 +23,7 @@
 - TODO: Have special controls like SwitchControl and PickerControl use input.css classes where ever possible
 - TODO: "Advanced" Table layout to specify the license in detail
 - TODO: Convert licenses listing to name -> license, instead of license[].
+- TODO: Search functionality for selects
 -->
 <script lang="ts">
   import PickerControl from "$lib/components/general/inputv2/PickerControl.svelte";
@@ -34,6 +35,8 @@
   import { licenses, type License } from "./licenses";
   import LinkedControls from "$lib/components/general/inputv2/LinkedControls.svelte";
   import { judge_HandlerCommit, judge_HandlerCreate, judge_HandlerUpdate, judge_JudgementCreate, judge_State, type judge_Handler, type judge_Judgement } from "$lib/logic/validation/validation";
+    import SelectControl from "$lib/components/general/inputv2/SelectControl.svelte";
+    import { countries } from "$lib/components/general/countries";
 
   pageBgClr.css = "var(--dark-green)";
 
@@ -575,7 +578,19 @@
             />
             <!-- Make a traditional select -->
             <div class="address-generic">
-              <TextControl
+              <SelectControl
+                className="field field--org-country"
+                name="org-country"
+                options={countries}
+                label={{
+                  label: "Country"
+                }}
+                bind:value={orgCountryHandler.Value}
+                judgement={orgCountryHandler.Judgement}
+                oninput={() => judge_HandlerUpdate(orgCountryHandler)}
+                onchange={() => judge_HandlerCommit(orgCountryHandler)}
+              />
+              <!-- <TextControl
                 className="field field--org-country"
                 type="text"
                 name="org-country"
@@ -587,7 +602,7 @@
                 judgement={orgCountryHandler.Judgement}
                 oninput={() => judge_HandlerUpdate(orgCountryHandler)}
                 onchange={() => judge_HandlerCommit(orgCountryHandler)}
-              />
+              /> -->
               <TextControl
                 className="field field--org-state"
                 type="text"

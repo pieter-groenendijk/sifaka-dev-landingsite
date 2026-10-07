@@ -42,12 +42,12 @@
     color 150ms ease-in-out,
     transform 70ms ease-in-out;
 }
-.control-input {
-  &::placeholder {
-    font-weight: 400;
-    color: rgb(from var(--color) r g b / 0.5);
-  }
+.control-value--placeholder,
+.control-input::placeholder {
+  font-weight: 400;
+  color: rgb(from var(--color) r g b / 0.5);
 }
+
 
 
 
