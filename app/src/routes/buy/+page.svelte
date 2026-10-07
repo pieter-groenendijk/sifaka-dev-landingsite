@@ -12,9 +12,6 @@
 - TODO: Make responsive
 - TODO: Disallow configuring 'seats' and combining with other licenses with free trial
 - TODO: Disallow configuring 'seats' with non-commercial
-- TODO: Convert to simple check
-- TODO: Only select & orient in first step
-- TODO: Use radio inputs for selecting licenses
 - TODO: Show terms on one select as well (for touch)
 - TODO: Swap yellow and light colors maybe?
 - TODO: Backend integration? Or just paddle stuff
@@ -44,11 +41,6 @@
   let stepElemIdList: string[] = [genId(), genId(), genId(), genId(), genId()];
 
 
-  function inputId(license: License): string {
-    return `license-${license.id}`;
-  }
-
-  let inspectLicenseAt: number|null = $state(null);
   let licensesHandler = $state(judge_HandlerCreate<[boolean, boolean, boolean, boolean]>((judgement, value) => {
     const [
       trialChecked,
@@ -72,6 +64,31 @@
     judgement.State = judge_State.Good;
     judgement.Message = "";
   }, [false, false, false, false]));
+  let inspectLicenseAt: number|null = $state(null);
+  let implicitInspectLicenseAt: number|null = $derived.by(() => {
+    if (inspectLicenseAt !== null) {
+      return inspectLicenseAt;
+    }
+
+    const checkedList = licensesHandler.Value;
+    const len = checkedList.length;
+    let checkedAt = -1;
+    for (let at = 0; at < len; ++at) {
+      if (checkedList[at]) {
+        if (checkedAt !== -1) {
+          return null;
+        }
+
+        checkedAt = at;
+      }
+    }
+
+    if (checkedAt === -1) {
+      return null;
+    } else {
+      return checkedAt;
+    }
+  });
 
 
   let fixedPeriodJudgement = $state(judge_JudgementCreate());
@@ -348,7 +365,6 @@
 
           <ul class="license-list">
             {#each licenses as license, at}
-              {@const amountInputId = `license-${license.id}`}
               <li>
                 <label
                   class="license"
@@ -357,17 +373,12 @@
 
                   onmouseenter={() => inspectLicenseAt = at}
                 >
+
                   <div class="license__title">
                     <span class="license__price">{license.price}<span class="license__price-postfix">{license.pricePostFix}</span></span>
                     <span class="license__name">{license.name}</span>
                   </div>
                   <p class="license__summary">{license.summary}</p>
-                  <input
-                    class="license__input"
-                    type="checkbox"
-                    bind:checked={licensesHandler.Value[at]}
-                    name={`license-${license.name}`}
-                  />
                   <div class="license__aria-terms">
                     <a href={license.longTermsURL}>Full terms</a>
                     <ul>
@@ -376,59 +387,23 @@
                       {/each}
                     </ul>
                   </div>
+
+                  <input
+                    class="license__input"
+                    type="checkbox"
+                    bind:checked={licensesHandler.Value[at]}
+                    name={`license-${license.name}`}
+                  />
+
                 </label>
               </li>
             {/each}
           </ul>
 
-          <!-- <li
-            class="license"
-
-            class:license--inspected={inspectLicenseAt === at}
-            class:license--selected={licenseAmounts[at] !== 0}
-
-            onmouseenter={() => inspectLicenseAt = at}
-          >
-            <div
-              class="license__amount"
-            >
-              <label for={amountInputId} class="license__amount__label">seats</label>
-              <input
-                id={amountInputId}
-                class="license__amount__input"
-                name={`${license.id}-license-amount`}
-                type="number"
-                min="0"
-                max="999"
-                bind:value={licenseAmounts[at]}
-                onchange={onLicenseAmountChange}
-              />
-            </div>
-            <button
-              aria-label="Press once to set the amount of seats to get of this license to one. Press again to set it back to zero."
-              aria-controls={amountInputId}
-              onclick={() => toggleSelectLicense(at, amountInputId)}
-            >
-              <h3 class="license__title">
-                <span class="license__price">{license.price}<span class="license__price-postfix">{license.pricePostFix}</span></span><span class="license__name">{license.name}</span>
-              </h3>
-              <p class="license__summary">{license.summary}</p>
-              <div class="license__aria-terms">
-                <a href={license.longTermsURL}>Full terms</a>
-                <ul>
-                  {#each license.shortTerms as shortTerm}
-                    <li>{shortTerm}</li>
-                  {/each}
-                </ul>
-              </div>
-            </button>
-          </li> -->
-
           <div class="license-terms" aria-hidden="true">
-            {#if inspectLicenseAt !== null}
-              {@const at = inspectLicenseAt}
+            {#if implicitInspectLicenseAt !== null}
+              {@const at = implicitInspectLicenseAt}
               {@const license = licenses[at]}
-              {@const inputAmountId = inputId(license)}
               <a href={license.longTermsURL} class="license-terms__long-terms">Full terms</a>
               <h4 class="license-terms__title">TL;DR of Terms</h4>
               <ul class="license-terms__list">
@@ -440,7 +415,7 @@
                 class="license-terms__getter"
                 onclick={() => licensesHandler.Value[at] = !licensesHandler.Value[at]}
               >
-                {#if licenseAmounts[at] === 0}
+                {#if !licensesHandler.Value[at]}
                   configure & buy
                 {:else}
                   unselect
