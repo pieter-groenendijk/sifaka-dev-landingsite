@@ -33,7 +33,7 @@
 
 
 
-<label
+<fieldset
   class="control toggle {className}"
 
   class:control--pending={judgement.State === judge_State.Pending}
@@ -42,9 +42,10 @@
 
   class:control--label-hidden={label.hidden}
 >
-
-  <div class="control-label">{label.label}</div>
-  <div class="control-supplement">{label.supplement}</div>
+  <legend>
+    <div class="control-label">{label.label}</div>
+    <div class="control-supplement">{label.supplement}</div>
+  </legend>
 
   <div class="toggle__select">
     {#each options.list as option}
@@ -68,7 +69,7 @@
     >{judgement.Message}</div>
   {/if}
 
-</label>
+</fieldset>
 
 
 
@@ -77,9 +78,11 @@
     --text-padding-inline: var(--gap-12);
   }
   .control-label {
+    margin-bottom: var(--gap-4);
     padding-inline: var(--text-padding-inline);
   }
   .control-supplement {
+    margin-bottom: var(--gap-4);
     padding-inline: var(--text-padding-inline);
   }
   .toggle__select {

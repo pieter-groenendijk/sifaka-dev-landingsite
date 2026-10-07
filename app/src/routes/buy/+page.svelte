@@ -16,6 +16,7 @@
 - TODO: Swap yellow and light colors maybe?
 - TODO: Backend integration? Or just paddle stuff
 - TODO: Standardize for browsers
+  - TODO: Firefox: duration increments don't function?
 - TODO: Add required markings
 - TODO: Have special controls like SwitchControl and PickerControl use input.css classes where ever possible
 - TODO: "Advanced" Table layout to specify the license in detail
