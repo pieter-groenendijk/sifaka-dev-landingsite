@@ -23,6 +23,7 @@
 - TODO: "Advanced" Table layout to specify the license in detail
 - TODO: Convert licenses listing to name -> license, instead of license[].
 - TODO: Search functionality for selects
+- TODO: Picker control less obvious button (takes too much attention)
 -->
 <script lang="ts">
   import PickerControl from "$lib/components/general/inputv2/PickerControl.svelte";

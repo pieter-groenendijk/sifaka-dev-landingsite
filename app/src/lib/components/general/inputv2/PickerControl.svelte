@@ -103,13 +103,13 @@ import "./input.css";
   }
   .picker__interactive {
     box-sizing: border-box;
-    outline: 0px solid rgb(from var(--yellow) r g b / 0);
+    outline: 0px solid rgb(from var(--color) r g b / 0);
     border-radius: var(--gap-8);
     width: 100%;
     display: flex;
     flex-wrap: wrap;
     column-gap: var(--gap-12);
-    background-color: rgb(from var(--yellow) r g b / 0.1);
+    background-color: rgb(from var(--color) r g b / 0.1);
     transition:
       border-radius 150ms ease-in-out,
       outline 100ms ease-in-out,
@@ -117,11 +117,11 @@ import "./input.css";
       transform 70ms ease-in-out;
 
     &:hover {
-      outline: 2px solid rgb(from var(--yellow) r g b / 0.8);
+      outline: 2px solid rgb(from var(--color) r g b / 0.8);
     }
 
     &:focus-within {
-      outline: 4px solid var(--yellow);
+      outline: 4px solid var(--color);
     }
   }
   .picker__value-wrapper {
@@ -140,7 +140,7 @@ import "./input.css";
   }
   .picker__value::placeholder {
     font-weight: 400;
-    color: rgb(from var(--yellow) r g b / 0.5);
+    color: rgb(from var(--color) r g b / 0.5);
   }
   .picker__picker {
     flex: 1 0 0;
