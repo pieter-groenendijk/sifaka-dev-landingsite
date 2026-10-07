@@ -4,6 +4,7 @@
   let {
     className,
     name,
+    required,
     value = $bindable(""),
     options,
     judgement,
@@ -20,6 +21,7 @@
       supplement?: string,
       hidden?: boolean,
     },
+    required?: boolean,
     [name: string]: unknown,
   } = $props();
 
@@ -40,15 +42,17 @@
   class:control--label-hidden={label.hidden}
 >
 
-  <div class="control-label">{label.label}</div>
+  <div class="control-label">{label.label + (required ? " *" : "")}</div>
   <div class="control-supplement">{label.supplement}</div>
 
   <select
     {...rest}
     class="select__input control-value"
     class:control-value--placeholder={value === ""}
-    bind:value={value}
+
     name={name}
+    required={required}
+    bind:value={value}
   >
     <!-- bind:value={value} -->
     <option class="select__option select__option--placeholder" value="" disabled>Select</option>
