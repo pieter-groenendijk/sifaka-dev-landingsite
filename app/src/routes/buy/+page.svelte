@@ -12,7 +12,6 @@
 - TODO: Make responsive
 - TODO: Disallow configuring 'seats' and combining with other licenses with free trial
 - TODO: Disallow configuring 'seats' with non-commercial
-- TODO: Show terms on one select as well (for touch)
 - TODO: Swap yellow and light colors maybe?
 - TODO: Backend integration? Or just paddle stuff
 - TODO: Standardize for browsers
@@ -35,6 +34,7 @@
   import { judge_HandlerCommit, judge_HandlerCreate, judge_HandlerUpdate, judge_JudgementCreate, judge_State, type judge_Handler, type judge_Judgement } from "$lib/logic/validation/validation";
   import SelectControl from "$lib/components/general/inputv2/SelectControl.svelte";
   import { countries } from "$lib/components/general/countries";
+    import { fade } from "svelte/transition";
 
   pageBgClr.css = "var(--dark-green)";
 
@@ -330,22 +330,27 @@
     <p class="introduction">To hopefully best fit your use-case and circumstance, multiple types of licenses are offered. Each license — except for the free trial — gets you the same product, although under different terms.</p>
   </header>
   <section class="section--process">
-    <aside class="progress">
-      <div aria-hidden="true" class="progress__marker-list">
-        {#each stepElemIdList}
-          <div
-            class="progress__marker"
-          ></div>
-        {/each}
-      </div>
-      <nav class="progress__nav">
-        {@render progressLink("Browse & Select Terms", 0)}
-        {@render progressLink("Configure Terms", 1)}
-        {@render progressLink("Your info", 2)}
-        {@render progressLink("Summary", 3)}
-        {@render progressLink("Pay", 4)}
-      </nav>
-    </aside>
+    {#if licensesHandler.Value.includes(true)}
+      <aside
+        class="progress"
+        transition:fade={{duration: 300}}
+      >
+        <div aria-hidden="true" class="progress__marker-list">
+          {#each stepElemIdList}
+            <div
+              class="progress__marker"
+            ></div>
+          {/each}
+        </div>
+        <nav class="progress__nav">
+          {@render progressLink("Browse & Select Terms", 0)}
+          {@render progressLink("Configure Terms", 1)}
+          {@render progressLink("Your info", 2)}
+          {@render progressLink("Summary", 3)}
+          {@render progressLink("Pay", 4)}
+        </nav>
+      </aside>
+    {/if}
 
     <form class="form">
 
@@ -428,251 +433,255 @@
         </div>
       </fieldset>
 
-      <fieldset
-        id={stepElemIdList[1]}
-        class="fieldset fieldset--license-config"
-      >
-        <legend class="fieldset__legend">Configure</legend>
-        <SwitchControl
-          className="field"
-          name="period-type"
-          required={true}
-          label={{
-            label: "Period",
-            supplement: "A fixed period specifies the number of active months. An auto-renewed period remains active until cancelled."
-          }}
-          options={{
-            list: [
-              {key: "Fixed", value: "fixed"},
-              {key: "Auto-renewed", value: "auto-renew"},
-            ],
-          }}
-          bind:value={periodHandler.Value}
-          judgement={periodHandler.Judgement}
-          oninput={() => judge_HandlerUpdate(periodHandler)}
-          onchange={() => judge_HandlerCommit(periodHandler)}
-        />
-
-        {#if periodHandler.Value === "fixed"}
-          <LinkedControls
+      {#if licensesHandler.Value.includes(true)}
+        <fieldset
+          id={stepElemIdList[1]}
+          class="fieldset fieldset--license-config"
+        >
+          <legend class="fieldset__legend">Configure</legend>
+          <SwitchControl
             className="field"
-            label={{
-              label: "Duration / End Date",
-            }}
+            name="period-type"
             required={true}
-            judgement={fixedPeriodJudgement}
-          >
-            {#snippet leftControl()}
-              <TextControl
-                className="field--duration"
-                name="duration"
-                required={true}
-                type="number"
-                placeholder=""
-                label={{
-                  label: "Fixed period given as end date.",
-                  hidden: true,
-                }}
-                bind:value={durationHandler.Value}
-                judgement={durationHandler.Judgement}
-                oninput={() => judge_HandlerUpdate(durationHandler)}
-                onchange={() => judge_HandlerCommit(durationHandler)}
-                onblur={() => judge_HandlerCommit(durationHandler)}
-              />
-            {/snippet}
-            {#snippet rightControl()}
-              <TextControl
-                className="field--end-date"
-                name="end-date"
-                required={true}
-                type="date"
-                placeholder=""
-                label={{
-                  label: "Fixed period given as duration",
-                  hidden: true,
-                }}
-                value={endDateHandler.Value}
-                judgement={endDateHandler.Judgement}
-                onchange={setEndDate}
-              />
-            {/snippet}
-          </LinkedControls>
-        {/if}
-      </fieldset>
+            label={{
+              label: "Period",
+              supplement: "A fixed period specifies the number of active months. An auto-renewed period remains active until cancelled."
+            }}
+            options={{
+              list: [
+                {key: "Fixed", value: "fixed"},
+                {key: "Auto-renewed", value: "auto-renew"},
+              ],
+            }}
+            bind:value={periodHandler.Value}
+            judgement={periodHandler.Judgement}
+            oninput={() => judge_HandlerUpdate(periodHandler)}
+            onchange={() => judge_HandlerCommit(periodHandler)}
+          />
 
-      <fieldset
-        id={stepElemIdList[2]}
-        class="fieldset fieldset--buyer-info"
-        name="buyer-info"
-      >
-        <PickerControl
-          className="field"
-          name="acc-username"
-          required={true}
-          label={{
-            label: "Account",
-            supplement: "Licenses being purchased will be coupled to the currently logged in account. ",
-            picker: usernameHandler.Value === "" ? "Log in / Sign up" : "Change Account",
-          }}
-          bind:value={usernameHandler.Value}
-          placeholder="No account chosen"
-          judgement={usernameHandler.Judgement}
-          inputAttr={{
-            "onblur": () => judge_HandlerCommit(usernameHandler),
-          }}
-          buttonAttr={{
-            "onblur": () => judge_HandlerCommit(usernameHandler),
-          }}
-        />
-        <SwitchControl
-          className="field"
-          name="owner"
-          required={true}
-          label={{
-            label: "Owner",
-            supplement: "Purchasing for yourself or on the behalf of an organization."
-          }}
-          options={{
-            list: [
-              {
-                key: "Individual",
-                value: "individual",
-              },
-              {
-                key: "Organization",
-                value: "organization",
-              }
-            ],
-          }}
-          bind:value={ownerHandler.Value}
-          judgement={ownerHandler.Judgement}
-          oninput={() => judge_HandlerUpdate(ownerHandler)}
-          onchange={() => judge_HandlerCommit(ownerHandler)}
-          aria-owns="fieldset--organization-buyer fieldset--buyer-placeholder"
-        />
-        {#if ownerHandler.Value === "organization"}
-          <fieldset id="fieldset--organization-buyer" name="organization">
-            <TextControl
-              className="field field--org-name"
-              type="text"
-              name="org-name"
-              required={true}
-              placeholder="Company Inc."
+          {#if periodHandler.Value === "fixed"}
+            <LinkedControls
+              className="field"
               label={{
-                label: "Organization name"
+                label: "Duration / End Date",
               }}
-              bind:value={orgNameHandler.Value}
-              judgement={orgNameHandler.Judgement}
-              oninput={() => judge_HandlerUpdate(orgNameHandler)}
-              onchange={() => judge_HandlerCommit(orgNameHandler)}
-            />
-            <TextControl
-              className="field field--org-vat"
-              type="text"
-              name="org-vat"
               required={true}
-              placeholder="GB999999973"
-              label={{
-                label: "VAT number"
-              }}
-              bind:value={orgVATHandler.Value}
-              judgement={orgVATHandler.Judgement}
-              oninput={() => judge_HandlerUpdate(orgVATHandler)}
-              onchange={() => judge_HandlerCommit(orgVATHandler)}
-            />
-            <!-- Make a traditional select -->
-            <div class="address-generic">
-              <SelectControl
-                className="field field--org-country"
-                name="org-country"
+              judgement={fixedPeriodJudgement}
+            >
+              {#snippet leftControl()}
+                <TextControl
+                  className="field--duration"
+                  name="duration"
+                  required={true}
+                  type="number"
+                  placeholder=""
+                  label={{
+                    label: "Fixed period given as end date.",
+                    hidden: true,
+                  }}
+                  bind:value={durationHandler.Value}
+                  judgement={durationHandler.Judgement}
+                  oninput={() => judge_HandlerUpdate(durationHandler)}
+                  onchange={() => judge_HandlerCommit(durationHandler)}
+                  onblur={() => judge_HandlerCommit(durationHandler)}
+                />
+              {/snippet}
+              {#snippet rightControl()}
+                <TextControl
+                  className="field--end-date"
+                  name="end-date"
+                  required={true}
+                  type="date"
+                  placeholder=""
+                  label={{
+                    label: "Fixed period given as duration",
+                    hidden: true,
+                  }}
+                  value={endDateHandler.Value}
+                  judgement={endDateHandler.Judgement}
+                  onchange={setEndDate}
+                />
+              {/snippet}
+            </LinkedControls>
+          {/if}
+        </fieldset>
+
+        <fieldset
+          id={stepElemIdList[2]}
+          class="fieldset fieldset--buyer-info"
+          name="buyer-info"
+        >
+          <PickerControl
+            className="field"
+            name="acc-username"
+            required={true}
+            label={{
+              label: "Account",
+              supplement: "Licenses being purchased will be coupled to the currently logged in account. ",
+              picker: usernameHandler.Value === "" ? "Log in / Sign up" : "Change Account",
+            }}
+            bind:value={usernameHandler.Value}
+            placeholder="No account chosen"
+            judgement={usernameHandler.Judgement}
+            inputAttr={{
+              "onblur": () => judge_HandlerCommit(usernameHandler),
+            }}
+            buttonAttr={{
+              "onblur": () => judge_HandlerCommit(usernameHandler),
+            }}
+          />
+          <SwitchControl
+            className="field"
+            name="owner"
+            required={true}
+            label={{
+              label: "Owner",
+              supplement: "Purchasing for yourself or on the behalf of an organization."
+            }}
+            options={{
+              list: [
+                {
+                  key: "Individual",
+                  value: "individual",
+                },
+                {
+                  key: "Organization",
+                  value: "organization",
+                }
+              ],
+            }}
+            bind:value={ownerHandler.Value}
+            judgement={ownerHandler.Judgement}
+            oninput={() => judge_HandlerUpdate(ownerHandler)}
+            onchange={() => judge_HandlerCommit(ownerHandler)}
+            aria-owns="fieldset--organization-buyer fieldset--buyer-placeholder"
+          />
+          {#if ownerHandler.Value === "organization"}
+            <fieldset id="fieldset--organization-buyer" name="organization">
+              <TextControl
+                className="field field--org-name"
+                type="text"
+                name="org-name"
                 required={true}
-                options={countries}
+                placeholder="Company Inc."
                 label={{
-                  label: "Country"
+                  label: "Organization name"
                 }}
-                bind:value={orgCountryHandler.Value}
-                judgement={orgCountryHandler.Judgement}
-                oninput={() => judge_HandlerUpdate(orgCountryHandler)}
-                onchange={() => judge_HandlerCommit(orgCountryHandler)}
+                bind:value={orgNameHandler.Value}
+                judgement={orgNameHandler.Judgement}
+                oninput={() => judge_HandlerUpdate(orgNameHandler)}
+                onchange={() => judge_HandlerCommit(orgNameHandler)}
               />
               <TextControl
-                className="field field--org-state"
+                className="field field--org-vat"
                 type="text"
-                name="org-state"
+                name="org-vat"
                 required={true}
-                placeholder="County of London"
+                placeholder="GB999999973"
                 label={{
-                  label: "State/County"
+                  label: "VAT number"
                 }}
-                bind:value={orgStateHandler.Value}
-                judgement={orgStateHandler.Judgement}
-                oninput={() => judge_HandlerUpdate(orgStateHandler)}
-                onchange={() => judge_HandlerCommit(orgStateHandler)}
+                bind:value={orgVATHandler.Value}
+                judgement={orgVATHandler.Judgement}
+                oninput={() => judge_HandlerUpdate(orgVATHandler)}
+                onchange={() => judge_HandlerCommit(orgVATHandler)}
               />
-            </div>
-            <div class="address-specific">
-              <TextControl
-                className="field field--org-city"
-                type="text"
-                name="org-city"
-                required={true}
-                placeholder="London"
-                label={{
-                  label: "City/Town"
-                }}
-                bind:value={orgCityHandler.Value}
-                judgement={orgCityHandler.Judgement}
-                oninput={() => judge_HandlerUpdate(orgCityHandler)}
-                onchange={() => judge_HandlerCommit(orgCityHandler)}
-              />
-              <TextControl
-                className="field field--org-street"
-                type="text"
-                name="org-street"
-                required={true}
-                placeholder="Brownlow Street"
-                label={{
-                  label: "Street"
-                }}
-                bind:value={orgStreetHandler.Value}
-                judgement={orgStreetHandler.Judgement}
-                oninput={() => judge_HandlerUpdate(orgStreetHandler)}
-                onchange={() => judge_HandlerCommit(orgStreetHandler)}
-              />
-              <TextControl
-                className="field field--org-postcode"
-                type="text"
-                name="org-postcode"
-                required={true}
-                placeholder="CR92AW"
-                label={{
-                  label: "Postcode"
-                }}
-                bind:value={orgPostcodeHandler.Value}
-                judgement={orgPostcodeHandler.Judgement}
-                oninput={() => judge_HandlerUpdate(orgPostcodeHandler)}
-                onchange={() => judge_HandlerCommit(orgPostcodeHandler)}
-              />
-            </div>
-          </fieldset>
-        {:else if ownerHandler.Value !== "individual"}
-          <SupNote id="fieldset--buyer-placeholder">Please select whether you're buying for yourself or an organization to continue...</SupNote>
-        {/if}
-      </fieldset>
+              <!-- Make a traditional select -->
+              <div class="address-generic">
+                <SelectControl
+                  className="field field--org-country"
+                  name="org-country"
+                  required={true}
+                  options={countries}
+                  label={{
+                    label: "Country"
+                  }}
+                  bind:value={orgCountryHandler.Value}
+                  judgement={orgCountryHandler.Judgement}
+                  oninput={() => judge_HandlerUpdate(orgCountryHandler)}
+                  onchange={() => judge_HandlerCommit(orgCountryHandler)}
+                />
+                <TextControl
+                  className="field field--org-state"
+                  type="text"
+                  name="org-state"
+                  required={true}
+                  placeholder="County of London"
+                  label={{
+                    label: "State/County"
+                  }}
+                  bind:value={orgStateHandler.Value}
+                  judgement={orgStateHandler.Judgement}
+                  oninput={() => judge_HandlerUpdate(orgStateHandler)}
+                  onchange={() => judge_HandlerCommit(orgStateHandler)}
+                />
+              </div>
+              <div class="address-specific">
+                <TextControl
+                  className="field field--org-city"
+                  type="text"
+                  name="org-city"
+                  required={true}
+                  placeholder="London"
+                  label={{
+                    label: "City/Town"
+                  }}
+                  bind:value={orgCityHandler.Value}
+                  judgement={orgCityHandler.Judgement}
+                  oninput={() => judge_HandlerUpdate(orgCityHandler)}
+                  onchange={() => judge_HandlerCommit(orgCityHandler)}
+                />
+                <TextControl
+                  className="field field--org-street"
+                  type="text"
+                  name="org-street"
+                  required={true}
+                  placeholder="Brownlow Street"
+                  label={{
+                    label: "Street"
+                  }}
+                  bind:value={orgStreetHandler.Value}
+                  judgement={orgStreetHandler.Judgement}
+                  oninput={() => judge_HandlerUpdate(orgStreetHandler)}
+                  onchange={() => judge_HandlerCommit(orgStreetHandler)}
+                />
+                <TextControl
+                  className="field field--org-postcode"
+                  type="text"
+                  name="org-postcode"
+                  required={true}
+                  placeholder="CR92AW"
+                  label={{
+                    label: "Postcode"
+                  }}
+                  bind:value={orgPostcodeHandler.Value}
+                  judgement={orgPostcodeHandler.Judgement}
+                  oninput={() => judge_HandlerUpdate(orgPostcodeHandler)}
+                  onchange={() => judge_HandlerCommit(orgPostcodeHandler)}
+                />
+              </div>
+            </fieldset>
+          {:else if ownerHandler.Value !== "individual"}
+            <SupNote id="fieldset--buyer-placeholder">Please select whether you're buying for yourself or an organization to continue...</SupNote>
+          {/if}
+        </fieldset>
+
+        <section
+          id={stepElemIdList[3]}
+          class="section--pay"
+        >
+          <h2 class="section__title">Summary</h2>
+        </section>
+
+        <section
+          id={stepElemIdList[4]}
+          class="section--thanks"
+        >
+        </section>
+      {/if}
 
     </form>
 
-    <section
-      id={stepElemIdList[3]}
-      class="section--pay"
-    >
-      <h2 class="section__title">Summary</h2>
-    </section>
-    <section
-      id={stepElemIdList[4]}
-      class="section--thanks"
-    >
-    </section>
 
   </section>
 </main>
@@ -688,7 +697,7 @@
     padding-bottom: var(--gap-128);
 
     display: grid;
-    grid-template-columns: fit-content(100%) minmax(var(--gap-64), 1fr) fit-content(100%);
+    grid-template-columns: minmax(auto, 1fr) minmax(var(--gap-64), auto) fit-content(100%);
     grid-template-rows: repeat(5, auto);
   }
 
@@ -860,7 +869,7 @@
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: var(--gap-128);
+    gap: var(--gap-64);
   }
   .license-terms {
     flex-grow: 0;
