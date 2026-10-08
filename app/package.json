@@ -26,12 +26,12 @@
     "wrangler": "^4.63.0"
   },
   "allowScripts": {
-    "esbuild@0.27.4": true,
-    "esbuild@0.27.3": true,
     "sharp@0.34.5": true,
-    "workerd@1.20260317.1": true
+    "esbuild@0.28.1": true,
+    "workerd@1.20260701.1": true
   },
   "dependencies": {
+    "@paddle/paddle-js": "^1.6.5",
     "remark-autolink-headings": "^7.0.1",
     "remark-slug": "^7.0.1"
   }
