@@ -21,6 +21,8 @@
 - TODO: Convert licenses listing to name -> license, instead of license[].
 - TODO: Search functionality for selects
 - TODO: Picker control less obvious button (takes too much attention)
+- TODO: Fix where SelectControl dropdown is visible at the bottom of the screen for some reason
+- TODO: Only show good judgement on after actual submission. Seems unnecessary for realtime in a form with many fields.
 -->
 <script lang="ts">
   import PickerControl from "$lib/components/general/inputv2/PickerControl.svelte";
@@ -34,7 +36,7 @@
   import { judge_HandlerCommit, judge_HandlerCreate, judge_HandlerUpdate, judge_JudgementCreate, judge_State, type judge_Handler, type judge_Judgement } from "$lib/logic/validation/validation";
   import SelectControl from "$lib/components/general/inputv2/SelectControl.svelte";
   import { countries } from "$lib/components/general/countries";
-    import { fade } from "svelte/transition";
+  import { fade } from "svelte/transition";
 
   pageBgClr.css = "var(--dark-green)";
 
@@ -185,6 +187,10 @@
   }
 
 
+  let versionHandler = $state(judge_HandlerCreate<string>((judgement, value) => {
+    judgement.State = judge_State.Good;
+    judgement.Message = "";
+  }, "1.3.0"));
 
 
   let usernameHandler = $state(judge_HandlerCreate<string>((judgement, value) => {
@@ -208,7 +214,7 @@
 
     judgement.State = judge_State.Good;
     judgement.Message = "";
-  }, "organization"))
+  }, "organization"));
 
   let periodHandler = $state(judge_HandlerCreate<"fixed"|"auto-renew">((judgement, value) => {
     if (value.length === 0) {
@@ -439,71 +445,94 @@
           class="fieldset fieldset--license-config"
         >
           <legend class="fieldset__legend">Configure</legend>
-          <SwitchControl
-            className="field"
-            name="period-type"
-            required={true}
-            label={{
-              label: "Period",
-              supplement: "A fixed period specifies the number of active months. An auto-renewed period remains active until cancelled."
-            }}
-            options={{
-              list: [
-                {key: "Fixed", value: "fixed"},
-                {key: "Auto-renewed", value: "auto-renew"},
-              ],
-            }}
-            bind:value={periodHandler.Value}
-            judgement={periodHandler.Judgement}
-            oninput={() => judge_HandlerUpdate(periodHandler)}
-            onchange={() => judge_HandlerCommit(periodHandler)}
-          />
 
-          {#if periodHandler.Value === "fixed"}
-            <LinkedControls
+          {#if licensesHandler.Value[2]}
+            <SwitchControl
               className="field"
-              label={{
-                label: "Duration / End Date",
-              }}
+              name="period-type"
               required={true}
-              judgement={fixedPeriodJudgement}
-            >
-              {#snippet leftControl()}
-                <TextControl
-                  className="field--duration"
-                  name="duration"
-                  required={true}
-                  type="number"
-                  placeholder=""
-                  label={{
-                    label: "Fixed period given as end date.",
-                    hidden: true,
-                  }}
-                  bind:value={durationHandler.Value}
-                  judgement={durationHandler.Judgement}
-                  oninput={() => judge_HandlerUpdate(durationHandler)}
-                  onchange={() => judge_HandlerCommit(durationHandler)}
-                  onblur={() => judge_HandlerCommit(durationHandler)}
-                />
-              {/snippet}
-              {#snippet rightControl()}
-                <TextControl
-                  className="field--end-date"
-                  name="end-date"
-                  required={true}
-                  type="date"
-                  placeholder=""
-                  label={{
-                    label: "Fixed period given as duration",
-                    hidden: true,
-                  }}
-                  value={endDateHandler.Value}
-                  judgement={endDateHandler.Judgement}
-                  onchange={setEndDate}
-                />
-              {/snippet}
-            </LinkedControls>
+              label={{
+                label: "Period",
+                supplement: "A fixed period specifies the number of active months. An auto-renewed period remains active until cancelled."
+              }}
+              options={{
+                list: [
+                  {key: "Fixed", value: "fixed"},
+                  {key: "Auto-renewed", value: "auto-renew"},
+                ],
+              }}
+              bind:value={periodHandler.Value}
+              judgement={periodHandler.Judgement}
+              oninput={() => judge_HandlerUpdate(periodHandler)}
+              onchange={() => judge_HandlerCommit(periodHandler)}
+            />
+
+            {#if periodHandler.Value === "fixed"}
+              <LinkedControls
+                className="field"
+                label={{
+                  label: "Duration / End Date",
+                }}
+                required={true}
+                judgement={fixedPeriodJudgement}
+              >
+                {#snippet leftControl()}
+                  <TextControl
+                    className="field--duration"
+                    name="duration"
+                    required={true}
+                    type="number"
+                    placeholder=""
+                    label={{
+                      label: "Fixed period given as end date.",
+                      hidden: true,
+                    }}
+                    bind:value={durationHandler.Value}
+                    judgement={durationHandler.Judgement}
+                    oninput={() => judge_HandlerUpdate(durationHandler)}
+                    onchange={() => judge_HandlerCommit(durationHandler)}
+                    onblur={() => judge_HandlerCommit(durationHandler)}
+                  />
+                {/snippet}
+                {#snippet rightControl()}
+                  <TextControl
+                    className="field--end-date"
+                    name="end-date"
+                    required={true}
+                    type="date"
+                    placeholder=""
+                    label={{
+                      label: "Fixed period given as duration",
+                      hidden: true,
+                    }}
+                    value={endDateHandler.Value}
+                    judgement={endDateHandler.Judgement}
+                    onchange={setEndDate}
+                  />
+                {/snippet}
+              </LinkedControls>
+            {/if}
           {/if}
+
+          {#if licensesHandler.Value[3]}
+            <SelectControl
+              name="tool-version"
+              required={true}
+              label={{
+                label: "Version",
+                supplement: "Bug fixes & security updates are provided to each version for two years."
+              }}
+              options={[
+                {key: "v1.3.0: Realtime Collaboration", value: "1.3.0"},
+                {key: "v1.2.0: Context Actions", value: "1.2.0"},
+                {key: "v1.1.0: Validation & Generation", value: "1.1.0"},
+                {key: "v1.0.0: Initial Release", value: "1.0.0"},
+              ]}
+              bind:value={versionHandler.Value}
+              judgement={versionHandler.Judgement}
+            />
+          {/if}
+
         </fieldset>
 
         <fieldset
